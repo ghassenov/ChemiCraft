@@ -1,0 +1,38 @@
+[
+  {
+    "id": "H",
+    "name": "Hydrogen",
+    "symbol": "H",
+    "color": 0xffffff,
+    "category": "basic",
+    "unlock_condition": "free",
+    "description": "The lightest element. Highly reactive."
+  },
+  {
+    "id": "O",
+    "name": "Oxygen",
+    "symbol": "O",
+    "color": 0xff4444,
+    "category": "basic",
+    "unlock_condition": "free",
+    "description": "Supports combustion. Essential for respiration."
+  },
+  {
+    "id": "N",
+    "name": "Nitrogen",
+    "symbol": "N",
+    "color": 0x4444ff,
+    "category": "basic",
+    "unlock_condition": "free",
+    "description": "Makes up 78% of air. Forms triple bonds."
+  },
+  {
+    "id": "C",
+    "name": "Carbon",
+    "symbol": "C",
+    "color": 0x666666,
+    "category": "basic",
+    "unlock_condition": "free",
+    "description": "The building block of organic chemistry."
+  }
+]

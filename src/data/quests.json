@@ -1,0 +1,26 @@
+[
+  {
+    "id": "quest_ventilation",
+    "npc": "panting_pete",
+    "map": "atom_meadows",
+    "title": "Ventilation Crisis",
+    "dialogue": {
+      "greeting": "*huff puff* Oh thank goodness you're here!",
+      "problem": "The air in our village has gone completely stale. We need fresh air molecules — the kind that make up 78% of our atmosphere!",
+      "hint": "Nitrogen atoms love to form triple bonds. If you put two of them together in the lab, you'll get a very stable gas.",
+      "success": "Ahhh! I can breathe again! You're a true chemist! Here's your reward."
+    },
+    "objective": {
+      "type": "molecule",
+      "target": "N2"
+    },
+    "required_reagents": ["N", "N"],
+    "rewards": {
+      "coins": 50,
+      "skill": "bonding",
+      "skill_points": 1,
+      "unlock_reagent": "O"
+    },
+    "prerequisites": []
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "reactants": ["N", "N"],
+    "product": "N2",
+    "name": "Nitrogen Gas",
+    "description": "Two nitrogen atoms triple-bond to form nitrogen gas."
+  },
+  {
+    "reactants": ["H", "H", "O"],
+    "product": "H2O",
+    "name": "Water",
+    "description": "Two hydrogens and one oxygen make water!"
+  },
+  {
+    "reactants": ["O", "H", "H"],
+    "product": "H2O",
+    "name": "Water",
+    "description": "Two hydrogens and one oxygen make water!"
+  },
+  {
+    "reactants": ["C", "O", "O"],
+    "product": "CO2",
+    "name": "Carbon Dioxide",
+    "description": "One carbon and two oxygens form carbon dioxide."
+  },
+  {
+    "reactants": ["O", "C", "O"],
+    "product": "CO2",
+    "name": "Carbon Dioxide",
+    "description": "One carbon and two oxygens form carbon dioxide."
+  }
+]
