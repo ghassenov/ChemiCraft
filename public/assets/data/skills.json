@@ -1,0 +1,58 @@
+{
+  "bonding": {
+    "id": "bonding",
+    "name": "Bonding",
+    "icon": "🔗",
+    "maxLevel": 5,
+    "description": "Understanding of chemical bonds. Provides molecule hints in the laboratory.",
+    "levelDescriptions": [
+      "Novice — No hints available",
+      "Apprentice — See bond type hints",
+      "Journeyman — See element compatibility",
+      "Expert — See partial recipes",
+      "Master — See full recipe suggestions"
+    ]
+  },
+  "equation_balancing": {
+    "id": "equation_balancing",
+    "name": "Equation Balancing",
+    "icon": "⚖️",
+    "maxLevel": 5,
+    "description": "Skill in balancing chemical equations. Provides balancing hints.",
+    "levelDescriptions": [
+      "Novice — No balancing help",
+      "Apprentice — See atom counts",
+      "Journeyman — See imbalanced elements",
+      "Expert — See suggested coefficients",
+      "Master — Auto-balance simple equations"
+    ]
+  },
+  "precipitation": {
+    "id": "precipitation",
+    "name": "Precipitation Mastery",
+    "icon": "💎",
+    "maxLevel": 5,
+    "description": "Knowledge of solubility and precipitation. Highlights compatible reagents.",
+    "levelDescriptions": [
+      "Novice — No highlights",
+      "Apprentice — See solubility hints",
+      "Journeyman — Compatible reagents glow",
+      "Expert — See reaction products preview",
+      "Master — Predict all precipitation reactions"
+    ]
+  },
+  "acid_base": {
+    "id": "acid_base",
+    "name": "Acid-Base Sense",
+    "icon": "🧪",
+    "maxLevel": 5,
+    "description": "Intuition for acids and bases. Displays estimated pH values.",
+    "levelDescriptions": [
+      "Novice — No pH info",
+      "Apprentice — See acid/base/neutral labels",
+      "Journeyman — See approximate pH range",
+      "Expert — See exact pH values",
+      "Master — Predict neutralization reactions"
+    ]
+  }
+}

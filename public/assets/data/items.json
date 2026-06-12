@@ -1,0 +1,142 @@
+{
+  "reagent_H": {
+    "id": "reagent_H",
+    "name": "Hydrogen",
+    "symbol": "H",
+    "type": "reagent",
+    "description": "The lightest and most abundant element in the universe. Atomic number 1.",
+    "color": "#ff6b6b",
+    "price": 0,
+    "stackable": true
+  },
+  "reagent_O": {
+    "id": "reagent_O",
+    "name": "Oxygen",
+    "symbol": "O",
+    "type": "reagent",
+    "description": "Essential for respiration. Atomic number 8. Highly reactive!",
+    "color": "#4ecdc4",
+    "price": 0,
+    "stackable": true
+  },
+  "reagent_N": {
+    "id": "reagent_N",
+    "name": "Nitrogen",
+    "symbol": "N",
+    "type": "reagent",
+    "description": "Makes up 78% of Earth's atmosphere. Atomic number 7.",
+    "color": "#45b7d1",
+    "price": 0,
+    "stackable": true
+  },
+  "reagent_C": {
+    "id": "reagent_C",
+    "name": "Carbon",
+    "symbol": "C",
+    "type": "reagent",
+    "description": "The building block of organic chemistry. Atomic number 6.",
+    "color": "#96ceb4",
+    "price": 0,
+    "stackable": true
+  },
+  "reagent_Na": {
+    "id": "reagent_Na",
+    "name": "Sodium",
+    "symbol": "Na",
+    "type": "reagent",
+    "description": "A soft, silvery-white alkali metal. Atomic number 11. Reacts vigorously with water!",
+    "color": "#ffd93d",
+    "price": 200,
+    "stackable": true
+  },
+  "molecule_H2": {
+    "id": "molecule_H2",
+    "name": "Molecular Hydrogen",
+    "symbol": "H₂",
+    "type": "molecule",
+    "description": "The simplest molecule — two hydrogen atoms bonded together.",
+    "color": "#ff8a80",
+    "price": 25,
+    "stackable": true
+  },
+  "molecule_O2": {
+    "id": "molecule_O2",
+    "name": "Molecular Oxygen",
+    "symbol": "O₂",
+    "type": "molecule",
+    "description": "The oxygen we breathe — vital for life!",
+    "color": "#80cbc4",
+    "price": 25,
+    "stackable": true
+  },
+  "molecule_N2": {
+    "id": "molecule_N2",
+    "name": "Molecular Nitrogen",
+    "symbol": "N₂",
+    "type": "molecule",
+    "description": "The most abundant gas in our atmosphere.",
+    "color": "#81d4fa",
+    "price": 25,
+    "stackable": true
+  },
+  "molecule_H2O": {
+    "id": "molecule_H2O",
+    "name": "Water",
+    "symbol": "H₂O",
+    "type": "molecule",
+    "description": "The universal solvent — essential for all life.",
+    "color": "#4fc3f7",
+    "price": 40,
+    "stackable": true
+  },
+  "molecule_CO2": {
+    "id": "molecule_CO2",
+    "name": "Carbon Dioxide",
+    "symbol": "CO₂",
+    "type": "molecule",
+    "description": "Used by plants in photosynthesis. Makes soda fizzy!",
+    "color": "#a5d6a7",
+    "price": 40,
+    "stackable": true
+  },
+  "lab_coat": {
+    "id": "lab_coat",
+    "name": "Lab Coat",
+    "symbol": "🥼",
+    "type": "equipment",
+    "description": "Professional chemistry attire. +10% crafting speed.",
+    "color": "#ffffff",
+    "price": 100,
+    "stackable": false
+  },
+  "goggles": {
+    "id": "goggles",
+    "name": "Safety Goggles",
+    "symbol": "🥽",
+    "type": "equipment",
+    "description": "Protect your eyes! Shows recipe hints in the lab.",
+    "color": "#ffeb3b",
+    "price": 150,
+    "stackable": false
+  },
+  "speed_potion": {
+    "id": "speed_potion",
+    "name": "Crafting Speed Potion",
+    "symbol": "⚗️",
+    "type": "consumable",
+    "description": "Speeds up crafting animations for 5 minutes.",
+    "color": "#ce93d8",
+    "price": 50,
+    "stackable": true
+  },
+  "mystery_molecule": {
+    "id": "mystery_molecule",
+    "name": "Mystery Molecule",
+    "symbol": "❓",
+    "type": "quest_item",
+    "description": "A strange, unidentified molecule. What could it be?",
+    "color": "#b39ddb",
+    "price": 500,
+    "stackable": false
+  }
+}

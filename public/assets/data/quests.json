@@ -1,0 +1,40 @@
+{
+  "ventilation_crisis": {
+    "id": "ventilation_crisis",
+    "title": "Ventilation Crisis",
+    "description": "The village air is stale! Create N₂ (molecular nitrogen) in the Laboratory to fix the ventilation.",
+    "npcId": "panting_pete",
+    "objectiveType": "craft",
+    "target": "N₂",
+    "targetAmount": 1,
+    "rewardCoins": 50,
+    "rewardSkill": { "bonding": 1 },
+    "rewardItems": ["reagent_O"],
+    "prerequisiteQuests": [],
+    "isMainQuest": true,
+    "hints": [
+      "Nitrogen makes up about 78% of Earth's atmosphere.",
+      "Try combining two nitrogen atoms (N + N).",
+      "Head to the Laboratory building — it's the large blue building."
+    ]
+  },
+  "water_of_life": {
+    "id": "water_of_life",
+    "title": "Water of Life",
+    "description": "The village well has dried up! Create H₂O in the Laboratory.",
+    "npcId": "mayor_molecule",
+    "objectiveType": "craft",
+    "target": "H₂O",
+    "targetAmount": 1,
+    "rewardCoins": 75,
+    "rewardSkill": { "bonding": 1, "equation_balancing": 1 },
+    "rewardItems": ["reagent_C"],
+    "prerequisiteQuests": ["ventilation_crisis"],
+    "isMainQuest": true,
+    "hints": [
+      "Water is H₂O — two hydrogen and one oxygen.",
+      "First create H₂, then combine it with O.",
+      "You'll need to craft in two steps!"
+    ]
+  }
+}

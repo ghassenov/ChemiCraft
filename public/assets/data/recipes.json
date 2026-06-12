@@ -1,0 +1,51 @@
+[
+  {
+    "inputs": ["H", "H"],
+    "output": "H₂",
+    "outputName": "Molecular Hydrogen",
+    "explanation": "Two hydrogen atoms share their electrons in a single covalent bond, forming H₂ — the simplest and lightest molecule in the universe. Hydrogen gas is highly flammable and is used as rocket fuel!",
+    "difficulty": 1
+  },
+  {
+    "inputs": ["O", "O"],
+    "output": "O₂",
+    "outputName": "Molecular Oxygen",
+    "explanation": "Two oxygen atoms form a double covalent bond to create O₂. This is the oxygen we breathe! It makes up about 21% of Earth's atmosphere and is essential for cellular respiration.",
+    "difficulty": 1
+  },
+  {
+    "inputs": ["N", "N"],
+    "output": "N₂",
+    "outputName": "Molecular Nitrogen",
+    "explanation": "Two nitrogen atoms form a triple covalent bond — one of the strongest bonds in chemistry! N₂ makes up 78% of Earth's atmosphere. Its stability is why it's so hard to break apart, which is important in fertilizer production.",
+    "difficulty": 1
+  },
+  {
+    "inputs": ["H₂", "O"],
+    "output": "H₂O",
+    "outputName": "Water",
+    "explanation": "Water is composed of two hydrogen atoms and one oxygen atom connected by covalent bonds. It's the universal solvent and essential for all known forms of life. The bent shape of the molecule gives it unique properties!",
+    "difficulty": 2
+  },
+  {
+    "inputs": ["C", "O", "O"],
+    "output": "CO₂",
+    "outputName": "Carbon Dioxide",
+    "explanation": "Carbon dioxide consists of one carbon atom double-bonded to two oxygen atoms. Plants use CO₂ in photosynthesis to make glucose and oxygen. It's also what makes soda fizzy!",
+    "difficulty": 2
+  },
+  {
+    "inputs": ["C", "H", "H", "H", "H"],
+    "output": "CH₄",
+    "outputName": "Methane",
+    "explanation": "Methane is the simplest hydrocarbon — one carbon atom bonded to four hydrogen atoms in a tetrahedral shape. It's the main component of natural gas and is produced by decomposing organic matter.",
+    "difficulty": 3
+  },
+  {
+    "inputs": ["N", "H", "H", "H"],
+    "output": "NH₃",
+    "outputName": "Ammonia",
+    "explanation": "Ammonia has one nitrogen atom bonded to three hydrogen atoms, with a lone pair of electrons giving it a pyramidal shape. It's crucial for making fertilizers through the Haber process!",
+    "difficulty": 3
+  }
+]

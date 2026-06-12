@@ -1,0 +1,70 @@
+{
+  "panting_pete": {
+    "id": "panting_pete",
+    "name": "Panting Pete",
+    "spriteColor": "#e74c3c",
+    "questId": "ventilation_crisis",
+    "dialogue": {
+      "default": [
+        "*wheeze* Oh... hello there, young chemist!",
+        "The air in our village is so stale...",
+        "We desperately need the molecule that makes up most of Earth's atmosphere!",
+        "Can you help us? Head to the Laboratory and create it!"
+      ],
+      "questActive": [
+        "*cough* Have you created the molecule yet?",
+        "Remember — it's the one that makes up 78% of our atmosphere!",
+        "Try combining two nitrogen atoms in the Laboratory."
+      ],
+      "questComplete": [
+        "*deep breath* AHHH! Fresh air at last!",
+        "You did it! N₂ — molecular nitrogen!",
+        "Two nitrogen atoms bonded together with a triple covalent bond.",
+        "One of the most stable molecules in nature!",
+        "Here, take these coins and this new reagent as thanks!"
+      ]
+    }
+  },
+  "professor_knowitall": {
+    "id": "professor_knowitall",
+    "name": "Prof. Knowitall",
+    "spriteColor": "#3498db",
+    "questId": null,
+    "dialogue": {
+      "default": [
+        "Welcome to the Atom Meadows Library!",
+        "I'm Professor Knowitall, your guide to chemistry.",
+        "Would you like to learn about atoms, molecules, or chemical bonds?",
+        "Step inside and browse our collection!"
+      ]
+    }
+  },
+  "shopkeeper_sal": {
+    "id": "shopkeeper_sal",
+    "name": "Shopkeeper Sal",
+    "spriteColor": "#f39c12",
+    "questId": null,
+    "dialogue": {
+      "default": [
+        "Welcome to Sal's Science Supply!",
+        "I've got all sorts of chemistry goodies.",
+        "Lab coats, goggles, extra reagents...",
+        "Take a look at what's in stock!"
+      ]
+    }
+  },
+  "mayor_molecule": {
+    "id": "mayor_molecule",
+    "name": "Mayor Molecule",
+    "spriteColor": "#9b59b6",
+    "questId": null,
+    "dialogue": {
+      "default": [
+        "Welcome to Atom Meadows, young scientist!",
+        "Our village is built on the principles of chemistry.",
+        "Talk to the villagers, visit the laboratory, and explore!",
+        "There's so much to discover about the elements around us."
+      ]
+    }
+  }
+}
