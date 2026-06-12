@@ -8,7 +8,7 @@ import { Direction } from '../data/types';
 export class Player extends Phaser.Physics.Arcade.Sprite {
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
   private wasd!: { W: Phaser.Input.Keyboard.Key; A: Phaser.Input.Keyboard.Key; S: Phaser.Input.Keyboard.Key; D: Phaser.Input.Keyboard.Key };
-  private interactKey!: Phaser.Input.Keyboard.Key;
+  private _interactKey!: Phaser.Input.Keyboard.Key;
   private speed = 120;
   private _facing: Direction = Direction.Down;
   private _canMove = true;
@@ -33,12 +33,35 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         S: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),
         D: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D),
       };
-      this.interactKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+      this._interactKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
     }
 
     // Create animations
     this.createAnimations(scene);
+
+    // Listen to consumed items
+    window.addEventListener('chemicraft:consumed', this.handleItemConsumed);
+    scene.events.on(Phaser.Scenes.Events.SHUTDOWN, () => {
+      window.removeEventListener('chemicraft:consumed', this.handleItemConsumed);
+    });
   }
+
+  private handleItemConsumed = (e: any) => {
+    const { itemId } = e.detail;
+    if (itemId === 'speed_potion') {
+      this.speed = 180; // Boost speed
+      // Particle effect
+      const emitter = this.scene.add.particles(0, 0, 'icon_particle', {
+        speed: 20, scale: { start: 0.5, end: 0 }, tint: 0xce93d8, blendMode: 'ADD', lifespan: 400
+      });
+      emitter.startFollow(this);
+      
+      this.scene.time.delayedCall(30000, () => { // 30 seconds
+        this.speed = 120;
+        emitter.destroy();
+      });
+    }
+  };
 
   private createAnimations(scene: Phaser.Scene) {
     const dirs = ['down', 'up', 'left', 'right'];
@@ -66,6 +89,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   get facing(): Direction { return this._facing; }
   get canMove(): boolean { return this._canMove; }
   set canMove(v: boolean) { this._canMove = v; if (!v) this.setVelocity(0, 0); }
+  get interactKey(): Phaser.Input.Keyboard.Key { return this._interactKey; }
 
   onInteract(cb: () => void) { this.interactionCallback = cb; }
 
@@ -109,7 +133,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     // Interaction
-    if (Phaser.Input.Keyboard.JustDown(this.interactKey) && this.interactionCallback) {
+    if (Phaser.Input.Keyboard.JustDown(this._interactKey) && this.interactionCallback) {
       this.interactionCallback();
     }
   }
