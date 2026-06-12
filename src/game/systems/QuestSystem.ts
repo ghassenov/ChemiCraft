@@ -73,6 +73,8 @@ export class QuestSystem {
 
     gameStore.completeQuest(id);
 
+    try { this.scene.sound.play('sfx_coin', { volume: 0.5 }); } catch (_) {}
+
     this.scene.events.emit(GameEvents.QuestCompleted, id);
     this.scene.events.emit(GameEvents.Notification, {
       title: 'Quest Complete!',

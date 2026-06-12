@@ -10,7 +10,11 @@ export interface PlayerData {
   inventory: InventoryItem[];
   completedQuests: string[];
   activeQuests: string[];
+  unlockedChemDex: string[];
+  activeTool: string;
+  equippedGear: string[];
   isGuest: boolean;
+  interiorVisits: Record<string, boolean>;
 }
 
 /** An item in the player's inventory */

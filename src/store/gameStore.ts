@@ -37,7 +37,11 @@ const DEFAULT_PLAYER_DATA: PlayerData = {
   ],
   completedQuests: [],
   activeQuests: [],
+  unlockedChemDex: [],
+  activeTool: 'none',
+  equippedGear: [],
   isGuest: true,
+  interiorVisits: {},
 };
 
 class GameStore {
@@ -195,6 +199,25 @@ class GameStore {
     return this.state.playerData.completedQuests.includes(questId);
   }
 
+  // ===== ChemDex =====
+  unlockChemDex(moleculeSymbol: string) {
+    if (!this.state.playerData.unlockedChemDex.includes(moleculeSymbol)) {
+      this.state.playerData.unlockedChemDex.push(moleculeSymbol);
+      this.notify();
+      this.autoSave();
+      
+      // We could trigger a notification event here
+      const event = new CustomEvent('chemicraft:notification', {
+        detail: { message: `New molecule unlocked in ChemDex: ${moleculeSymbol}!`, color: '#00cec9' }
+      });
+      window.dispatchEvent(event);
+    }
+  }
+
+  hasChemDex(moleculeSymbol: string): boolean {
+    return this.state.playerData.unlockedChemDex.includes(moleculeSymbol);
+  }
+
   // ===== Skills =====
   addSkillPoints(skillId: string, points: number) {
     const current = this.state.playerData.skills[skillId] || 0;
@@ -207,6 +230,36 @@ class GameStore {
     return this.state.playerData.skills[skillId] || 0;
   }
 
+  // ===== Equipment & Tools =====
+  setActiveTool(tool: string) {
+    this.state.playerData.activeTool = tool;
+    this.notify();
+    this.autoSave();
+  }
+
+  equipGear(itemId: string) {
+    // Unequip similar items if needed, or just set it
+    if (!this.state.playerData.equippedGear.includes(itemId)) {
+      this.state.playerData.equippedGear.push(itemId);
+      this.notify();
+      this.autoSave();
+    }
+  }
+
+  isEquipped(itemId: string): boolean {
+    return this.state.playerData.equippedGear.includes(itemId);
+  }
+
+  consumeItem(itemId: string): boolean {
+    if (this.removeFromInventory(itemId, 1)) {
+      // Trigger effect via events
+      const event = new CustomEvent('chemicraft:consumed', { detail: { itemId } });
+      window.dispatchEvent(event);
+      return true;
+    }
+    return false;
+  }
+
   // ===== UI State =====
   setDialogueOpen(open: boolean) {
     this.state.isDialogueOpen = open;
@@ -216,6 +269,17 @@ class GameStore {
   setPaused(paused: boolean) {
     this.state.isPaused = paused;
     this.notify();
+  }
+
+  // ===== Interior Visits =====
+  markInteriorVisited(sceneKey: string) {
+    this.state.playerData.interiorVisits[sceneKey] = true;
+    this.notify();
+    this.autoSave();
+  }
+
+  hasVisitedInterior(sceneKey: string): boolean {
+    return !!this.state.playerData.interiorVisits[sceneKey];
   }
 
   // ===== Persistence (localStorage) =====

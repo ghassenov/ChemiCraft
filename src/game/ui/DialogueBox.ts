@@ -24,6 +24,7 @@ export class DialogueBox {
   private questId: string | null = null;
   private showQuestPrompt = false;
   private questBtns: Phaser.GameObjects.Container[] = [];
+  private portraitInitial: Phaser.GameObjects.Text | null = null;
 
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
@@ -89,11 +90,15 @@ export class DialogueBox {
     this.portrait.fillCircle(70, this.scene.cameras.main.height - 90, 30);
     this.portrait.fillStyle(color, 1);
     this.portrait.fillCircle(70, this.scene.cameras.main.height - 90, 20);
-    // Initial of name
-    const initial = this.scene.add.text(70, this.scene.cameras.main.height - 90, name[0], {
-      fontFamily: '"Press Start 2P"', fontSize: '14px', color: '#fff',
-    }).setOrigin(0.5).setScrollFactor(0).setDepth(101);
-    this.container.add(initial);
+    // Initial of name (reuse to avoid leaks)
+    if (this.portraitInitial) {
+      this.portraitInitial.setText(name[0]);
+    } else {
+      this.portraitInitial = this.scene.add.text(70, this.scene.cameras.main.height - 90, name[0], {
+        fontFamily: '"Press Start 2P"', fontSize: '14px', color: '#fff',
+      }).setOrigin(0.5).setScrollFactor(0).setDepth(101);
+      this.container.add(this.portraitInitial);
+    }
 
     // Show container
     this.scene.tweens.add({
