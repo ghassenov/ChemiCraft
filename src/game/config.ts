@@ -2,12 +2,14 @@ import Phaser from 'phaser';
 import { BootScene } from './scenes/BootScene';
 import { MainMenuScene } from './scenes/MainMenuScene';
 import { GameScene } from './scenes/GameScene';
+import { LabInteriorScene } from './scenes/LabInteriorScene';
+import { LibraryInteriorScene } from './scenes/LibraryInteriorScene';
+import { ShopInteriorScene } from './scenes/ShopInteriorScene';
+import { HUDScene } from './scenes/HUDScene';
 import { LaboratoryScene } from './scenes/LaboratoryScene';
 import { LibraryScene } from './scenes/LibraryScene';
 import { ShopScene } from './scenes/ShopScene';
-import { HUDScene } from './scenes/HUDScene';
 
-/** Creates and returns the Phaser game configuration */
 export function createGameConfig(): Phaser.Types.Core.GameConfig {
   return {
     type: Phaser.AUTO,
@@ -32,10 +34,13 @@ export function createGameConfig(): Phaser.Types.Core.GameConfig {
       BootScene,
       MainMenuScene,
       GameScene,
+      LabInteriorScene,
+      LibraryInteriorScene,
+      ShopInteriorScene,
+      HUDScene,
       LaboratoryScene,
       LibraryScene,
       ShopScene,
-      HUDScene,
     ],
   };
 }
