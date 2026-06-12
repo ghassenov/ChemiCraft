@@ -13,12 +13,12 @@
       ],
       "questActive": [
         "*cough* Have you created the molecule yet?",
-        "Remember — it's the one that makes up 78% of our atmosphere!",
+        "Remember \u2014 it\u2019s the one that makes up 78% of our atmosphere!",
         "Try combining two nitrogen atoms in the Laboratory."
       ],
       "questComplete": [
         "*deep breath* AHHH! Fresh air at last!",
-        "You did it! N₂ — molecular nitrogen!",
+        "You did it! N\u2082 \u2014 molecular nitrogen!",
         "Two nitrogen atoms bonded together with a triple covalent bond.",
         "One of the most stable molecules in nature!",
         "Here, take these coins and this new reagent as thanks!"
@@ -57,13 +57,39 @@
     "id": "mayor_molecule",
     "name": "Mayor Molecule",
     "spriteColor": "#9b59b6",
-    "questId": null,
+    "questId": "water_of_life",
     "dialogue": {
       "default": [
         "Welcome to Atom Meadows, young scientist!",
         "Our village is built on the principles of chemistry.",
         "Talk to the villagers, visit the laboratory, and explore!",
         "There's so much to discover about the elements around us."
+      ],
+      "questActive": [
+        "Have you managed to create water yet?",
+        "The village well is still dry! We need H\u2082O!",
+        "Remember \u2014 water is two hydrogen atoms and one oxygen atom.",
+        "Try crafting H\u2082 first, then combine it with oxygen!"
+      ],
+      "questComplete": [
+        "You did it! Fresh, clean water!",
+        "H\u2082O \u2014 the universal solvent, essential for all life!",
+        "Two hydrogen atoms covalently bonded to one oxygen atom.",
+        "You're a true chemist! Here's your reward!"
+      ]
+    }
+  },
+  "lab_assistant": {
+    "id": "lab_assistant",
+    "name": "Lab Assistant",
+    "spriteColor": "#00b894",
+    "questId": null,
+    "dialogue": {
+      "default": [
+        "Welcome to the laboratory!",
+        "Use the shelf on the left to pick up reagents.",
+        "Then bring them to the workbench in the center to craft.",
+        "I'm here if you need any help!"
       ]
     }
   }
