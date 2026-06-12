@@ -1,10 +1,16 @@
 import { gameStore } from '../store/gameStore';
 
-/** Renders the auth screen HTML overlay with login/signup/guest modes */
 export function renderAuthScreen(onComplete: () => void) {
   const overlay = document.getElementById('auth-overlay')!;
 
   overlay.innerHTML = `
+    <div class="auth-float-deco" style="top:8%;left:6%;font-size:22px;animation-delay:-1s;">⚗️</div>
+    <div class="auth-float-deco" style="bottom:10%;right:5%;font-size:18px;animation-delay:-3s;">🔬</div>
+    <div class="auth-float-deco" style="top:25%;right:8%;font-size:14px;animation-delay:-7s;">🧪</div>
+    <div class="auth-float-deco" style="bottom:30%;left:5%;font-size:16px;animation-delay:-11s;">⚛️</div>
+    <div class="auth-float-deco" style="top:45%;left:3%;font-size:12px;animation-delay:-5s;">💎</div>
+    <div class="auth-float-deco" style="top:15%;right:4%;font-size:20px;animation-delay:-9s;">🌡️</div>
+
     <div class="auth-card">
       <div class="auth-molecule">⚗️</div>
       <h1>CHEMICRAFT</h1>
@@ -15,7 +21,6 @@ export function renderAuthScreen(onComplete: () => void) {
         <button class="auth-tab" data-tab="signup" id="tab-signup">Sign Up</button>
       </div>
 
-      <!-- Login Form -->
       <form id="login-form">
         <div class="form-group">
           <label for="login-username">Username</label>
@@ -29,7 +34,6 @@ export function renderAuthScreen(onComplete: () => void) {
         <button type="submit" class="btn-primary">Enter the Lab →</button>
       </form>
 
-      <!-- Signup Form (hidden by default) -->
       <form id="signup-form" style="display: none;">
         <div class="form-group">
           <label for="signup-username">Username</label>
@@ -55,7 +59,6 @@ export function renderAuthScreen(onComplete: () => void) {
     </div>
   `;
 
-  // Tab switching
   const loginTab = overlay.querySelector('#tab-login')!;
   const signupTab = overlay.querySelector('#tab-signup')!;
   const loginForm = overlay.querySelector('#login-form') as HTMLFormElement;
@@ -75,7 +78,6 @@ export function renderAuthScreen(onComplete: () => void) {
     loginForm.style.display = 'none';
   });
 
-  // Login submit
   loginForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const username = (overlay.querySelector('#login-username') as HTMLInputElement).value.trim();
@@ -86,12 +88,10 @@ export function renderAuthScreen(onComplete: () => void) {
       return;
     }
 
-    // Local auth — just check username exists in localStorage
     gameStore.login(username);
     hideOverlay(overlay, onComplete);
   });
 
-  // Signup submit
   signupForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const username = (overlay.querySelector('#signup-username') as HTMLInputElement).value.trim();
@@ -115,7 +115,6 @@ export function renderAuthScreen(onComplete: () => void) {
     hideOverlay(overlay, onComplete);
   });
 
-  // Guest mode
   overlay.querySelector('#btn-guest')!.addEventListener('click', () => {
     gameStore.playAsGuest();
     hideOverlay(overlay, onComplete);
@@ -128,11 +127,11 @@ function showError(id: string, message: string) {
 }
 
 function hideOverlay(overlay: HTMLElement, callback: () => void) {
-  overlay.style.transition = 'opacity 0.5s ease';
+  overlay.style.transition = 'opacity 0.4s ease';
   overlay.style.opacity = '0';
   setTimeout(() => {
     overlay.classList.add('hidden');
     overlay.style.opacity = '1';
     callback();
-  }, 500);
+  }, 400);
 }
