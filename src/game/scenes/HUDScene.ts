@@ -10,8 +10,7 @@ export class HUDScene extends Phaser.Scene {
   private uiContainer!: Phaser.GameObjects.Container;
   private overlayBg!: Phaser.GameObjects.Rectangle;
   private isOverlayOpen = false;
-  private nameInputEl!: HTMLInputElement;
-  private nameWrapperEl!: HTMLDivElement;
+  private inputEl!: HTMLInputElement;
   private keyboardGuard = false;
 
   constructor() {
@@ -21,22 +20,22 @@ export class HUDScene extends Phaser.Scene {
   create() {
     const { width, height } = this.cameras.main;
 
-    const panelW = 250;
-    const panelCX = width - 160;
+    const panelW = 230;
+    const panelCX = width - 150;
 
     // Coins
-    this.add.image(panelCX, 28, 'hud_panel').setDisplaySize(panelW, 30);
-    this.coinText = this.add.text(panelCX - panelW / 2 + 14, 28, `🪙 ${gameStore.getState().playerData.coins}`, {
-      fontFamily: '"Press Start 2P", monospace', fontSize: '12px', color: '#fdcb6e'
+    this.add.image(panelCX, 28, 'hud_panel').setDisplaySize(panelW, 38);
+    this.coinText = this.add.text(panelCX - panelW / 2 + 16, 28, `🪙 ${gameStore.getState().playerData.coins}`, {
+      fontFamily: '"Press Start 2P", monospace', fontSize: '11px', color: '#fdcb6e'
     }).setOrigin(0, 0.5);
 
     // Current Quest (right side, below coins and player name)
-    this.add.image(panelCX, 128, 'hud_panel').setDisplaySize(panelW, 50);
-    this.add.text(panelCX - panelW / 2 + 14, 110, 'Current Quest', {
+    this.add.image(panelCX, 138, 'hud_panel').setDisplaySize(panelW, 58);
+    this.add.text(panelCX - panelW / 2 + 16, 117, 'Current Quest', {
       fontFamily: '"Inter"', fontSize: '11px', color: '#f39c12', fontStyle: 'bold'
     });
-    this.questTracker = this.add.text(panelCX - panelW / 2 + 14, 127, 'Explore the village.', {
-        fontFamily: '"Inter"', fontSize: '12px', color: '#dfe6e9', wordWrap: { width: panelW - 28 }
+    this.questTracker = this.add.text(panelCX - panelW / 2 + 16, 135, 'Explore the village.', {
+        fontFamily: '"Inter"', fontSize: '12px', color: '#dfe6e9', wordWrap: { width: panelW - 32 }
     });
 
     // Buttons
@@ -97,77 +96,69 @@ export class HUDScene extends Phaser.Scene {
 
   private createUsernameInput() {
     const { width } = this.cameras.main;
-    const panelW = 250;
-    const panelCX = width - 160;
+    const panelW = 230;
+    const panelCX = width - 150;
 
-    // Phaser panel
-    this.add.image(panelCX, 72, 'hud_panel').setDisplaySize(panelW, 36);
-    this.add.text(panelCX - panelW / 2 + 14, 58, 'PLAYER', {
+    this.add.image(panelCX, 78, 'hud_panel').setDisplaySize(panelW, 44);
+    this.add.text(panelCX - panelW / 2 + 16, 62, 'PLAYER', {
       fontFamily: '"Press Start 2P", monospace', fontSize: '7px',
-      color: '#7a6a4a', letterSpacing: 1,
+      color: '#f39c12', letterSpacing: 1,
     });
 
-    // Position DOM input over the Phaser panel
     const updatePosition = () => {
       const canvas = document.querySelector('canvas');
       if (!canvas) return;
-      const rect = canvas.getBoundingClientRect();
-      const sx = rect.width / 960;
-      const sy = rect.height / 640;
+      const r = canvas.getBoundingClientRect();
+      const sx = r.width / 960, sy = r.height / 640;
+      const x = r.left + (panelCX - panelW / 2 + 16) * sx;
+      const y = r.top + 76 * sy;
+      const w = (panelW - 32) * sx;
 
-      this.nameWrapperEl.style.left = (rect.left + (panelCX - panelW / 2 + 14) * sx) + 'px';
-      this.nameWrapperEl.style.top = (rect.top + 74 * sy) + 'px';
-      this.nameWrapperEl.style.width = ((panelW - 28) * sx) + 'px';
+      this.inputEl.style.left = x + 'px';
+      this.inputEl.style.top = y + 'px';
+      this.inputEl.style.width = w + 'px';
     };
 
-    this.nameWrapperEl = document.createElement('div');
-    this.nameWrapperEl.style.cssText = 'position: fixed; z-index: 500;';
-
-    this.nameInputEl = document.createElement('input');
-    this.nameInputEl.type = 'text';
-    this.nameInputEl.value = gameStore.getState().playerData.username;
-    this.nameInputEl.style.cssText = `
-      width: 100%; padding: 4px 0; font-size: 14px; font-weight: 600;
-      background: transparent; border: none; border-bottom: 2px solid #3d2b1f;
-      outline: none; color: #dfe6e9; font-family: "Inter", sans-serif;
-      transition: border-color 0.2s ease, color 0.2s ease;
+    this.inputEl = document.createElement('input');
+    this.inputEl.type = 'text';
+    this.inputEl.value = gameStore.getState().playerData.username;
+    this.inputEl.style.cssText = `
+      position: fixed; z-index: 500;
+      padding: 4px 0; font-size: 14px; font-weight: 500;
+      background: transparent; border: none; outline: none;
+      color: #dfe6e9; font-family: "Inter", sans-serif;
       caret-color: #f39c12;
     `;
 
-    this.nameInputEl.addEventListener('focus', () => {
-      this.nameInputEl.style.color = '#ffffff';
-      this.nameInputEl.style.borderBottomColor = '#f39c12';
+    this.inputEl.addEventListener('focus', () => {
+      this.inputEl.style.color = '#ffffff';
       this.keyboardGuard = true;
       gameStore.setPaused(true);
-      this.nameInputEl.dataset.originalValue = this.nameInputEl.value;
+      this.inputEl.dataset.originalValue = this.inputEl.value;
     });
 
-    this.nameInputEl.addEventListener('blur', () => {
-      this.nameInputEl.style.color = '#dfe6e9';
-      this.nameInputEl.style.borderBottomColor = '#3d2b1f';
+    this.inputEl.addEventListener('blur', () => {
+      this.inputEl.style.color = '#dfe6e9';
       this.keyboardGuard = false;
       gameStore.setPaused(false);
-      const val = this.nameInputEl.value.trim();
+      const val = this.inputEl.value.trim();
       if (val) gameStore.setUsername(val);
     });
 
-    this.nameInputEl.addEventListener('keydown', (e: KeyboardEvent) => {
+    this.inputEl.addEventListener('keydown', (e: KeyboardEvent) => {
       e.stopPropagation();
-      if (e.key === 'Enter') {
-        this.nameInputEl.blur();
-      }
+      if (e.key === 'Enter') this.inputEl.blur();
       if (e.key === 'Escape') {
-        this.nameInputEl.value = this.nameInputEl.dataset.originalValue || this.nameInputEl.value;
-        this.nameInputEl.blur();
+        this.inputEl.value = this.inputEl.dataset.originalValue || this.inputEl.value;
+        this.inputEl.blur();
       }
     });
 
-    this.nameWrapperEl.appendChild(this.nameInputEl);
-    document.body.appendChild(this.nameWrapperEl);
+    document.body.appendChild(this.inputEl);
     updatePosition();
 
     this.events.on(Phaser.Scenes.Events.SHUTDOWN, () => {
-      if (this.nameWrapperEl.parentNode) this.nameWrapperEl.parentNode.removeChild(this.nameWrapperEl);
+      if (this.inputEl.parentNode) this.inputEl.parentNode.removeChild(this.inputEl);
     });
   }
 
