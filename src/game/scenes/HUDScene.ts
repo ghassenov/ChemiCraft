@@ -21,17 +21,22 @@ export class HUDScene extends Phaser.Scene {
   create() {
     const { width, height } = this.cameras.main;
 
+    const panelW = 250;
+    const panelCX = width - 160;
+
     // Coins
-    this.add.image(width - 110, 30, 'hud_panel').setDisplaySize(180, 40);
-    this.coinText = this.add.text(width - 180, 30, `🪙 ${gameStore.getState().playerData.coins}`, {
+    this.add.image(panelCX, 28, 'hud_panel').setDisplaySize(panelW, 30);
+    this.coinText = this.add.text(panelCX - panelW / 2 + 14, 28, `🪙 ${gameStore.getState().playerData.coins}`, {
       fontFamily: '"Press Start 2P", monospace', fontSize: '12px', color: '#fdcb6e'
     }).setOrigin(0, 0.5);
 
-    // Quest Tracker
-    this.add.image(130, 40, 'hud_panel').setDisplaySize(220, 60);
-    this.add.text(30, 20, 'Current Quest', { fontFamily: '"Inter"', fontSize: '12px', color: '#f39c12', fontStyle: 'bold' });
-    this.questTracker = this.add.text(30, 40, 'Explore the village.', {
-        fontFamily: '"Inter"', fontSize: '12px', color: '#dfe6e9', wordWrap: { width: 200 }
+    // Current Quest (right side, below coins and player name)
+    this.add.image(panelCX, 128, 'hud_panel').setDisplaySize(panelW, 50);
+    this.add.text(panelCX - panelW / 2 + 14, 110, 'Current Quest', {
+      fontFamily: '"Inter"', fontSize: '11px', color: '#f39c12', fontStyle: 'bold'
+    });
+    this.questTracker = this.add.text(panelCX - panelW / 2 + 14, 127, 'Explore the village.', {
+        fontFamily: '"Inter"', fontSize: '12px', color: '#dfe6e9', wordWrap: { width: panelW - 28 }
     });
 
     // Buttons
@@ -92,11 +97,13 @@ export class HUDScene extends Phaser.Scene {
 
   private createUsernameInput() {
     const { width } = this.cameras.main;
+    const panelW = 250;
+    const panelCX = width - 160;
 
-    // Phaser panel (same style as coin display)
-    this.add.image(width - 110, 85, 'hud_panel').setDisplaySize(180, 55);
-    this.add.text(width - 175, 70, 'PLAYER', {
-      fontFamily: '"Press Start 2P", monospace', fontSize: '8px',
+    // Phaser panel
+    this.add.image(panelCX, 72, 'hud_panel').setDisplaySize(panelW, 36);
+    this.add.text(panelCX - panelW / 2 + 14, 58, 'PLAYER', {
+      fontFamily: '"Press Start 2P", monospace', fontSize: '7px',
       color: '#7a6a4a', letterSpacing: 1,
     });
 
@@ -108,9 +115,9 @@ export class HUDScene extends Phaser.Scene {
       const sx = rect.width / 960;
       const sy = rect.height / 640;
 
-      this.nameWrapperEl.style.left = (rect.left + (width - 175) * sx) + 'px';
-      this.nameWrapperEl.style.top = (rect.top + 86 * sy) + 'px';
-      this.nameWrapperEl.style.width = (140 * sx) + 'px';
+      this.nameWrapperEl.style.left = (rect.left + (panelCX - panelW / 2 + 14) * sx) + 'px';
+      this.nameWrapperEl.style.top = (rect.top + 74 * sy) + 'px';
+      this.nameWrapperEl.style.width = ((panelW - 28) * sx) + 'px';
     };
 
     this.nameWrapperEl = document.createElement('div');
@@ -120,13 +127,16 @@ export class HUDScene extends Phaser.Scene {
     this.nameInputEl.type = 'text';
     this.nameInputEl.value = gameStore.getState().playerData.username;
     this.nameInputEl.style.cssText = `
-      width: 100%; padding: 3px 0; font-size: 13px;
-      background: transparent; border: none; outline: none;
-      color: #dfe6e9; font-family: "Inter", sans-serif;
+      width: 100%; padding: 4px 0; font-size: 14px; font-weight: 600;
+      background: transparent; border: none; border-bottom: 2px solid #3d2b1f;
+      outline: none; color: #dfe6e9; font-family: "Inter", sans-serif;
+      transition: border-color 0.2s ease, color 0.2s ease;
+      caret-color: #f39c12;
     `;
 
     this.nameInputEl.addEventListener('focus', () => {
       this.nameInputEl.style.color = '#ffffff';
+      this.nameInputEl.style.borderBottomColor = '#f39c12';
       this.keyboardGuard = true;
       gameStore.setPaused(true);
       this.nameInputEl.dataset.originalValue = this.nameInputEl.value;
@@ -134,6 +144,7 @@ export class HUDScene extends Phaser.Scene {
 
     this.nameInputEl.addEventListener('blur', () => {
       this.nameInputEl.style.color = '#dfe6e9';
+      this.nameInputEl.style.borderBottomColor = '#3d2b1f';
       this.keyboardGuard = false;
       gameStore.setPaused(false);
       const val = this.nameInputEl.value.trim();
