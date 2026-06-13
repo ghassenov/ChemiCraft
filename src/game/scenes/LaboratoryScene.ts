@@ -265,7 +265,9 @@ export class LaboratoryScene extends Phaser.Scene {
           fontFamily: '"Inter"', fontSize: '18px', color: itemData.color, fontStyle: 'bold',
         }).setOrigin(0.5);
 
-        const qty = this.add.text(0, 22, `${invItem.quantity}`, {
+        const countInChamber = this.selectedReagents.filter(s => s === itemData.symbol).length;
+        const qtyText = `${invItem.quantity - countInChamber}`;
+        const qty = this.add.text(0, 22, qtyText, {
           fontFamily: '"Inter"', fontSize: '14px', color: '#bcc6db',
         }).setOrigin(0.5);
 
@@ -281,9 +283,11 @@ export class LaboratoryScene extends Phaser.Scene {
         });
 
         card.on('pointerdown', () => {
-          if (this.selectedReagents.length < 5 && gameStore.hasItem(itemData.id, 1)) {
+          const countInChamber = this.selectedReagents.filter(s => s === itemData.symbol).length;
+          if (this.selectedReagents.length < 5 && gameStore.hasItem(itemData.id, countInChamber + 1)) {
             this.addToChamber(itemData);
-          } else if (!gameStore.hasItem(itemData.id, 1)) {
+            this.renderShelf(items);
+          } else if (!gameStore.hasItem(itemData.id, countInChamber + 1)) {
             this.explanationText.setText('Not enough reagents!');
           } else {
             this.explanationText.setText('Chamber is full! (Max 5 reagents)');
@@ -296,41 +300,75 @@ export class LaboratoryScene extends Phaser.Scene {
     }
   }
 
-  private addToChamber(itemData: ItemData) {
-    this.resultIcon.setText('');
-    this.explanationText.setText('Ready to react...');
-
-    const slotIdx = this.selectedReagents.length;
-    this.selectedReagents.push(itemData.symbol);
-
+  private refreshChamber(animateLast = false) {
+    this.chamberGroup.clear(true, true);
+    
     const { width, height } = this.cameras.main;
     const cx = width / 2;
     const cy = height / 2 - 10;
     const r = 55;
-    const angle = (slotIdx * (Math.PI * 2) / 5) - Math.PI / 2;
+    
+    const items = this.cache.json.get('items') as Record<string, ItemData>;
+    const symbolToItem: Record<string, ItemData> = {};
+    for (const data of Object.values(items)) {
+        symbolToItem[data.symbol] = data;
+    }
 
-    const px = cx + Math.cos(angle) * r;
-    const py = cy + Math.sin(angle) * r;
+    for (let i = 0; i < this.selectedReagents.length; i++) {
+        const sym = this.selectedReagents[i];
+        const itemData = symbolToItem[sym];
+        
+        const angle = (i * (Math.PI * 2) / 5) - Math.PI / 2;
+        const px = cx + Math.cos(angle) * r;
+        const py = cy + Math.sin(angle) * r;
 
-    const g = this.add.graphics();
-    g.fillStyle(0x1a1a3e, 0.9);
-    g.fillCircle(0, 0, 18);
-    g.lineStyle(2, Phaser.Display.Color.HexStringToColor(itemData.color).color, 0.6);
-    g.strokeCircle(0, 0, 18);
+        const g = this.add.graphics();
+        g.fillStyle(0x1a1a3e, 0.9);
+        g.fillCircle(0, 0, 18);
+        g.lineStyle(2, Phaser.Display.Color.HexStringToColor(itemData.color).color, 0.6);
+        g.strokeCircle(0, 0, 18);
 
-    const txt = this.add.text(0, 0, itemData.symbol, {
-      fontFamily: '"Inter"', fontSize: '20px', color: itemData.color, fontStyle: 'bold',
-    }).setOrigin(0.5);
+        const txt = this.add.text(0, 0, itemData.symbol, {
+          fontFamily: '"Inter"', fontSize: '20px', color: itemData.color, fontStyle: 'bold',
+        }).setOrigin(0.5);
 
-    const container = this.add.container(px, py, [g, txt]);
-    this.chamberGroup.add(container);
+        const container = this.add.container(px, py, [g, txt]);
+        
+        // Make interactive
+        container.setInteractive(new Phaser.Geom.Circle(0, 0, 18), Phaser.Geom.Circle.Contains);
+        // Workaround for useHandCursor on custom hit area
+        container.input!.cursor = 'pointer';
+        
+        container.on('pointerdown', () => {
+            this.selectedReagents.splice(i, 1);
+            this.refreshChamber(false);
+            this.renderShelf(items);
+        });
+        
+        this.chamberGroup.add(container);
 
-    container.setScale(0);
-    this.tweens.add({
-      targets: container, scale: 1, duration: 250, ease: 'Back.easeOut',
-    });
+        if (animateLast && i === this.selectedReagents.length - 1) {
+            container.setScale(0);
+            this.tweens.add({
+              targets: container, scale: 1, duration: 250, ease: 'Back.easeOut',
+            });
+        }
+    }
+    
+    this.showFlame(this.selectedReagents.length > 0);
+    if (this.selectedReagents.length === 0) {
+        this.resultIcon.setText('');
+        this.explanationText.setText('Chamber cleared.');
+        this.liquidGfx.clear();
+    } else {
+        this.resultIcon.setText('');
+        this.explanationText.setText('Ready to react...');
+    }
+  }
 
-    this.showFlame(true);
+  private addToChamber(itemData: ItemData) {
+    this.selectedReagents.push(itemData.symbol);
+    this.refreshChamber(true);
   }
 
   private showFlame(visible: boolean) {
@@ -398,6 +436,10 @@ export class LaboratoryScene extends Phaser.Scene {
     this.flameGfx.clear();
     this.liquidGfx.clear();
     this.explanationText.setText('Chamber cleared.');
+    
+    // Re-render shelf to update quantities
+    const items = this.cache.json.get('items') as Record<string, ItemData>;
+    this.renderShelf(items);
   }
 
   private attemptCraft(items: Record<string, ItemData>) {
