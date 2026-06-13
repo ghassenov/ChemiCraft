@@ -46,12 +46,12 @@ export class HUDScene extends Phaser.Scene {
     this.createMiniBtn(width - 240, height - 40, 'C', 'ChemDex', () => this.showOverlay('chemdex'));
     this.createMiniBtn(width - 290, height - 40, '⛶', 'Fullscreen', () => this.toggleFullscreen());
 
-    // Active Tool
-    this.add.image(width / 2, height - 30, 'hud_panel').setDisplaySize(120, 40);
-    this.activeToolIcon = this.add.image(width / 2 - 30, height - 30, 'icon_particle').setDisplaySize(20, 20); // Fallback icon
-    this.activeToolText = this.add.text(width / 2 + 10, height - 30, 'None\n[T]', {
+    // Active Tool (right column, above buttons)
+    this.add.image(panelCX, height - 85, 'hud_panel').setDisplaySize(panelW, 36);
+    this.activeToolIcon = this.add.image(panelCX - panelW / 2 + 24, height - 85, 'icon_particle').setDisplaySize(20, 20);
+    this.activeToolText = this.add.text(panelCX + panelW / 2 - 16, height - 85, 'None\n[T]', {
       fontFamily: '"Inter"', fontSize: '10px', color: '#fff', align: 'center'
-    }).setOrigin(0.5);
+    }).setOrigin(1, 0.5);
 
     // Keyboard shortcuts (guarded so they don't fire while typing)
     const guard = (fn: () => void) => () => { if (!this.keyboardGuard) fn(); };
