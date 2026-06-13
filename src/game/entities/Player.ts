@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { Direction } from '../data/types';
+import { gameStore } from '../../store/gameStore';
 
 /**
  * Player — the controllable character with 8-direction movement,
@@ -13,6 +14,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   private _facing: Direction = Direction.Down;
   private _canMove = true;
   private interactionCallback: (() => void) | null = null;
+  private nameLabel!: Phaser.GameObjects.Text;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, 'player_sheet', 0);
@@ -43,7 +45,18 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     window.addEventListener('chemicraft:consumed', this.handleItemConsumed);
     scene.events.on(Phaser.Scenes.Events.SHUTDOWN, () => {
       window.removeEventListener('chemicraft:consumed', this.handleItemConsumed);
+      if (this.nameLabel) this.nameLabel.destroy();
     });
+
+    // Name label above player
+    const username = gameStore.getState().playerData.username;
+    this.nameLabel = scene.add.text(x, y - 28, username, {
+      fontFamily: '"Inter", sans-serif',
+      fontSize: '11px',
+      color: '#ffffff',
+      backgroundColor: '#00000088',
+      padding: { x: 4, y: 2 },
+    }).setOrigin(0.5).setDepth(20);
   }
 
   private handleItemConsumed = (e: any) => {
@@ -94,7 +107,10 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   onInteract(cb: () => void) { this.interactionCallback = cb; }
 
   update() {
-    if (!this._canMove) {
+    this.nameLabel.setPosition(this.x, this.y - 28);
+    this.nameLabel.setText(gameStore.getState().playerData.username);
+
+    if (!this._canMove || gameStore.getState().isPaused) {
       this.setVelocity(0, 0);
       return;
     }
