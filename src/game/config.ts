@@ -16,8 +16,9 @@ export function createGameConfig(): Phaser.Types.Core.GameConfig {
     width: 960,
     height: 640,
     parent: 'game-container',
-    pixelArt: true,
-    roundPixels: true,
+    pixelArt: false,
+    antialias: true,
+    roundPixels: false,
     backgroundColor: '#0a0a1a',
     physics: {
       default: 'arcade',
