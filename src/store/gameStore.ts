@@ -73,6 +73,12 @@ class GameStore {
     this.notify();
   }
 
+  setUsername(name: string) {
+    this.state.playerData.username = name;
+    this.notify();
+    this.autoSave();
+  }
+
   getState(): GameState {
     return this.state;
   }
