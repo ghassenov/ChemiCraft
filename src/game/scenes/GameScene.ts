@@ -79,15 +79,21 @@ export class GameScene extends Phaser.Scene {
     }
 
     this.resourceNodes = this.physics.add.staticGroup();
-    const isRecycling = this.mapData.key === 'recyclingFields';
-    const wasteCrisisDone = gameStore.isQuestCompleted('waste_crisis');
+    const emojiOverlay: Record<string, string> = {
+      plastic_pile: '♻️', glass_pile: '🪟', metal_pile: '🔩',
+      paper_pile: '📄', compost_heap: '🌿',
+    };
     if (this.mapData.resourceNodes && this.mapData.resourceNodes.length > 0) {
       for (const nodeData of this.mapData.resourceNodes) {
-        if (isRecycling && wasteCrisisDone) continue;
         const rx = nodeData.tileX * ts + ts / 2;
         const ry = nodeData.tileY * ts + ts / 2;
         const node = new ResourceNode(this, rx, ry, nodeData.type as ResourceType, nodeData.maxGathers);
         this.resourceNodes.add(node);
+        if (this.mapData.key === 'recyclingFields' && emojiOverlay[nodeData.type]) {
+          this.add.text(rx, ry - 20, emojiOverlay[nodeData.type], {
+            fontSize: '18px',
+          }).setOrigin(0.5).setDepth(3);
+        }
       }
     } else {
       for (let i = 0; i < 5; i++) {
@@ -430,6 +436,7 @@ export class GameScene extends Phaser.Scene {
             break;
           }
           case 'bin': {
+            if (gameStore.isQuestCompleted('waste_crisis')) break;
             const binColors: Record<string, number> = {
               yellow: 0xf1c40f, green: 0x00b894, grey: 0xb2bec3, blue: 0x0984e3, brown: 0x6d4c41,
             };
@@ -761,13 +768,6 @@ export class GameScene extends Phaser.Scene {
 
   private clearRecyclingNodes() {
     if (this.mapData.key !== 'recyclingFields') return;
-    for (const child of this.resourceNodes.getChildren()) {
-      const node = child as ResourceNode;
-      if (node.active) {
-        node.active = false;
-        node.destroy();
-      }
-    }
     for (const zone of this.binZones) {
       zone.prompt.destroy();
     }

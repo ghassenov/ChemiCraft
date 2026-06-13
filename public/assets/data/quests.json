@@ -56,11 +56,11 @@
   "know_your_materials": {
     "id": "know_your_materials", "mapOrigin": "recyclingFields",
     "title": "Know Your Materials", "isMainQuest": true, "npcId": "eco_educator",
-    "description": "Before you can recycle efficiently, you need to identify materials correctly. Complete the material identification quiz with 100% accuracy.",
-    "objectiveType": "sort", "target": "sorting_perfect", "targetItemId": "", "targetAmount": 10,
+    "description": "Before you can recycle efficiently, you need to identify materials correctly. Study in the recycling center and earn your Materials Expert Certificate.",
+    "objectiveType": "collect", "target": "materials_certificate", "targetItemId": "materials_certificate", "targetAmount": 1,
     "rewardCoins": 50, "rewardSkill": { "recycling_mastery": 1 }, "rewardItems": [],
     "prerequisiteQuests": ["waste_crisis"],
-    "hints": ["Read each item's description carefully.", "When in doubt, think about what the item is made of.", "Plastics float, metals are heavy and shiny."]
+    "hints": ["Visit the Materials Recycling Center near Eco Emma.", "Study the recycling lessons in the bookshelves.", "Complete all questions in any lesson to earn the certificate!", "Show the certificate to Eco Emma to complete the quest."]
   },
   "circular_economy": {
     "id": "circular_economy", "mapOrigin": "recyclingFields",
@@ -83,11 +83,11 @@
   "carbon_neutral": {
     "id": "carbon_neutral", "mapOrigin": "ecoVille",
     "title": "Carbon Neutral", "isMainQuest": true, "npcId": "climate_scientist",
-    "description": "Use the Climate Calculator to reduce EcoVille's carbon footprint by 50% in 10 actions or fewer.",
-    "objectiveType": "climate_calc", "target": "carbon_reduction", "targetItemId": "", "targetAmount": 50,
+    "description": "EcoVille needs its first carbon-neutral fuel source! Craft 1 Biofuel from organic waste and water.",
+    "objectiveType": "craft", "target": "biofuel", "targetItemId": "biofuel", "targetAmount": 1,
     "rewardCoins": 100, "rewardSkill": { "climate_science": 1 }, "rewardItems": [],
     "prerequisiteQuests": [],
-    "hints": ["Solar Farms and Wind Turbines reduce CO₂ while boosting approval.", "Carbon Tax is free but unpopular.", "Reforestation is cheap and boosts public approval!"]
+    "hints": ["Biofuel is made from organic waste + H₂O.", "Organic waste can be gathered from Recycling Fields.", "You already crafted H₂O in Atom Meadows — check your inventory!", "Craft it at the Eco Lab workbench."]
   },
   "greenhouse_gases": {
     "id": "greenhouse_gases", "mapOrigin": "ecoVille",
@@ -123,7 +123,7 @@
     "objectiveType": "craft", "target": "green_certificate", "targetItemId": "green_certificate", "targetAmount": 1,
     "rewardCoins": 200, "rewardSkill": { "climate_science": 1, "bonding": 1, "recycling_mastery": 1 }, "rewardItems": [],
     "prerequisiteQuests": ["renewable_shift"],
-    "hints": ["The Green Certificate is awarded automatically when all EcoVille quests are complete.", "Make sure you've finished the Climate Calculator quest.", "Check the Quest Log to see what's still pending."]
+    "hints": ["The Green Certificate needs biofuel + solar panel + carbon credit.", "Biofuel should be in your inventory from quest rewards.", "Carbon credit is made from 2× captured CO₂.", "Craft it at the Eco Lab workbench to prove EcoVille is carbon neutral!"]
   },
   "split_the_light": {
     "id": "split_the_light", "mapOrigin": "prismHeights",
@@ -137,11 +137,11 @@
   "color_mixing": {
     "id": "color_mixing", "mapOrigin": "prismHeights",
     "title": "Color Mixing", "isMainQuest": true, "npcId": "color_artist",
-    "description": "Create secondary colors of light! Solve light puzzles 2 and 3 to mix colored light beams.",
-    "objectiveType": "light_puzzle", "target": "light_puzzle_3", "targetItemId": "", "targetAmount": 1,
+    "description": "Create the perfect Color Filter Set by combining red, blue, and green filters — buy them at the Prism Shop!",
+    "objectiveType": "craft", "target": "color_filter_set", "targetItemId": "color_filter_set", "targetAmount": 1,
     "rewardCoins": 100, "rewardSkill": { "optics_mastery": 1 }, "rewardItems": [],
     "prerequisiteQuests": ["split_the_light"],
-    "hints": ["Red + Green light = Yellow!", "Blue + Green = Cyan, Red + Blue = Magenta.", "In light mixing, combining colors makes brighter colors — opposite of pigments!"]
+    "hints": ["Red, blue, and green filters can be bought at the Optics Shop.", "Combine them at the Light Lab workbench.", "Each filter only passes its own wavelength — together they mix colors!"]
   },
   "lens_creation": {
     "id": "lens_creation", "mapOrigin": "prismHeights",
@@ -155,20 +155,20 @@
   "invisible_spectrum": {
     "id": "invisible_spectrum", "mapOrigin": "prismHeights",
     "title": "The Invisible Spectrum", "isMainQuest": true, "npcId": "light_researcher",
-    "description": "Beyond visible light lies the invisible spectrum! Solve light puzzle 4 and reveal hidden UV messages.",
-    "objectiveType": "light_puzzle", "target": "light_puzzle_4", "targetItemId": "", "targetAmount": 1,
+    "description": "Beyond visible light lies the invisible spectrum! Craft 2 Rainbow Gems to harness both visible and invisible light.",
+    "objectiveType": "craft", "target": "rainbow_gem", "targetItemId": "rainbow_gem", "targetAmount": 2,
     "rewardCoins": 175, "rewardSkill": { "optics_mastery": 1, "equation_balancing": 1 }, "rewardItems": [],
     "prerequisiteQuests": ["lens_creation"],
-    "hints": ["Light exists beyond what we can see — infrared and ultraviolet.", "You'll need your Convex Lens to complete puzzle 4.", "Focus the beam through the lens to amplify its power!"]
+    "hints": ["Each Rainbow Gem needs 1 white light + 1 prism.", "The light well gives infinite white light — gather as needed.", "Crystal clusters in Prism Heights yield prisms.", "Craft both gems at the Light Lab workbench."]
   },
   "rainbow_bridge": {
     "id": "rainbow_bridge", "mapOrigin": "prismHeights",
     "title": "Rainbow Bridge", "isMainQuest": true, "npcId": "optician",
-    "description": "Complete all 5 light puzzles to restore the Rainbow Bridge and unlock the path to Magnet Core!",
-    "objectiveType": "light_puzzle", "target": "light_puzzle_5", "targetItemId": "", "targetAmount": 1,
+    "description": "The Rainbow Bridge needs focusing! Gather 2 Convex Lenses to restore the path to Magnet Core.",
+    "objectiveType": "collect", "target": "convex_lens", "targetItemId": "convex_lens", "targetAmount": 2,
     "rewardCoins": 250, "rewardSkill": { "optics_mastery": 2 }, "rewardItems": [],
     "prerequisiteQuests": ["invisible_spectrum"],
-    "hints": ["The final puzzle uses all optical components.", "Plan your beam path before placing components.", "Remember: mirrors reflect at 45°, splitters divide into 3 beams."]
+    "hints": ["Each Convex Lens needs 1 prism + 1 recycled glass.", "Prisms are gathered from crystal clusters in Prism Heights.", "Recycled glass comes from Recycling Fields — travel back if needed.", "Craft them at the Light Lab workbench."]
   },
   "polar_attraction": {
     "id": "polar_attraction", "mapOrigin": "magnetCore",
@@ -191,20 +191,20 @@
   "field_art": {
     "id": "field_art", "mapOrigin": "magnetCore",
     "title": "Field Art", "isMainQuest": true, "npcId": "magnetic_artist",
-    "description": "Create a beautiful magnetic field pattern by placing iron filings around magnets in the Core studio.",
-    "objectiveType": "field_nav", "target": "field_pattern", "targetItemId": "", "targetAmount": 1,
+    "description": "Gather iron filings from the iron veins in Magnet Core to visualize magnetic field patterns!",
+    "objectiveType": "collect", "target": "iron_filings", "targetItemId": "iron_filings", "targetAmount": 3,
     "rewardCoins": 125, "rewardSkill": { "magnetism_mastery": 1 }, "rewardItems": [],
     "prerequisiteQuests": ["magnetic_fields"],
-    "hints": ["Iron filings align along magnetic field lines.", "North and south poles create beautiful curved patterns.", "The field density shows where the force is strongest."]
+    "hints": ["Iron filings are found at iron vein resource nodes.", "Equip the right tool to gather them!", "Bring 3 filings to Lorena Lines to create field art."]
   },
   "perfect_trajectory": {
     "id": "perfect_trajectory", "mapOrigin": "magnetCore",
     "title": "Perfect Trajectory", "isMainQuest": true, "npcId": "rocket_engineer",
-    "description": "The launch cannon needs precise calibration! Solve trajectory puzzle 4 without missing, then craft the Propulsion Device.",
-    "objectiveType": "trajectory", "target": "trajectory_puzzle_4", "targetItemId": "", "targetAmount": 1,
+    "description": "The launch cannon needs a Propulsion Device! Craft it in the Physics Lab using an electromagnet, steel alloy, and biofuel.",
+    "objectiveType": "craft", "target": "propulsion_device", "targetItemId": "propulsion_device", "targetAmount": 1,
     "rewardCoins": 225, "rewardSkill": { "magnetism_mastery": 1, "equation_balancing": 1 }, "rewardItems": [],
     "prerequisiteQuests": ["field_art"],
-    "hints": ["Remember: gravity always pulls down.", "Magnets can redirect your projectile's path.", "Try the preview trajectory line before firing — it shows your path!"]
+    "hints": ["The Propulsion Device needs: electromagnet + steel alloy + biofuel.", "Electromagnet = steel alloy + copper wire.", "Steel alloy = metal waste + carbon.", "Biofuel can be crafted or brought from EcoVille."]
   },
   "core_stabilization": {
     "id": "core_stabilization", "mapOrigin": "magnetCore",

@@ -135,5 +135,23 @@
     "output": "magnetic_shield", "outputName": "Magnetic Shield",
     "outputItemId": "magnetic_shield", "outputQuantity": 1, "difficulty": 4, "mapOrigin": "magnetCore",
     "explanation": "Magnetic shielding uses high-permeability materials to redirect magnetic field lines around a protected area. It's used to protect sensitive electronics and medical equipment."
+  },
+  {
+    "id": "convex_lens_craft", "inputs": ["prism", "recycled_glass"],
+    "output": "convex_lens", "outputName": "Convex Lens",
+    "outputItemId": "convex_lens", "outputQuantity": 1, "difficulty": 3, "mapOrigin": "prismHeights",
+    "explanation": "A convex lens focuses light by refracting parallel rays to a single focal point. Grinding recycled glass with a prism shard creates a perfectly curved surface that bends light inward!"
+  },
+  {
+    "id": "color_filter_set_craft", "inputs": ["red_filter", "blue_filter", "green_filter"],
+    "output": "color_filter_set", "outputName": "Color Filter Set",
+    "outputItemId": "color_filter_set", "outputQuantity": 1, "difficulty": 2, "mapOrigin": "prismHeights",
+    "explanation": "By combining three perfect filters for the primary additive colors (red, green, blue), we can selectively block or transmit any wavelength of visible light."
+  },
+  {
+    "id": "green_certificate_craft", "inputs": ["biofuel", "solar_panel", "carbon_credit"],
+    "output": "green_certificate", "outputName": "Green Certificate",
+    "outputItemId": "green_certificate", "outputQuantity": 1, "difficulty": 5, "mapOrigin": "ecoVille",
+    "explanation": "The Green Certificate represents the perfect synthesis of sustainable technologies: renewable energy (biofuel), clean infrastructure (solar panel), and carbon offsetting (carbon credit). EcoVille is now truly carbon neutral!"
   }
 ]

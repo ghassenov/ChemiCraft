@@ -253,5 +253,15 @@
     "id": "core_crystal", "name": "Core Crystal", "symbol": "💠", "type": "quest_item",
     "description": "The heart of Magnet Core — a perfectly balanced magnetic crystal.",
     "color": "#7c4dff", "price": 1000, "stackable": false, "mapOrigin": "magnetCore"
+  },
+  "materials_certificate": {
+    "id": "materials_certificate", "name": "Materials Expert Certificate", "symbol": "📜", "type": "quest_item",
+    "description": "Proof of material identification mastery. Show it to Eco Emma!",
+    "color": "#8bc34a", "price": 0, "stackable": true, "mapOrigin": "recyclingFields"
+  },
+  "color_filter_set": {
+    "id": "color_filter_set", "name": "Color Filter Set", "symbol": "🎨", "type": "quest_item",
+    "description": "Three perfect color filters covering the primary additive colors.",
+    "color": "#ce93d8", "price": 0, "stackable": false, "mapOrigin": "prismHeights"
   }
 }

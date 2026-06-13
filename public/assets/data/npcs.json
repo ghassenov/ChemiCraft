@@ -72,8 +72,8 @@
     "questId": "know_your_materials", "mapOrigin": "recyclingFields",
     "dialogue": {
       "default": ["Education is the first step to sustainability!", "Most people can't tell plastic types apart.", "But a chemist like you? You should know your PET from your HDPE!", "Let me test you on material identification."],
-      "questActive": ["Try to get 10 perfect identifications in a row!", "Remember: PET plastic is clear and crinkly (water bottles).", "HDPE is stiff and milky (milk jugs, shampoo bottles)."],
-      "questComplete": ["100% accuracy! You're a true materials expert!", "Proper sorting increases recycling efficiency by up to 40%.", "Share this knowledge — it makes a real difference!"]
+      "questActive": ["Did you visit the Materials Recycling Center?", "Study the lessons there and earn your Materials Expert Certificate!", "Come show me the certificate once you have it!"],
+      "questComplete": ["A Materials Expert Certificate! You're a true recycling champion!", "Proper sorting increases recycling efficiency by up to 40%.", "Share this knowledge — it makes a real difference!"]
     }
   },
   "climate_scientist": {

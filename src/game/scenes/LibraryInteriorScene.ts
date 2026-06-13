@@ -38,13 +38,19 @@ export class LibraryInteriorScene extends Phaser.Scene {
     this.player.setCollideWorldBounds(true);
     this.physics.add.collider(this.player, this.walls);
 
-    this.professor = new NPC(this, 480, 200, 'professor_knowitall', 'Prof. Knowitall', 'npc_professor_knowitall', null);
+    const currentMap = gameStore.getCurrentMap();
+    const recycling = currentMap === 'recyclingFields';
+    const npcId = recycling ? 'eco_educator' : 'professor_knowitall';
+    const npcName = recycling ? 'Eco Emma' : 'Prof. Knowitall';
+
+    this.professor = new NPC(this, 480, 200, npcId, npcName, `npc_${npcId}`, null);
     this.physics.add.collider(this.player, this.professor);
 
     this.dialogueBox = new DialogueBox(this);
     this.player.onInteract(() => this.handleInteraction());
 
-    this.add.text(320, 55, 'LIBRARY OF ELEMENTS', {
+    const libTitle = recycling ? 'MATERIALS RECYCLING CENTER' : 'LIBRARY OF ELEMENTS';
+    this.add.text(320, 55, libTitle, {
       fontFamily: '"Press Start 2P", monospace', fontSize: '12px', color: '#d4a855',
     }).setOrigin(0.5);
 
@@ -53,14 +59,27 @@ export class LibraryInteriorScene extends Phaser.Scene {
       align: 'center', wordWrap: { width: 300 },
     }).setOrigin(0.5).setDepth(15);
 
-    this.portraits = [
-      { name: 'Lavoisier', label: 'Father of modern chemistry', x: 120, y: 560, read: false },
-      { name: 'Mendeleev', label: 'Creator of the periodic table', x: 320, y: 560, read: false },
-      { name: 'Curie', label: 'Pioneer in radioactivity', x: 520, y: 560, read: false },
-    ];
+    if (recycling) {
+      this.portraits = [
+        { name: 'Eugene Poubelle', label: 'Invented the waste bin system (1884)', x: 120, y: 560, read: false },
+        { name: 'Jean-Jacques', label: 'Pioneer of industrial ecology', x: 320, y: 560, read: false },
+        { name: 'Wangari Maathai', label: 'Nobel laureate, environmental activist', x: 520, y: 560, read: false },
+      ];
+    } else {
+      this.portraits = [
+        { name: 'Lavoisier', label: 'Father of modern chemistry', x: 120, y: 560, read: false },
+        { name: 'Mendeleev', label: 'Creator of the periodic table', x: 320, y: 560, read: false },
+        { name: 'Curie', label: 'Pioneer in radioactivity', x: 520, y: 560, read: false },
+      ];
+    }
 
     this.createAnimatedDecor();
-    addHelpButton(this, [
+    addHelpButton(this, recycling ? [
+      'Browse the center to learn about\nrecycling and materials.',
+      'Study the three portraits\nfor a coin bonus.',
+      'Complete lessons to earn your\nMaterials Expert Certificate.',
+      'Exit through the corridor.',
+    ] : [
       'Browse bookshelves to learn\nchemistry lessons.',
       'Study the three portraits\nfor a coin bonus.',
       'Exit through the corridor.',
@@ -429,20 +448,23 @@ export class LibraryInteriorScene extends Phaser.Scene {
   private handleInteraction() {
     const px = this.player.x;
     const py = this.player.y;
+    const currentMap = gameStore.getCurrentMap();
+    const recycling = currentMap === 'recyclingFields';
 
     if (this.isNear(px, py, this.professor.x, this.professor.y, 40)) {
       if (!gameStore.hasVisitedInterior('LibraryInteriorScene')) {
         gameStore.markInteriorVisited('LibraryInteriorScene');
         const data = this.cache.json.get('npcs') as Record<string, any>;
+        const npcKey = recycling ? 'eco_educator' : 'professor_knowitall';
         this.dialogueBox.show(
-          'Prof. Knowitall',
-          data.professor_knowitall.dialogue.default,
-          '#3498db',
+          data[npcKey].name,
+          data[npcKey].dialogue.default,
+          data[npcKey].spriteColor,
           undefined,
-          () => openLessonSelector(this)
+          () => openLessonSelector(this, currentMap)
         );
       } else {
-        openLessonSelector(this);
+        openLessonSelector(this, currentMap);
       }
       return;
     }
@@ -451,7 +473,7 @@ export class LibraryInteriorScene extends Phaser.Scene {
         this.isInZone(px, py, 530, 80, 80, 420) ||
         this.isInZone(px, py, 110, 80, 80, 200) ||
         this.isInZone(px, py, 450, 80, 80, 200)) {
-      openLessonSelector(this);
+      openLessonSelector(this, currentMap);
       return;
     }
 
