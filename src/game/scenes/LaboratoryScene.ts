@@ -3,6 +3,7 @@ import { SceneTransition } from '../systems/SceneTransition';
 import { CraftingSystem } from '../systems/CraftingSystem';
 import { gameStore } from '../../store/gameStore';
 import { RecipeData, ItemData, GameEvents } from '../data/types';
+import { MAP_SCENE_KEYS } from '../data/mapSceneKeys';
 
 export class LaboratoryScene extends Phaser.Scene {
   private craftingSystem!: CraftingSystem;
@@ -89,8 +90,9 @@ export class LaboratoryScene extends Phaser.Scene {
     const exitTxt = this.add.text(50, 30, 'EXIT', {
       fontFamily: '"Inter"', fontSize: '11px', color: '#dfe6e9', fontStyle: 'bold',
     }).setOrigin(0.5);
-    exitBg.on('pointerdown', () => SceneTransition.fadeOutIn(this, 'GameScene'));
-    exitTxt.on('pointerdown', () => SceneTransition.fadeOutIn(this, 'GameScene'));
+    const exitKey = MAP_SCENE_KEYS[gameStore.getCurrentMap()] || 'AtomMeadowsScene';
+    exitBg.on('pointerdown', () => SceneTransition.fadeOutIn(this, exitKey));
+    exitTxt.on('pointerdown', () => SceneTransition.fadeOutIn(this, exitKey));
 
     this.bubbleTimer = this.time.addEvent({
       delay: 2800, loop: true,

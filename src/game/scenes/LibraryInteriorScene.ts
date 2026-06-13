@@ -4,6 +4,7 @@ import { NPC } from '../entities/NPC';
 import { DialogueBox } from '../ui/DialogueBox';
 import { SceneTransition } from '../systems/SceneTransition';
 import { gameStore } from '../../store/gameStore';
+import { MAP_SCENE_KEYS } from '../data/mapSceneKeys';
 import { openLessonSelector } from '../overlays/LessonSelector';
 import { addHelpButton } from '../overlays/HelpOverlay';
 
@@ -203,10 +204,12 @@ export class LibraryInteriorScene extends Phaser.Scene {
         this.sound.play('sfx_coin', { volume: 0.5 });
         this.cameras.main.flash(200, 243, 156, 18);
         this.time.delayedCall(600, () => {
-          SceneTransition.fadeOutIn(this, 'GameScene');
+          const sceneKey = MAP_SCENE_KEYS[gameStore.getCurrentMap()] || 'AtomMeadowsScene';
+          SceneTransition.fadeOutIn(this, sceneKey);
         });
       } else {
-        SceneTransition.fadeOutIn(this, 'GameScene');
+        const sceneKey = MAP_SCENE_KEYS[gameStore.getCurrentMap()] || 'AtomMeadowsScene';
+        SceneTransition.fadeOutIn(this, sceneKey);
       }
     }
   }

@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { gameStore } from '../../store/gameStore';
+import { MAP_SCENE_KEYS } from '../data/mapSceneKeys';
 
 export class MainMenuScene extends Phaser.Scene {
   private particles: { x: number; y: number; vx: number; vy: number; r: number; color: number; alpha: number }[] = [];
@@ -103,14 +104,16 @@ export class MainMenuScene extends Phaser.Scene {
 
   private continueGame() {
     gameStore.loadSave();
+    const currentMapKey = gameStore.getCurrentMap();
+    const sceneKey = MAP_SCENE_KEYS[currentMapKey] || 'AtomMeadowsScene';
     this.cameras.main.fadeOut(500, 0, 0, 0);
-    this.time.delayedCall(500, () => { this.scene.start('GameScene'); });
+    this.time.delayedCall(500, () => { this.scene.start(sceneKey); });
   }
 
   private newGame() {
     gameStore.newGame();
     this.cameras.main.fadeOut(500, 0, 0, 0);
-    this.time.delayedCall(500, () => { this.scene.start('GameScene'); });
+    this.time.delayedCall(500, () => { this.scene.start('AtomMeadowsScene'); });
   }
 
   private showControls() {

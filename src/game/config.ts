@@ -1,7 +1,6 @@
 import Phaser from 'phaser';
 import { BootScene } from './scenes/BootScene';
 import { MainMenuScene } from './scenes/MainMenuScene';
-import { GameScene } from './scenes/GameScene';
 import { LabInteriorScene } from './scenes/LabInteriorScene';
 import { LibraryInteriorScene } from './scenes/LibraryInteriorScene';
 import { ShopInteriorScene } from './scenes/ShopInteriorScene';
@@ -9,6 +8,11 @@ import { HUDScene } from './scenes/HUDScene';
 import { LaboratoryScene } from './scenes/LaboratoryScene';
 import { LibraryScene } from './scenes/LibraryScene';
 import { ShopScene } from './scenes/ShopScene';
+import { AtomMeadowsScene } from './maps/atomMeadows/AtomMeadowsScene';
+import { RecyclingFieldsScene } from './maps/recyclingFields/RecyclingFieldsScene';
+import { EcoVilleScene } from './maps/ecoVille/EcoVilleScene';
+import { PrismHeightsScene } from './maps/prismHeights/PrismHeightsScene';
+import { MagnetCoreScene } from './maps/magnetCore/MagnetCoreScene';
 
 export function createGameConfig(): Phaser.Types.Core.GameConfig {
   return {
@@ -35,7 +39,11 @@ export function createGameConfig(): Phaser.Types.Core.GameConfig {
     scene: [
       BootScene,
       MainMenuScene,
-      GameScene,
+      AtomMeadowsScene,
+      RecyclingFieldsScene,
+      EcoVilleScene,
+      PrismHeightsScene,
+      MagnetCoreScene,
       LabInteriorScene,
       LibraryInteriorScene,
       ShopInteriorScene,

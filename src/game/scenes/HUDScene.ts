@@ -7,6 +7,7 @@ import {
     QuestData,
     MapData,
 } from "../data/types";
+import { MAP_SCENE_KEYS } from "../data/mapSceneKeys";
 
 export class HUDScene extends Phaser.Scene {
     private coinText!: Phaser.GameObjects.Text;
@@ -161,15 +162,13 @@ export class HUDScene extends Phaser.Scene {
 
         this.updateHUD();
 
-        // Notifications
-        this.scene
-            .get("GameScene")
-            .events.on(
-                GameEvents.Notification,
-                (data: { title: string; message: string; icon: string }) => {
-                    this.showNotification(data);
-                },
-            );
+        // Notifications - use game-wide event bus (works across all scenes)
+        this.game.events.on(GameEvents.Notification, (data: { title: string; message: string; icon: string }) => {
+            this.showNotification(data);
+        });
+        this.events.on(Phaser.Scenes.Events.SHUTDOWN, () => {
+            this.game.events.off(GameEvents.Notification);
+        });
 
         // Custom events
         window.addEventListener("chemicraft:notification", (e: any) => {
@@ -179,6 +178,15 @@ export class HUDScene extends Phaser.Scene {
                 icon: "💡",
             });
         });
+    }
+
+    private getActiveMapScene(): Phaser.Scene | null {
+        const mapKeys = Object.values(MAP_SCENE_KEYS);
+        for (const key of mapKeys) {
+            const scene = this.scene.get(key);
+            if (scene && scene.scene.isActive()) return scene;
+        }
+        return null;
     }
 
     private createUsernameInput() {
@@ -661,8 +669,8 @@ export class HUDScene extends Phaser.Scene {
     }
 
     private renderMap() {
-        const gameScene = this.scene.get("GameScene") as any;
-        if (!gameScene.player || !gameScene.mapData) return;
+        const gameScene = this.getActiveMapScene() as any;
+        if (!gameScene || !gameScene.player || !gameScene.mapData) return;
 
         const mapData = gameScene.mapData as MapData;
         const mapW = mapData.width;

@@ -6,6 +6,7 @@ import { CraftingSystem } from '../systems/CraftingSystem';
 import { SceneTransition } from '../systems/SceneTransition';
 import { gameStore } from '../../store/gameStore';
 import { RecipeData, ItemData, Direction } from '../data/types';
+import { MAP_SCENE_KEYS } from '../data/mapSceneKeys';
 import { openReagentSelector, ReagentSelectorCallbacks } from '../overlays/ReagentSelector';
 import { addHelpButton } from '../overlays/HelpOverlay';
 
@@ -139,7 +140,7 @@ export class LabInteriorScene extends Phaser.Scene {
       } else if (this.deconComplete) {
         this.corridorText?.destroy();
         this.corridorOverlay?.destroy();
-        SceneTransition.fadeOutIn(this, 'GameScene');
+        SceneTransition.fadeOutIn(this, MAP_SCENE_KEYS[gameStore.getCurrentMap()] || 'AtomMeadowsScene');
       }
     }
   }

@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { SceneTransition } from '../systems/SceneTransition';
 import { gameStore } from '../../store/gameStore';
+import { MAP_SCENE_KEYS } from '../data/mapSceneKeys';
 import { ItemData } from '../data/types';
 
 export class ShopScene extends Phaser.Scene {
@@ -41,8 +42,9 @@ export class ShopScene extends Phaser.Scene {
     const exitTxt = this.add.text(50, 30, 'EXIT', {
       fontFamily: '"Inter"', fontSize: '11px', color: '#dfe6e9', fontStyle: 'bold',
     }).setOrigin(0.5);
-    exitBg.on('pointerdown', () => SceneTransition.fadeOutIn(this, 'GameScene'));
-    exitTxt.on('pointerdown', () => SceneTransition.fadeOutIn(this, 'GameScene'));
+    const exitKey = MAP_SCENE_KEYS[gameStore.getCurrentMap()] || 'AtomMeadowsScene';
+    exitBg.on('pointerdown', () => SceneTransition.fadeOutIn(this, exitKey));
+    exitTxt.on('pointerdown', () => SceneTransition.fadeOutIn(this, exitKey));
 
     const shopItems = Object.values(items).filter(i => i.price && i.price > 0);
 
