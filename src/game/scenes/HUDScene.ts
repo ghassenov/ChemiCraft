@@ -367,9 +367,8 @@ export class HUDScene extends Phaser.Scene {
         }
       }
 
-      const gs = gameScene.player.sprite;
-      const px = Math.floor(gs.x / ts);
-      const py = Math.floor(gs.y / ts);
+      const px = Math.floor(gameScene.player.x / ts);
+      const py = Math.floor(gameScene.player.y / ts);
       g.fillStyle(0x00b894, 1);
       g.fillCircle(ox + px * tilePx + tilePx / 2, oy + py * tilePx + tilePx / 2, 4);
 
