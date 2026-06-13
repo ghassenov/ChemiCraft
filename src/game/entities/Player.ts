@@ -110,7 +110,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.nameLabel.setPosition(this.x, this.y - 28);
     this.nameLabel.setText(gameStore.getState().playerData.username);
 
-    if (!this._canMove) {
+    if (!this._canMove || gameStore.getState().isPaused) {
       this.setVelocity(0, 0);
       return;
     }

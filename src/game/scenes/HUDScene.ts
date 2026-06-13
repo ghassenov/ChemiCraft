@@ -10,6 +10,9 @@ export class HUDScene extends Phaser.Scene {
   private uiContainer!: Phaser.GameObjects.Container;
   private overlayBg!: Phaser.GameObjects.Rectangle;
   private isOverlayOpen = false;
+  private nameInputEl!: HTMLInputElement;
+  private nameWrapperEl!: HTMLDivElement;
+  private keyboardGuard = false;
 
   constructor() {
     super({ key: 'HUDScene' });
@@ -46,16 +49,18 @@ export class HUDScene extends Phaser.Scene {
       fontFamily: '"Inter"', fontSize: '10px', color: '#fff', align: 'center'
     }).setOrigin(0.5);
 
-    // Input
+    // Keyboard shortcuts (guarded so they don't fire while typing)
+    const guard = (fn: () => void) => () => { if (!this.keyboardGuard) fn(); };
+
     if (this.input.keyboard) {
-        this.input.keyboard.on('keydown-I', () => this.toggleOverlay('inventory'));
-        this.input.keyboard.on('keydown-Q', () => this.toggleOverlay('quests'));
-        this.input.keyboard.on('keydown-K', () => this.toggleOverlay('skills'));
-        this.input.keyboard.on('keydown-C', () => this.toggleOverlay('chemdex'));
-        this.input.keyboard.on('keydown-M', () => this.toggleOverlay('map'));
-        this.input.keyboard.on('keydown-T', () => this.cycleTool());
-        this.input.keyboard.on('keydown-ESC', () => this.closeOverlay());
-        this.input.keyboard.on('keydown-F', () => this.toggleFullscreen());
+        this.input.keyboard.on('keydown-I', guard(() => this.toggleOverlay('inventory')));
+        this.input.keyboard.on('keydown-Q', guard(() => this.toggleOverlay('quests')));
+        this.input.keyboard.on('keydown-K', guard(() => this.toggleOverlay('skills')));
+        this.input.keyboard.on('keydown-C', guard(() => this.toggleOverlay('chemdex')));
+        this.input.keyboard.on('keydown-M', guard(() => this.toggleOverlay('map')));
+        this.input.keyboard.on('keydown-T', guard(() => this.cycleTool()));
+        this.input.keyboard.on('keydown-ESC', guard(() => this.closeOverlay()));
+        this.input.keyboard.on('keydown-F', guard(() => this.toggleFullscreen()));
     }
 
     // Subscribe to store
@@ -69,6 +74,9 @@ export class HUDScene extends Phaser.Scene {
     
     this.uiContainer = this.add.container(width/2, height/2).setAlpha(0);
 
+    // Username input (DOM overlay on the right side)
+    this.createUsernameInput();
+
     this.updateHUD();
 
     // Notifications
@@ -79,6 +87,57 @@ export class HUDScene extends Phaser.Scene {
     // Custom events
     window.addEventListener('chemicraft:notification', (e: any) => {
         this.showNotification({ title: 'System', message: e.detail.message, icon: '💡' });
+    });
+  }
+
+  private createUsernameInput() {
+    this.nameWrapperEl = document.createElement('div');
+    this.nameWrapperEl.style.cssText = `
+      position: fixed; top: 75px; right: 20px; z-index: 500;
+      display: flex; flex-direction: column; align-items: stretch; gap: 3px;
+    `;
+
+    const label = document.createElement('span');
+    label.textContent = 'PLAYER';
+    label.style.cssText = `
+      font-family: "Press Start 2P", monospace; font-size: 8px;
+      color: #7a6a4a; letter-spacing: 1px; text-align: right;
+    `;
+
+    this.nameInputEl = document.createElement('input');
+    this.nameInputEl.type = 'text';
+    this.nameInputEl.value = gameStore.getState().playerData.username;
+    this.nameInputEl.style.cssText = `
+      width: 160px; padding: 6px 10px; font-size: 13px;
+      background: #0a0a0a; border: 2px solid #2a1a0a; border-radius: 2px;
+      color: #c8b89a; font-family: "Inter", sans-serif; outline: none;
+      transition: border-color 0.2s ease;
+    `;
+
+    this.nameInputEl.addEventListener('focus', () => {
+      this.nameInputEl.style.borderColor = '#f39c12';
+      this.keyboardGuard = true;
+      gameStore.setPaused(true);
+    });
+
+    this.nameInputEl.addEventListener('blur', () => {
+      this.nameInputEl.style.borderColor = '#2a1a0a';
+      this.keyboardGuard = false;
+      gameStore.setPaused(false);
+      const val = this.nameInputEl.value.trim();
+      if (val) gameStore.setUsername(val);
+    });
+
+    this.nameInputEl.addEventListener('keydown', (e: KeyboardEvent) => {
+      if (e.key === 'Enter') this.nameInputEl.blur();
+    });
+
+    this.nameWrapperEl.appendChild(label);
+    this.nameWrapperEl.appendChild(this.nameInputEl);
+    document.body.appendChild(this.nameWrapperEl);
+
+    this.events.on(Phaser.Scenes.Events.SHUTDOWN, () => {
+      if (this.nameWrapperEl.parentNode) this.nameWrapperEl.parentNode.removeChild(this.nameWrapperEl);
     });
   }
 
