@@ -2,7 +2,7 @@
 
 **Learn Chemistry Through Adventure** — an educational 2D RPG built with Phaser 3.
 
-Explore a village, talk to NPCs, solve chemistry quests in the lab, and unlock new reagents and recipes.
+E xplore a village, talk to NPCs, solve chemistry quests in the lab, and unlock new reagents and recipes.
 
 ## Quick Start
 
