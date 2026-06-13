@@ -118,6 +118,7 @@ export class HUDScene extends Phaser.Scene {
       this.nameInputEl.style.borderColor = '#f39c12';
       this.keyboardGuard = true;
       gameStore.setPaused(true);
+      this.nameInputEl.dataset.originalValue = this.nameInputEl.value;
     });
 
     this.nameInputEl.addEventListener('blur', () => {
@@ -129,7 +130,14 @@ export class HUDScene extends Phaser.Scene {
     });
 
     this.nameInputEl.addEventListener('keydown', (e: KeyboardEvent) => {
-      if (e.key === 'Enter') this.nameInputEl.blur();
+      e.stopPropagation();
+      if (e.key === 'Enter') {
+        this.nameInputEl.blur();
+      }
+      if (e.key === 'Escape') {
+        this.nameInputEl.value = this.nameInputEl.dataset.originalValue || this.nameInputEl.value;
+        this.nameInputEl.blur();
+      }
     });
 
     this.nameWrapperEl.appendChild(label);
