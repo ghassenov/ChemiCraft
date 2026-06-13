@@ -91,38 +91,49 @@ export class HUDScene extends Phaser.Scene {
   }
 
   private createUsernameInput() {
-    this.nameWrapperEl = document.createElement('div');
-    this.nameWrapperEl.style.cssText = `
-      position: fixed; top: 75px; right: 20px; z-index: 500;
-      display: flex; flex-direction: column; align-items: stretch; gap: 3px;
-    `;
+    const { width } = this.cameras.main;
 
-    const label = document.createElement('span');
-    label.textContent = 'PLAYER';
-    label.style.cssText = `
-      font-family: "Press Start 2P", monospace; font-size: 8px;
-      color: #7a6a4a; letter-spacing: 1px; text-align: right;
-    `;
+    // Phaser panel (same style as coin display)
+    this.add.image(width - 110, 85, 'hud_panel').setDisplaySize(180, 55);
+    this.add.text(width - 175, 70, 'PLAYER', {
+      fontFamily: '"Press Start 2P", monospace', fontSize: '8px',
+      color: '#7a6a4a', letterSpacing: 1,
+    });
+
+    // Position DOM input over the Phaser panel
+    const updatePosition = () => {
+      const canvas = document.querySelector('canvas');
+      if (!canvas) return;
+      const rect = canvas.getBoundingClientRect();
+      const sx = rect.width / 960;
+      const sy = rect.height / 640;
+
+      this.nameWrapperEl.style.left = (rect.left + (width - 175) * sx) + 'px';
+      this.nameWrapperEl.style.top = (rect.top + 86 * sy) + 'px';
+      this.nameWrapperEl.style.width = (140 * sx) + 'px';
+    };
+
+    this.nameWrapperEl = document.createElement('div');
+    this.nameWrapperEl.style.cssText = 'position: fixed; z-index: 500;';
 
     this.nameInputEl = document.createElement('input');
     this.nameInputEl.type = 'text';
     this.nameInputEl.value = gameStore.getState().playerData.username;
     this.nameInputEl.style.cssText = `
-      width: 160px; padding: 6px 10px; font-size: 13px;
-      background: #0a0a0a; border: 2px solid #2a1a0a; border-radius: 2px;
-      color: #c8b89a; font-family: "Inter", sans-serif; outline: none;
-      transition: border-color 0.2s ease;
+      width: 100%; padding: 3px 0; font-size: 13px;
+      background: transparent; border: none; outline: none;
+      color: #dfe6e9; font-family: "Inter", sans-serif;
     `;
 
     this.nameInputEl.addEventListener('focus', () => {
-      this.nameInputEl.style.borderColor = '#f39c12';
+      this.nameInputEl.style.color = '#ffffff';
       this.keyboardGuard = true;
       gameStore.setPaused(true);
       this.nameInputEl.dataset.originalValue = this.nameInputEl.value;
     });
 
     this.nameInputEl.addEventListener('blur', () => {
-      this.nameInputEl.style.borderColor = '#2a1a0a';
+      this.nameInputEl.style.color = '#dfe6e9';
       this.keyboardGuard = false;
       gameStore.setPaused(false);
       const val = this.nameInputEl.value.trim();
@@ -140,9 +151,9 @@ export class HUDScene extends Phaser.Scene {
       }
     });
 
-    this.nameWrapperEl.appendChild(label);
     this.nameWrapperEl.appendChild(this.nameInputEl);
     document.body.appendChild(this.nameWrapperEl);
+    updatePosition();
 
     this.events.on(Phaser.Scenes.Events.SHUTDOWN, () => {
       if (this.nameWrapperEl.parentNode) this.nameWrapperEl.parentNode.removeChild(this.nameWrapperEl);
