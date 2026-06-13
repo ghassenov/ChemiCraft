@@ -227,17 +227,20 @@ export class HUDScene extends Phaser.Scene {
       gameStore.setPaused(true);
       this.isOverlayOpen = true;
 
-      const panel = this.add.image(0, 0, 'panel_bg');
-      this.uiContainer.add(panel);
+      if (type === 'map') {
+          this.renderMap();
+      } else {
+          const panel = this.add.image(0, 0, 'panel_bg');
+          this.uiContainer.add(panel);
 
-      const titleMap: any = { inventory: 'Backpack', quests: 'Quest Log', skills: 'Skill Tree', map: 'Map', chemdex: 'ChemDex' };
-      this.uiContainer.add(this.add.text(0, -170, titleMap[type], { fontFamily: '"Press Start 2P"', fontSize: '16px', color: '#f39c12' }).setOrigin(0.5));
+          const titleMap: Record<string, string> = { inventory: 'Backpack', quests: 'Quest Log', skills: 'Skill Tree', chemdex: 'ChemDex' };
+          this.uiContainer.add(this.add.text(0, -170, titleMap[type] || '', { fontFamily: '"Press Start 2P"', fontSize: '16px', color: '#f39c12' }).setOrigin(0.5));
 
-      if (type === 'inventory') this.renderInventory();
-      else if (type === 'quests') this.renderQuests();
-      else if (type === 'skills') this.renderSkills();
-      else if (type === 'chemdex') this.renderChemDex();
-      else if (type === 'map') this.renderMap();
+          if (type === 'inventory') this.renderInventory();
+          else if (type === 'quests') this.renderQuests();
+          else if (type === 'skills') this.renderSkills();
+          else if (type === 'chemdex') this.renderChemDex();
+      }
 
       this.tweens.add({ targets: [this.overlayBg, this.uiContainer], alpha: 1, duration: 200 });
   }
@@ -384,76 +387,189 @@ export class HUDScene extends Phaser.Scene {
       if (!gameScene.player || !gameScene.mapData) return;
 
       const mapData = gameScene.mapData as MapData;
-
       const mapW = mapData.width;
       const mapH = mapData.height;
-      const tilePx = 14;
+      const tilePx = 20;
       const totalPxW = mapW * tilePx;
       const totalPxH = mapH * tilePx;
 
       const container = this.uiContainer;
-      const panelBg = container.getAt(0) as Phaser.GameObjects.Image;
-      const cx = -panelBg.displayWidth / 2 + 20;
-      const cy = -panelBg.displayHeight / 2 + 20;
-      const ox = cx + (panelBg.displayWidth - 40 - totalPxW) / 2;
-      const oy = cy + 50;
-
-      const g = this.add.graphics().setAlpha(0.9);
+      const g = this.add.graphics();
       container.add(g);
 
       const ts = mapData.tileSize;
 
+      // Full-screen dark background for the map area
+      g.fillStyle(0x0a0704, 0.92);
+      g.fillRoundedRect(-totalPxW / 2 - 36, -totalPxH / 2 - 56, totalPxW + 72, totalPxH + 120, 16);
+      g.lineStyle(2, 0xf39c12, 0.25);
+      g.strokeRoundedRect(-totalPxW / 2 - 36, -totalPxH / 2 - 56, totalPxW + 72, totalPxH + 120, 16);
+
+      // Map area origin (centered)
+      const ox = -totalPxW / 2;
+      const oy = -totalPxH / 2 + 10;
+
+      // Terrain pass
       for (let y = 0; y < mapH; y++) {
         for (let x = 0; x < mapW; x++) {
           const val = mapData.ground[y][x];
           const rx = ox + x * tilePx;
           const ry = oy + y * tilePx;
 
-          if (val === 0 || val === 5 || val === 6) {
-            g.fillStyle(0x4a9e3a, 0.6);
-            g.fillRect(rx, ry, tilePx - 1, tilePx - 1);
-          } else if (val === 1) {
-            g.fillStyle(0x3d2b1f, 0.9);
-            g.fillRect(rx, ry, tilePx - 1, tilePx - 1);
+          if (val === 1) {
+            g.fillStyle(0x2a1a0e, 0.85);
+            g.fillRect(rx, ry, tilePx, tilePx);
+          } else if (val >= 2 && val <= 4) {
+            g.fillStyle(0x7a6a4a, 0.3);
+            g.fillRect(rx, ry, tilePx, tilePx);
+          } else if (val === 5) {
+            g.fillStyle(0x4a7a3a, 0.4);
+            g.fillRect(rx, ry, tilePx, tilePx);
+          } else if (val === 6) {
+            g.fillStyle(0x3a5a7a, 0.35);
+            g.fillRect(rx, ry, tilePx, tilePx);
+          } else {
+            g.fillStyle(0x3a7a2a, 0.25);
+            g.fillRect(rx, ry, tilePx, tilePx);
           }
+
+          // Subtle bevel for depth
+          g.fillStyle(0x000000, 0.06);
+          g.fillRect(rx + tilePx - 1, ry, 1, tilePx);
+          g.fillRect(rx, ry + tilePx - 1, tilePx, 1);
         }
       }
 
+      // Map frame border
+      g.lineStyle(1.5, 0xf39c12, 0.45);
+      g.strokeRect(ox, oy, totalPxW, totalPxH);
+
+      // Title
+      container.add(this.add.text(0, oy - 40, `🗺  ${mapData.name}`, {
+        fontFamily: '"Press Start 2P"', fontSize: '13px', color: '#f39c12',
+      }).setOrigin(0.5));
+
+      // Buildings
       const buildingColors: Record<string, number> = {
-        lab: 0x8B4513,
-        library: 0x4a6741,
-        shop: 0x6B4226,
+        lab: 0x8B4513, library: 0x3a6a35, shop: 0x6B4226,
       };
       for (const b of mapData.buildings) {
         const col = buildingColors[b.type] || 0x555555;
+        const minX = Math.min(...b.tiles.map(([bx]) => bx));
+        const maxX = Math.max(...b.tiles.map(([bx]) => bx));
+        const minY = Math.min(...b.tiles.map(([, by]) => by));
+
         for (const [bx, by] of b.tiles) {
-          g.fillStyle(col, 0.85);
-          g.fillRect(ox + bx * tilePx, oy + by * tilePx, tilePx - 1, tilePx - 1);
+          g.fillStyle(col, 0.92);
+          g.fillRect(ox + bx * tilePx, oy + by * tilePx, tilePx, tilePx);
         }
-        g.fillStyle(0xffffff, 0.95);
-        const label = this.add.text(ox + b.tileX * tilePx + tilePx / 2, oy + b.tileY * tilePx - 4, b.name, {
-          fontFamily: '"Inter"', fontSize: '8px', color: '#ffffff', backgroundColor: '#000000aa',
-          padding: { x: 2, y: 1 },
+
+        // Roof highlight on top row
+        for (const [bx, by] of b.tiles) {
+          if (!b.tiles.some(([ax, ay]) => ax === bx && ay === by - 1)) {
+            g.fillStyle(0xffffff, 0.1);
+            g.fillRect(ox + bx * tilePx + 1, oy + by * tilePx + 1, tilePx - 2, 3);
+          }
+        }
+
+        g.lineStyle(1, 0x000000, 0.35);
+        for (const [bx, by] of b.tiles) {
+          g.strokeRect(ox + bx * tilePx, oy + by * tilePx, tilePx, tilePx);
+        }
+
+        const bw = (maxX - minX + 1) * tilePx;
+        const label = this.add.text(ox + minX * tilePx + bw / 2, oy + minY * tilePx - 4, b.name, {
+          fontFamily: '"Inter"', fontSize: '9px', color: '#fff',
+          backgroundColor: '#000000aa', padding: { x: 4, y: 2 },
         }).setOrigin(0.5, 1);
         container.add(label);
       }
 
-      if (mapData.portals && mapData.portals.length > 0) {
+      // Portals as glowing gateways
+      if (mapData.portals) {
         for (const portal of mapData.portals) {
-          g.fillStyle(0xf39c12, 1);
-          g.fillRect(ox + portal.tileX * tilePx - 1, oy + portal.tileY * tilePx - 1, tilePx + 1, tilePx + 1);
+          const cx = ox + portal.tileX * tilePx + tilePx / 2;
+          const cy = oy + portal.tileY * tilePx + tilePx / 2;
+          g.fillStyle(0xf39c12, 0.15);
+          g.fillCircle(cx, cy, 12);
+          g.lineStyle(2, 0xf39c12, 0.8);
+          g.strokeCircle(cx, cy, 6);
+          g.fillStyle(0xffeaa7, 0.9);
+          g.fillCircle(cx, cy, 2.5);
         }
       }
 
-      const px = Math.floor(gameScene.player.x / ts);
-      const py = Math.floor(gameScene.player.y / ts);
-      g.fillStyle(0x00b894, 1);
-      g.fillCircle(ox + px * tilePx + tilePx / 2, oy + py * tilePx + tilePx / 2, 4);
+      // Decorations
+      if (mapData.decorations) {
+        for (const dec of mapData.decorations) {
+          const dx = ox + dec.tileX * tilePx + tilePx / 2;
+          const dy = oy + dec.tileY * tilePx + tilePx / 2;
+          if (dec.type === 'tree') {
+            g.fillStyle(0x2d6d2d, 0.7);
+            g.fillCircle(dx, dy - 1, 3);
+            g.fillStyle(0x5c3a1e, 0.7);
+            g.fillRect(dx - 1, dy + 1, 2, 3);
+          } else {
+            g.fillStyle(0x888888, 0.35);
+            g.fillCircle(dx, dy, 1.5);
+          }
+        }
+      }
 
-      const legendY = oy + mapH * tilePx + 14;
-      container.add(this.add.text(ox, legendY, '■ Wall  ■ Building  ★ Portal  ● You', {
-        fontFamily: '"Inter"', fontSize: '9px', color: '#7a6a4a',
-      }));
+      // NPC dots
+      if (mapData.npcs) {
+        for (const npc of mapData.npcs) {
+          g.fillStyle(0xffffff, 0.3);
+          g.fillCircle(ox + npc.tileX * tilePx + tilePx / 2, oy + npc.tileY * tilePx + tilePx / 2, 1.5);
+        }
+      }
+
+      // Player marker
+      const ppx = Math.floor(gameScene.player.x / ts);
+      const ppy = Math.floor(gameScene.player.y / ts);
+      const pcx = ox + ppx * tilePx + tilePx / 2;
+      const pcy = oy + ppy * tilePx + tilePx / 2;
+      g.fillStyle(0x00b894, 0.12);
+      g.fillCircle(pcx, pcy, 14);
+      g.lineStyle(2, 0x00b894, 0.5);
+      g.strokeCircle(pcx, pcy, 8);
+      g.fillStyle(0x00b894, 1);
+      g.fillCircle(pcx, pcy, 4);
+      g.lineStyle(1.5, 0xffffff, 0.9);
+      g.strokeCircle(pcx, pcy, 4);
+
+      // Legend
+      const legendY = oy + totalPxH + 16;
+      const legParts = [
+        { text: '▨ Wall', color: '#5a3a2a' },
+        { text: '▨ Building', color: '#8B4513' },
+        { text: '◉ Portal', color: '#f39c12' },
+        { text: '● You', color: '#00b894' },
+      ];
+      let legX = -totalPxW / 2;
+      for (const part of legParts) {
+        const txt = this.add.text(legX, legendY, part.text, {
+          fontFamily: '"Inter"', fontSize: '9px', color: part.color,
+        }).setOrigin(0, 0.5);
+        container.add(txt);
+        legX += txt.width + 18;
+      }
+
+      // Compass
+      const compX = ox + totalPxW - 14;
+      const compY = oy + 14;
+      g.lineStyle(1, 0xf39c12, 0.4);
+      g.lineBetween(compX, compY + 4, compX, compY - 8);
+      g.fillStyle(0xf39c12, 0.7);
+      g.fillTriangle(compX, compY - 10, compX + 4, compY - 4, compX - 4, compY - 4);
+      container.add(this.add.text(compX, compY - 15, 'N', {
+        fontFamily: '"Inter"', fontSize: '9px', color: '#f39c12', fontStyle: 'bold',
+      }).setOrigin(0.5));
+
+      // Close hint
+      container.add(this.add.text(0, legendY + 18, 'Press ESC to close', {
+        fontFamily: '"Inter"', fontSize: '9px', color: '#4a3a2a',
+      }).setOrigin(0.5));
   }
 
   private showNotification(data: { title: string, message: string, icon: string }) {
