@@ -157,6 +157,15 @@
       "questComplete": ["*gasps with delight* The patterns are perfect!", "Faraday first visualized magnetic fields this way in the 1800s!", "His field line concept is still used in physics today."]
     }
   },
+  "carbon_researcher": {
+    "id": "carbon_researcher", "name": "Dr. Carbone", "spriteColor": "#26a69a",
+    "questId": "carbon_capture_1", "mapOrigin": "atomMeadows",
+    "dialogue": {
+      "default": ["Hello there, young scientist!", "I'm Dr. Carbone, studying atmospheric carbon levels.", "I've noticed a worrying increase in CO₂ around Atom Meadows.", "Could you help me understand how to capture it?"],
+      "questActive": ["CO₂ is carbon dioxide — one carbon atom and two oxygen atoms.", "First, craft CO₂ in the lab using C + O + O.", "Then bring it to me so we can study its properties!"],
+      "questComplete": ["Fascinating! CO₂ captured and analyzed!", "This linear molecule is a major greenhouse gas.", "Understanding its structure is the first step to solving climate change!", "Here's your reward — keep up the great science!"]
+    }
+  },
   "core_guardian": {
     "id": "core_guardian", "name": "Guardian Gauss", "spriteColor": "#7c4dff",
     "questId": "core_stabilization", "mapOrigin": "magnetCore",

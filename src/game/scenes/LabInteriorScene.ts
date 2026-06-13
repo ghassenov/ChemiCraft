@@ -19,7 +19,9 @@ export class LabInteriorScene extends Phaser.Scene {
   private walls!: Phaser.Physics.Arcade.StaticGroup;
   private state: LabState = 'idle';
   private carriedReagent: string | null = null;
+  private carriedItemId: string | null = null;
   private benchReagents: string[] = [];
+  private benchItemIds: string[] = [];
   private carriedIcon: Phaser.GameObjects.Text | null = null;
   private benchIcons: Phaser.GameObjects.Container[] = [];
   private benchGroup!: Phaser.GameObjects.Group;
@@ -41,7 +43,9 @@ export class LabInteriorScene extends Phaser.Scene {
     this.cameras.main.fadeIn(400, 0, 0, 0);
     this.state = 'idle';
     this.carriedReagent = null;
+    this.carriedItemId = null;
     this.benchReagents = [];
+    this.benchItemIds = [];
     this.benchIcons = [];
     this.deconActive = false;
     this.deconComplete = false;
@@ -630,6 +634,13 @@ export class LabInteriorScene extends Phaser.Scene {
       if (this.state === 'idle') {
         openReagentSelector(this, {
           onSelectReagent: (symbol) => {
+            for (const [id, data] of Object.entries(this.craftingItems)) {
+              if (data.symbol === symbol && (data.type === 'reagent' || data.type === 'molecule' || data.type === 'material')) {
+                gameStore.removeFromInventory(id, 1);
+                this.carriedItemId = id;
+                break;
+              }
+            }
             this.carriedReagent = symbol;
             this.state = 'carrying';
             if (this.statusText) this.statusText.setText(`Carrying: ${symbol}\nBring it to the workbench.`);
@@ -664,6 +675,13 @@ export class LabInteriorScene extends Phaser.Scene {
     }
     openReagentSelector(this, {
       onSelectReagent: (symbol) => {
+        for (const [id, data] of Object.entries(this.craftingItems)) {
+          if (data.symbol === symbol && (data.type === 'reagent' || data.type === 'molecule' || data.type === 'material')) {
+            gameStore.removeFromInventory(id, 1);
+            this.carriedItemId = id;
+            break;
+          }
+        }
         this.carriedReagent = symbol;
         this.state = 'carrying';
         if (this.statusText) this.statusText.setText(`Carrying: ${symbol}\nBring it to the workbench.`);
@@ -691,7 +709,9 @@ export class LabInteriorScene extends Phaser.Scene {
   private addToBench() {
     if (!this.carriedReagent) return;
     this.benchReagents.push(this.carriedReagent);
+    this.benchItemIds.push(this.carriedItemId || '');
     this.carriedReagent = null;
+    this.carriedItemId = null;
     this.state = 'idle';
 
     if (this.carriedIcon) {
@@ -818,8 +838,12 @@ export class LabInteriorScene extends Phaser.Scene {
     } else {
       this.cameras.main.shake(200, 0.01);
       this.showResultPopout(result.error || 'Reaction failed.', '#ff7675');
+      for (const id of this.benchItemIds) {
+        if (id) gameStore.addToInventory(id, 1);
+      }
       this.clearBenchIcons();
       this.benchReagents = [];
+      this.benchItemIds = [];
       this.state = 'idle';
     }
   }
@@ -934,14 +958,6 @@ export class LabInteriorScene extends Phaser.Scene {
     }
 
     if (craftedItemId) {
-      const symbolToId: Record<string, string> = {};
-      for (const [id, data] of Object.entries(this.craftingItems)) {
-        symbolToId[data.symbol] = id;
-      }
-      for (const sym of this.benchReagents) {
-        const id = symbolToId[sym];
-        if (id) gameStore.removeFromInventory(id, 1);
-      }
       gameStore.addToInventory(craftedItemId, 1);
       gameStore.unlockChemDex(outSymbol);
 
@@ -953,6 +969,7 @@ export class LabInteriorScene extends Phaser.Scene {
 
     this.clearBenchIcons();
     this.benchReagents = [];
+    this.benchItemIds = [];
     this.state = 'idle';
   }
 
@@ -970,8 +987,21 @@ export class LabInteriorScene extends Phaser.Scene {
   }
 
   private clearBench() {
+    for (const id of this.benchItemIds) {
+      if (id) gameStore.addToInventory(id, 1);
+    }
+    if (this.carriedItemId) {
+      gameStore.addToInventory(this.carriedItemId, 1);
+      this.carriedItemId = null;
+      this.carriedReagent = null;
+      if (this.carriedIcon) {
+        this.carriedIcon.destroy();
+        this.carriedIcon = null;
+      }
+    }
     this.clearBenchIcons();
     this.benchReagents = [];
+    this.benchItemIds = [];
     this.state = 'idle';
     this.statusText.setText('Bench cleared.');
   }

@@ -101,4 +101,17 @@ export class QuestSystem {
     }
     return npcData.dialogue.default;
   }
+
+  /** Get the name of the unmet prerequisite quest, if any */
+  getMissingPrerequisite(questId: string): string | null {
+    const quest = this.quests[questId];
+    if (!quest) return null;
+    for (const pq of quest.prerequisiteQuests) {
+      if (!gameStore.isQuestCompleted(pq)) {
+        const pqQuest = this.quests[pq];
+        return pqQuest ? pqQuest.title : pq;
+      }
+    }
+    return null;
+  }
 }

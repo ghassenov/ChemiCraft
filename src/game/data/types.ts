@@ -17,6 +17,7 @@ export interface PlayerData {
   equippedGear: string[];
   isGuest: boolean;
   interiorVisits: Record<string, boolean>;
+  sortingScore: number;
 }
 
 /** Map Progression State */
@@ -148,9 +149,10 @@ export interface MapNPC {
 }
 
 export interface MapDecoration {
-  type: 'flower' | 'grass' | 'tree' | 'rock' | 'lamp' | 'sign' | 'bin' | 'solar_panel' | 'prism' | 'magnet';
+  type: 'flower' | 'grass' | 'tree' | 'rock' | 'lamp' | 'sign' | 'bin' | 'solar_panel' | 'prism' | 'magnet' | 'barrel' | 'pile' | 'conveyor';
   tileX: number;
   tileY: number;
+  color?: string;
 }
 
 export interface ResourceNodeData {

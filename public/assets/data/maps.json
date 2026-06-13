@@ -59,7 +59,8 @@
       { "npcId": "professor_knowitall", "tileX": 15, "tileY": 5 },
       { "npcId": "shopkeeper_sal", "tileX": 14, "tileY": 9 },
       { "npcId": "mayor_molecule", "tileX": 10, "tileY": 17 },
-      { "npcId": "lab_assistant", "tileX": 7, "tileY": 4 }
+      { "npcId": "lab_assistant", "tileX": 7, "tileY": 4 },
+      { "npcId": "carbon_researcher", "tileX": 14, "tileY": 15 }
     ],
     "decorations": [
       { "type": "flower", "tileX": 3, "tileY": 5 },
@@ -137,8 +138,27 @@
       { "npcId": "eco_educator", "tileX": 8, "tileY": 14 }
     ],
     "decorations": [
-      { "type": "bin", "tileX": 5, "tileY": 14 },
-      { "type": "tree", "tileX": 12, "tileY": 16 }
+      { "type": "bin", "tileX": 3, "tileY": 14, "color": "yellow" },
+      { "type": "bin", "tileX": 5, "tileY": 8, "color": "green" },
+      { "type": "bin", "tileX": 16, "tileY": 12, "color": "grey" },
+      { "type": "bin", "tileX": 8, "tileY": 5, "color": "blue" },
+      { "type": "bin", "tileX": 4, "tileY": 9, "color": "brown" },
+      { "type": "tree", "tileX": 2, "tileY": 3 },
+      { "type": "tree", "tileX": 4, "tileY": 17 },
+      { "type": "tree", "tileX": 12, "tileY": 17 },
+      { "type": "tree", "tileX": 17, "tileY": 6 },
+      { "type": "lamp", "tileX": 6, "tileY": 10 },
+      { "type": "lamp", "tileX": 14, "tileY": 10 },
+      { "type": "lamp", "tileX": 10, "tileY": 5 },
+      { "type": "sign", "tileX": 9, "tileY": 7 },
+      { "type": "sign", "tileX": 15, "tileY": 14 },
+      { "type": "barrel", "tileX": 5, "tileY": 12 },
+      { "type": "barrel", "tileX": 15, "tileY": 6 },
+      { "type": "barrel", "tileX": 7, "tileY": 15 },
+      { "type": "conveyor", "tileX": 12, "tileY": 9 },
+      { "type": "conveyor", "tileX": 6, "tileY": 9 },
+      { "type": "pile", "tileX": 4, "tileY": 11 },
+      { "type": "pile", "tileX": 16, "tileY": 8 }
     ],
     "resourceNodes": [
       { "type": "plastic_pile", "tileX": 6, "tileY": 8, "maxGathers": 3 },

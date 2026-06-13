@@ -50,6 +50,7 @@ const DEFAULT_PLAYER_DATA: PlayerData = {
     atomMeadows: { unlocked: true, completed: false, completedQuests: [] },
   },
   unlockedMaps: ['atomMeadows'],
+  sortingScore: 0,
 };
 
 class GameStore {
@@ -244,6 +245,23 @@ class GameStore {
 
   getSkillLevel(skillId: string): number {
     return this.state.playerData.skills[skillId] || 0;
+  }
+
+  // ===== Sorting Score =====
+  addSortingScore(amount: number = 1) {
+    this.state.playerData.sortingScore += amount;
+    this.notify();
+    this.autoSave();
+  }
+
+  getSortingScore(): number {
+    return this.state.playerData.sortingScore || 0;
+  }
+
+  resetSortingScore() {
+    this.state.playerData.sortingScore = 0;
+    this.notify();
+    this.autoSave();
   }
 
   // ===== Equipment & Tools =====

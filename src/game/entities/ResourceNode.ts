@@ -88,7 +88,7 @@ export class ResourceNode extends Phaser.Physics.Arcade.Sprite {
 
     const requiredTool = toolMap[this.resourceType] || 'pickaxe';
     if (activeTool !== requiredTool) {
-      return 'wrong_tool';
+      return requiredTool;
     }
 
     this.amount--;

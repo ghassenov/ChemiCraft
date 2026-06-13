@@ -12,7 +12,7 @@ export function openReagentSelector(scene: Phaser.Scene, callbacks: ReagentSelec
   const inv = gameStore.getInventory();
   const available = inv.filter(invItem => {
     const data = callbacks.getCraftingItems()[invItem.itemId];
-    return data && data.type === 'reagent' && invItem.quantity > 0;
+    return data && (data.type === 'reagent' || data.type === 'molecule' || data.type === 'material') && invItem.quantity > 0;
   });
 
   if (available.length === 0) {
@@ -31,7 +31,7 @@ export function openReagentSelector(scene: Phaser.Scene, callbacks: ReagentSelec
   panel.strokeRoundedRect(width / 2 - 160, height / 2 - 150, 320, 300, 12);
   panel.setDepth(51);
 
-  const titleTxt = scene.add.text(width / 2, height / 2 - 130, 'SELECT REAGENT', {
+  const titleTxt = scene.add.text(width / 2, height / 2 - 130, 'SELECT ITEM', {
     fontFamily: '"Inter"', fontSize: '14px', color: '#a29bfe', fontStyle: 'bold',
   }).setOrigin(0.5).setDepth(52);
 

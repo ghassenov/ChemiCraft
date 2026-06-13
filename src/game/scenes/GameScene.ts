@@ -19,6 +19,7 @@ export class GameScene extends Phaser.Scene {
   private portalPrompt!: Phaser.GameObjects.Text;
 
   private resourceNodes!: Phaser.Physics.Arcade.StaticGroup;
+  private binZones: { x: number; y: number; wasteType: string; color: string; prompt: Phaser.GameObjects.Container }[] = [];
 
   constructor() {
     super({ key: 'GameScene' });
@@ -78,8 +79,11 @@ export class GameScene extends Phaser.Scene {
     }
 
     this.resourceNodes = this.physics.add.staticGroup();
+    const isRecycling = this.mapData.key === 'recyclingFields';
+    const wasteCrisisDone = gameStore.isQuestCompleted('waste_crisis');
     if (this.mapData.resourceNodes && this.mapData.resourceNodes.length > 0) {
       for (const nodeData of this.mapData.resourceNodes) {
+        if (isRecycling && wasteCrisisDone) continue;
         const rx = nodeData.tileX * ts + ts / 2;
         const ry = nodeData.tileY * ts + ts / 2;
         const node = new ResourceNode(this, rx, ry, nodeData.type as ResourceType, nodeData.maxGathers);
@@ -122,6 +126,14 @@ export class GameScene extends Phaser.Scene {
 
     this.events.on(Phaser.Scenes.Events.SHUTDOWN, () => unsub());
 
+    const questCompleteHandler = (id: string) => {
+      if (id === 'waste_crisis') this.clearRecyclingNodes();
+    };
+    this.events.on(GameEvents.QuestCompleted, questCompleteHandler);
+    this.events.on(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.events.off(GameEvents.QuestCompleted, questCompleteHandler);
+    });
+
     if (!sessionStorage.getItem('chemicraft_tutorial_shown')) {
       sessionStorage.setItem('chemicraft_tutorial_shown', '1');
       this.showTutorialOverlay();
@@ -154,6 +166,18 @@ export class GameScene extends Phaser.Scene {
         node.hidePrompt();
       }
     }
+    for (const zone of this.binZones) {
+      const dist = Phaser.Math.Distance.Between(this.player.x, this.player.y, zone.x, zone.y);
+      if (dist < 40) {
+        if (zone.prompt.alpha === 0) {
+          zone.prompt.setAlpha(1).setScale(1);
+        }
+      } else {
+        if (zone.prompt.alpha === 1) {
+          zone.prompt.setAlpha(0).setScale(0.8);
+        }
+      }
+    }
 
     const px = Math.floor(this.player.x / ts);
     const py = Math.floor(this.player.y / ts);
@@ -169,46 +193,16 @@ export class GameScene extends Phaser.Scene {
 
     const portals = this.mapData.portals;
     if (portals && portals.length > 0) {
-      let nearPortal = false;
       for (const portal of portals) {
         const distToPortal = Phaser.Math.Distance.Between(
           this.player.x, this.player.y,
           portal.tileX * ts + ts / 2, portal.tileY * ts + ts / 2
         );
-        if (distToPortal < 40) {
-          nearPortal = true;
-          const currentMapKey = this.mapData.key;
-          const nextMapKey = portal.targetMap;
-          const isUnlockPortal = portal.unlockCondition === 'all_quests';
-
-          if (isUnlockPortal) {
-            const allMainComplete = this.checkAllMainQuestsComplete();
-            if (allMainComplete) {
-              this.portalPrompt.setText('[E] Travel to next region');
-              this.portalPrompt.setColor('#00cec9');
-              if (Phaser.Input.Keyboard.JustDown(this.player.interactKey)) {
-                this.portalPrompt.setAlpha(0);
-                this.unlockAndTravel(currentMapKey, nextMapKey, portal);
-              }
-            } else {
-              this.portalPrompt.setText('Complete all quests to unlock the portal');
-              this.portalPrompt.setColor('#ff7675');
-            }
-          } else {
-            this.portalPrompt.setText('[E] Travel to ' + portal.targetMap);
-            this.portalPrompt.setColor('#00cec9');
-            if (Phaser.Input.Keyboard.JustDown(this.player.interactKey)) {
-              this.portalPrompt.setAlpha(0);
-              this.unlockAndTravel(currentMapKey, nextMapKey, portal);
-            }
-          }
-          this.portalPrompt.setPosition(this.cameras.main.width / 2, 80);
-          this.portalPrompt.setAlpha(1);
+        if (distToPortal < 30) {
+          this.portalPrompt.setAlpha(0);
+          this.unlockAndTravel(this.mapData.key, portal.targetMap, portal);
           break;
         }
-      }
-      if (!nearPortal) {
-        this.portalPrompt.setAlpha(0);
       }
     }
   }
@@ -250,22 +244,84 @@ export class GameScene extends Phaser.Scene {
     const mapH = this.mapData.height * ts;
 
     const theme = this.mapData.theme;
-    const particleTint: number[] = theme?.accentColor
-      ? [theme.accentColor, theme.groundColor, theme.wallColor]
-      : [0xa8e6cf, 0xdcedc1, 0xffd3b6];
 
-    this.add.particles(0, 0, 'icon_particle', {
-      x: { min: 0, max: mapW },
-      y: { min: 0, max: mapH },
-      lifespan: 6000,
-      speed: { min: 5, max: 18 },
-      angle: { min: 200, max: 250 },
-      scale: { start: 0.25, end: 0 },
-      alpha: { start: 0.35, end: 0 },
-      blendMode: 'ADD',
-      tint: particleTint,
-      frequency: 350,
-    }).setDepth(15);
+    const isFirstMap = this.mapData.key === 'atomMeadows';
+    if (isFirstMap) {
+      const particleTint: number[] = theme?.accentColor
+        ? [theme.accentColor, theme.groundColor, theme.wallColor]
+        : [0xa8e6cf, 0xdcedc1, 0xffd3b6];
+      this.add.particles(0, 0, 'icon_particle', {
+        x: { min: 0, max: mapW }, y: { min: 0, max: mapH },
+        lifespan: 6000, speed: { min: 5, max: 18 },
+        angle: { min: 200, max: 250 },
+        scale: { start: 0.25, end: 0 },
+        alpha: { start: 0.35, end: 0 },
+        blendMode: 'ADD',
+        tint: particleTint,
+        frequency: 350,
+      }).setDepth(15);
+    } else {
+      const particleType = theme?.particles ?? 'pollen';
+      let particleConfig: Phaser.Types.GameObjects.Particles.ParticleEmitterConfig;
+      switch (particleType) {
+        case 'leaves':
+          particleConfig = {
+            x: { min: 0, max: mapW }, y: -10,
+            lifespan: 8000, speed: { min: 10, max: 30 },
+            angle: { min: 200, max: 250 },
+            scale: { start: 0.3, end: 0 },
+            alpha: { start: 0.4, end: 0 },
+            tint: [0x8bc34a, 0x4caf50, 0xcddc39],
+            frequency: 400, blendMode: 'ADD',
+          };
+          break;
+        case 'wind':
+          particleConfig = {
+            x: -10, y: { min: 0, max: mapH },
+            lifespan: 3000, speed: { min: 40, max: 80 },
+            angle: { min: 0, max: 10 },
+            scale: { start: 0.2, end: 0 },
+            alpha: { start: 0.25, end: 0 },
+            tint: [0xb3e5fc, 0x81d4fa, 0xffffff],
+            frequency: 200, blendMode: 'ADD',
+          };
+          break;
+        case 'sparkles':
+          particleConfig = {
+            x: { min: 0, max: mapW }, y: { min: 0, max: mapH },
+            lifespan: 2000, speed: { min: 2, max: 8 },
+            angle: { min: 0, max: 360 },
+            scale: { start: 0.15, end: 0 },
+            alpha: { start: 0.6, end: 0 },
+            tint: [0xffeb3b, 0xfff176, 0xffffff],
+            frequency: 150, blendMode: 'ADD',
+          };
+          break;
+        case 'embers':
+          particleConfig = {
+            x: { min: 0, max: mapW }, y: { min: mapH * 0.5, max: mapH },
+            lifespan: 5000, speed: { min: 8, max: 25 },
+            angle: { min: 250, max: 290 },
+            scale: { start: 0.3, end: 0 },
+            alpha: { start: 0.7, end: 0 },
+            tint: [0xff5722, 0xff6f00, 0xff9800, 0xffeb3b],
+            frequency: 300, blendMode: 'ADD',
+          };
+          break;
+        default:
+          particleConfig = {
+            x: { min: 0, max: mapW }, y: { min: 0, max: mapH },
+            lifespan: 6000, speed: { min: 5, max: 18 },
+            angle: { min: 200, max: 250 },
+            scale: { start: 0.25, end: 0 },
+            alpha: { start: 0.35, end: 0 },
+            tint: [theme?.accentColor ?? 0xa8e6cf, theme?.groundColor ?? 0xdcedc1, theme?.wallColor ?? 0xffd3b6],
+            frequency: 350, blendMode: 'ADD',
+          };
+          break;
+      }
+      this.add.particles(0, 0, 'icon_particle', particleConfig).setDepth(15);
+    }
 
     for (const b of this.mapData.buildings) {
       const ex = b.tileX * ts + ts / 2;
@@ -324,30 +380,181 @@ export class GameScene extends Phaser.Scene {
       }
     }
 
-    const flowerEmojis = ['🌿', '🌸', '🌼', '🍀', '🌱'];
-    const flowerPositions: { x: number, y: number }[] = [];
-    for (let i = 0; i < 25; i++) {
-      const fx = Phaser.Math.Between(2, this.mapData.width - 3) * ts + Phaser.Math.Between(-10, 10);
-      const fy = Phaser.Math.Between(2, this.mapData.height - 3) * ts + Phaser.Math.Between(-10, 10);
-      let blocked = false;
-      for (const b of this.mapData.buildings) {
-        for (const [bx, by] of b.tiles) {
-          if (Math.abs(fx - bx * ts) < ts && Math.abs(fy - by * ts) < ts) { blocked = true; break; }
+    if (this.mapData.key === 'atomMeadows') {
+      const flowerEmojis = ['🌿', '🌸', '🌼', '🍀', '🌱'];
+      const flowerPositions: { x: number, y: number }[] = [];
+      for (let i = 0; i < 25; i++) {
+        const fx = Phaser.Math.Between(2, this.mapData.width - 3) * ts + Phaser.Math.Between(-10, 10);
+        const fy = Phaser.Math.Between(2, this.mapData.height - 3) * ts + Phaser.Math.Between(-10, 10);
+        let blocked = false;
+        for (const b of this.mapData.buildings) {
+          for (const [bx, by] of b.tiles) {
+            if (Math.abs(fx - bx * ts) < ts && Math.abs(fy - by * ts) < ts) { blocked = true; break; }
+          }
+          if (blocked) break;
         }
-        if (blocked) break;
+        if (!blocked) flowerPositions.push({ x: fx, y: fy });
       }
-      if (!blocked) flowerPositions.push({ x: fx, y: fy });
-    }
-    for (const fp of flowerPositions) {
-      const emoji = flowerEmojis[Phaser.Math.Between(0, flowerEmojis.length - 1)];
-      const flower = this.add.text(fp.x, fp.y, emoji, { fontSize: '14px' }).setOrigin(0.5).setDepth(2).setAlpha(0.7);
-      this.tweens.add({
-        targets: flower,
-        y: flower.y - 2,
-        angle: Phaser.Math.Between(-5, 5),
-        duration: 2000 + Phaser.Math.Between(0, 1000),
-        yoyo: true, repeat: -1, ease: 'Sine.easeInOut'
-      });
+      for (const fp of flowerPositions) {
+        const emoji = flowerEmojis[Phaser.Math.Between(0, flowerEmojis.length - 1)];
+        const flower = this.add.text(fp.x, fp.y, emoji, { fontSize: '14px' }).setOrigin(0.5).setDepth(2).setAlpha(0.7);
+        this.tweens.add({
+          targets: flower,
+          y: flower.y - 2,
+          angle: Phaser.Math.Between(-5, 5),
+          duration: 2000 + Phaser.Math.Between(0, 1000),
+          yoyo: true, repeat: -1, ease: 'Sine.easeInOut',
+        });
+      }
+    } else if (this.mapData.decorations) {
+      for (const decor of this.mapData.decorations) {
+        const dx = decor.tileX * ts + ts / 2;
+        const dy = decor.tileY * ts + ts / 2;
+        switch (decor.type) {
+          case 'flower': {
+            const colors = [0xe91e63, 0xff9800, 0xffeb3b, 0x8bc34a, 0x03a9f4];
+            const g = this.add.graphics().setDepth(2);
+            const c = colors[Phaser.Math.Between(0, colors.length - 1)];
+            g.fillStyle(0x4caf50, 0.7);
+            g.fillRect(dx - 1, dy, 2, 6);
+            g.fillStyle(c, 0.8);
+            g.fillCircle(dx, dy - 2, 4);
+            break;
+          }
+          case 'grass': {
+            const g = this.add.graphics().setDepth(2);
+            g.fillStyle(0x4caf50, 0.5);
+            for (let i = -1; i <= 1; i++) {
+              g.fillRect(dx + i * 3, dy - 4 + Math.abs(i) * 2, 2, 6);
+            }
+            break;
+          }
+          case 'bin': {
+            const binColors: Record<string, number> = {
+              yellow: 0xf1c40f, green: 0x00b894, grey: 0xb2bec3, blue: 0x0984e3, brown: 0x6d4c41,
+            };
+            const wasteByColor: Record<string, string> = {
+              yellow: 'plastic_waste', green: 'glass_waste', grey: 'metal_waste',
+              blue: 'paper_waste', brown: 'organic_waste',
+            };
+            const color = decor.color || 'green';
+            const bodyColor = binColors[color] || 0x4a7c59;
+            const g = this.add.graphics().setDepth(2);
+            g.fillStyle(bodyColor, 0.9);
+            g.fillRoundedRect(dx - 9, dy - 7, 18, 16, 3);
+            g.fillStyle(0xffffff, 0.3);
+            g.fillRoundedRect(dx - 11, dy - 11, 22, 5, 2);
+            g.fillStyle(0x000000, 0.15);
+            g.fillCircle(dx, dy, 6);
+            const binPrompt = this.add.text(0, 0, '[E] Sort', {
+              fontFamily: '"Inter"', fontSize: '10px', fontStyle: 'bold', color: '#00cec9',
+            }).setOrigin(0.5);
+            const promptContainer = this.add.container(dx, dy - 30, [binPrompt]);
+            promptContainer.setDepth(20).setAlpha(0).setScale(0.8);
+            this.binZones.push({ x: dx, y: dy, wasteType: wasteByColor[color] || 'plastic_waste', color, prompt: promptContainer });
+            break;
+          }
+          case 'tree': {
+            const g = this.add.graphics().setDepth(2);
+            g.fillStyle(0x5d4037, 0.9);
+            g.fillRect(dx - 3, dy - 4, 6, 14);
+            const canopy = this.add.circle(dx, dy - 10, 14, 0x388e3c, 0.65).setDepth(2);
+            this.tweens.add({
+              targets: canopy, scaleX: 1.05, scaleY: 1.05,
+              duration: 3000 + Math.random() * 2000, yoyo: true, repeat: -1, ease: 'Sine.easeInOut',
+            });
+            break;
+          }
+          case 'lamp': {
+            const g = this.add.graphics().setDepth(2);
+            g.fillStyle(0x616161, 0.9);
+            g.fillRect(dx - 2, dy - 14, 4, 18);
+            g.fillStyle(0xffd54f, 0.7);
+            g.fillCircle(dx, dy - 16, 5);
+            const glow = this.add.circle(dx, dy - 16, 14, 0xffd54f, 0.1).setDepth(1);
+            this.tweens.add({
+              targets: glow, alpha: 0.04, scaleX: 1.3, scaleY: 1.3,
+              duration: 1500, yoyo: true, repeat: -1, ease: 'Sine.easeInOut',
+            });
+            break;
+          }
+          case 'sign': {
+            const g = this.add.graphics().setDepth(2);
+            g.fillStyle(0x795548, 0.9);
+            g.fillRect(dx - 1, dy - 12, 3, 16);
+            g.fillStyle(0x5d4037, 0.85);
+            g.fillRoundedRect(dx - 12, dy - 22, 24, 12, 3);
+            g.lineStyle(1, 0x8d6e63, 0.6);
+            g.strokeRoundedRect(dx - 12, dy - 22, 24, 12, 3);
+            break;
+          }
+          case 'barrel': {
+            const g = this.add.graphics().setDepth(2);
+            g.fillStyle(0x78909c, 0.85);
+            g.fillRoundedRect(dx - 8, dy - 8, 16, 16, 3);
+            g.fillStyle(0x90a4ae, 0.6);
+            g.fillRect(dx - 9, dy - 3, 18, 3);
+            g.fillRect(dx - 9, dy + 2, 18, 3);
+            break;
+          }
+          case 'pile': {
+            const g = this.add.graphics().setDepth(2);
+            const pColors = [0x795548, 0x6d4c41, 0x5d4037, 0x8d6e63];
+            for (let i = 0; i < 6; i++) {
+              g.fillStyle(pColors[Phaser.Math.Between(0, pColors.length - 1)], 0.7);
+              g.fillCircle(dx + Phaser.Math.Between(-10, 10), dy + Phaser.Math.Between(-6, 6), Phaser.Math.Between(2, 5));
+            }
+            break;
+          }
+          case 'conveyor': {
+            const g = this.add.graphics().setDepth(2);
+            g.fillStyle(0x455a64, 0.85);
+            g.fillRect(dx - 14, dy - 6, 28, 12);
+            for (let i = 0; i < 6; i++) {
+              g.fillStyle(i % 2 === 0 ? 0x78909c : 0x546e7a, 0.9);
+              g.fillRect(dx - 12 + i * 5, dy - 4, 3, 8);
+            }
+            this.tweens.add({
+              targets: g, x: 2, duration: 400, repeat: -1,
+              onRepeat: () => { g.x = 0; },
+            });
+            break;
+          }
+          case 'solar_panel': {
+            const g = this.add.graphics().setDepth(2);
+            g.fillStyle(0x1565c0, 0.85);
+            g.fillRect(dx - 10, dy - 6, 20, 12);
+            g.lineStyle(1, 0x42a5f5, 0.5);
+            g.strokeRect(dx - 10, dy - 6, 20, 12);
+            g.fillStyle(0x0d47a1, 0.4);
+            g.fillRect(dx - 8, dy - 2, 5, 4);
+            g.fillRect(dx + 3, dy - 2, 5, 4);
+            break;
+          }
+          case 'prism': {
+            const g = this.add.graphics().setDepth(2);
+            g.fillStyle(0xce93d8, 0.7);
+            g.fillTriangle(dx, dy - 10, dx - 8, dy + 6, dx + 8, dy + 6);
+            g.lineStyle(1, 0xe1bee7, 0.6);
+            g.strokeTriangle(dx, dy - 10, dx - 8, dy + 6, dx + 8, dy + 6);
+            break;
+          }
+          case 'magnet': {
+            const g = this.add.graphics().setDepth(2);
+            g.fillStyle(0xd32f2f, 0.85);
+            g.fillRect(dx - 10, dy - 6, 6, 14);
+            g.fillRect(dx + 4, dy - 6, 6, 14);
+            g.fillStyle(0xb71c1c, 0.85);
+            g.fillRect(dx - 4, dy - 6, 8, 6);
+            break;
+          }
+          default: {
+            const dot = this.add.text(dx, dy, '•', { fontSize: '12px', color: '#ffffff' }).setOrigin(0.5).setDepth(2).setAlpha(0.5);
+            this.tweens.add({ targets: dot, alpha: 0.2, duration: 1000, yoyo: true, repeat: -1 });
+            break;
+          }
+        }
+      }
     }
 
     const portals = this.mapData.portals;
@@ -420,9 +627,10 @@ export class GameScene extends Phaser.Scene {
       const dist = Phaser.Math.Distance.Between(this.player.x, this.player.y, node.x, node.y);
       if (dist < 50) {
         const result = node.gather(activeTool);
-        if (result === 'wrong_tool') {
-          const required = (node.resourceType === 'water' || node.resourceType === 'air') ? 'Flask' : 'Pickaxe';
-          const t = this.add.text(node.x, node.y - 20, `Equip ${required}! [T]`, {
+        if (result === 'pickaxe' || result === 'flask' || result === 'none') {
+          const labels: Record<string, string> = { pickaxe: 'Pickaxe', flask: 'Flask', none: 'your hands' };
+          const msg = result === 'none' ? 'Use your hands!' : `Equip ${labels[result]}! [T]`;
+          const t = this.add.text(node.x, node.y - 20, msg, {
             fontFamily: '"Inter"', fontSize: '11px', color: '#ff7675', fontStyle: 'bold'
           }).setOrigin(0.5).setDepth(40);
           this.tweens.add({
@@ -431,12 +639,31 @@ export class GameScene extends Phaser.Scene {
           this.cameras.main.shake(120, 0.003);
         } else if (result) {
           gameStore.addToInventory(result, 1);
-          const t = this.add.text(node.x, node.y - 20, `+1 ${node.resourceType}`, {
-            fontFamily: '"Inter"', fontSize: '12px', color: '#00cec9', fontStyle: 'bold'
-          }).setOrigin(0.5).setDepth(40);
-          this.tweens.add({
-            targets: t, y: t.y - 30, alpha: 0, duration: 1500, onComplete: () => t.destroy()
-          });
+          if (this.mapData.key === 'recyclingFields') {
+            const names: Record<string, string> = {
+              plastic_pile: 'Plastic waste', glass_pile: 'Glass waste',
+              metal_pile: 'Metal waste', paper_pile: 'Paper waste', compost_heap: 'Organic waste',
+            };
+            const binColors: Record<string, string> = {
+              plastic_pile: 'yellow', glass_pile: 'green',
+              metal_pile: 'grey', paper_pile: 'blue', compost_heap: 'brown',
+            };
+            const type = node.resourceType;
+            const name = names[type] || type;
+            const t = this.add.text(node.x, node.y - 25, `Found ${name}!`, {
+              fontFamily: '"Inter"', fontSize: '11px', color: '#00cec9', fontStyle: 'bold',
+            }).setOrigin(0.5).setDepth(40);
+            this.tweens.add({
+              targets: t, y: t.y - 35, alpha: 0, duration: 1500, onComplete: () => t.destroy()
+            });
+          } else {
+            const t = this.add.text(node.x, node.y - 20, `+1 ${node.resourceType}`, {
+              fontFamily: '"Inter"', fontSize: '12px', color: '#00cec9', fontStyle: 'bold'
+            }).setOrigin(0.5).setDepth(40);
+            this.tweens.add({
+              targets: t, y: t.y - 30, alpha: 0, duration: 1500, onComplete: () => t.destroy()
+            });
+          }
           this.sound.play('sfx_coin', { volume: 0.3 });
         }
         interactedNode = true;
@@ -446,6 +673,32 @@ export class GameScene extends Phaser.Scene {
 
     if (interactedNode) return;
 
+    for (const zone of this.binZones) {
+      const dist = Phaser.Math.Distance.Between(this.player.x, this.player.y, zone.x, zone.y);
+      if (dist < 50) {
+        const names: Record<string, string> = {
+          plastic_waste: 'Plastic waste', glass_waste: 'Glass waste',
+          metal_waste: 'Metal waste', paper_waste: 'Paper waste', organic_waste: 'Organic waste',
+        };
+        const itemName = names[zone.wasteType] || zone.wasteType;
+        if (gameStore.hasItem(zone.wasteType, 1)) {
+          gameStore.removeFromInventory(zone.wasteType, 1);
+          gameStore.addSortingScore(1);
+          const t = this.add.text(zone.x, zone.y - 25, `${itemName} sorted!`, {
+            fontFamily: '"Inter"', fontSize: '11px', color: '#00cec9', fontStyle: 'bold',
+          }).setOrigin(0.5).setDepth(40);
+          this.tweens.add({ targets: t, y: t.y - 35, alpha: 0, duration: 1500, onComplete: () => t.destroy() });
+          this.sound.play('sfx_coin', { volume: 0.3 });
+        } else {
+          const t = this.add.text(zone.x, zone.y - 25, `No ${itemName} to sort!`, {
+            fontFamily: '"Inter"', fontSize: '10px', color: '#ff7675', fontStyle: 'bold',
+          }).setOrigin(0.5).setDepth(40);
+          this.tweens.add({ targets: t, y: t.y - 30, alpha: 0, duration: 1500, onComplete: () => t.destroy() });
+        }
+        return;
+      }
+    }
+
     if (closestNpc && closestNpc.npcId) {
       const data = allNpcs[closestNpc.npcId];
       if (!data) return;
@@ -454,34 +707,71 @@ export class GameScene extends Phaser.Scene {
         this.dialogueBox.show(data.name, data.dialogue.default, data.spriteColor, undefined, () => {
           SceneTransition.fadeOutIn(this, 'ShopInteriorScene');
         });
-      } else if (data.id === 'professor_knowitall' || data.id === 'eco_educator') {
-        this.dialogueBox.show(data.name, data.dialogue.default, data.spriteColor, undefined, () => {
-          SceneTransition.fadeOutIn(this, 'LibraryInteriorScene');
-        });
-      } else if (data.id === 'lab_assistant') {
-        this.dialogueBox.show(data.name, data.dialogue.default, data.spriteColor, undefined, () => {
-          SceneTransition.fadeOutIn(this, 'LabInteriorScene');
-        });
-      } else {
-        if (data.questId && gameStore.isQuestActive(data.questId)) {
-          const quest = this.questSystem.getQuest(data.questId);
-          if (quest && (quest.objectiveType === 'craft' || quest.objectiveType === 'collect')) {
-            const targetItemId = quest.targetItemId;
-            if (targetItemId && gameStore.hasItem(targetItemId, quest.targetAmount || 1)) {
-              gameStore.removeFromInventory(targetItemId, quest.targetAmount || 1);
-              this.questSystem.completeQuest(data.questId);
-            }
+        return;
+      }
+
+      const buildingSceneKey = data.id === 'lab_assistant' ? 'LabInteriorScene'
+        : (data.id === 'professor_knowitall' || data.id === 'eco_educator') ? 'LibraryInteriorScene'
+        : null;
+
+      if (data.questId && gameStore.isQuestActive(data.questId)) {
+        const quest = this.questSystem.getQuest(data.questId);
+        if (quest && (quest.objectiveType === 'craft' || quest.objectiveType === 'collect')) {
+          const targetItemId = quest.targetItemId;
+          if (targetItemId && gameStore.hasItem(targetItemId, quest.targetAmount || 1)) {
+            gameStore.removeFromInventory(targetItemId, quest.targetAmount || 1);
+            this.questSystem.completeQuest(data.questId);
+            if (data.questId === 'waste_crisis') this.clearRecyclingNodes();
+          }
+        } else if (quest && quest.objectiveType === 'sort') {
+          if (gameStore.getSortingScore() >= (quest.targetAmount || 1)) {
+            gameStore.resetSortingScore();
+            this.questSystem.completeQuest(data.questId);
+            this.clearRecyclingNodes();
           }
         }
+      }
 
-        const lines = this.questSystem.getNpcDialogue(data);
-        let questToOffer: string | undefined;
-        if (data.questId && this.questSystem.canAcceptQuest(data.questId)) {
-          questToOffer = data.questId;
+      const lines = this.questSystem.getNpcDialogue(data);
+      let questToOffer: string | undefined;
+      if (data.questId && this.questSystem.canAcceptQuest(data.questId)) {
+        questToOffer = data.questId;
+      }
+
+      if (data.questId && !questToOffer && !gameStore.isQuestActive(data.questId) && !gameStore.isQuestCompleted(data.questId)) {
+        const missing = this.questSystem.getMissingPrerequisite(data.questId);
+        if (missing) {
+          const prereqLines = [`I can't help you with that yet.`, `First, you need to complete: "${missing}".`, `Come back after that's done!`];
+          this.dialogueBox.show(data.name, prereqLines, data.spriteColor, undefined, buildingSceneKey ? (() => {
+            SceneTransition.fadeOutIn(this, buildingSceneKey);
+          }) : undefined);
+          return;
         }
+      }
+
+      if (buildingSceneKey) {
+        this.dialogueBox.show(data.name, lines, data.spriteColor, questToOffer, () => {
+          SceneTransition.fadeOutIn(this, buildingSceneKey);
+        });
+      } else {
         this.dialogueBox.show(data.name, lines, data.spriteColor, questToOffer);
       }
     }
+  }
+
+  private clearRecyclingNodes() {
+    if (this.mapData.key !== 'recyclingFields') return;
+    for (const child of this.resourceNodes.getChildren()) {
+      const node = child as ResourceNode;
+      if (node.active) {
+        node.active = false;
+        node.destroy();
+      }
+    }
+    for (const zone of this.binZones) {
+      zone.prompt.destroy();
+    }
+    this.binZones = [];
   }
 
   private buildMap() {
@@ -504,6 +794,18 @@ export class GameScene extends Phaser.Scene {
         }
 
         const tile = this.add.image(x * ts + ts / 2, y * ts + ts / 2, texture);
+
+        if (this.mapData.key !== 'atomMeadows') {
+          const theme = this.mapData.theme;
+          if (tileVal === 0 || (tileVal >= 2 && tileVal <= 4)) {
+            tile.setTint(theme.groundColor);
+          } else if (tileVal === 1) {
+            tile.setTint(theme.wallColor);
+          } else if (tileVal === 5) {
+            const c = Phaser.Display.Color.ValueToColor(theme.accentColor);
+            tile.setTint(Phaser.Display.Color.GetColor(c.red * 0.6, c.green * 0.6, c.blue * 0.6));
+          }
+        }
 
         if (tileVal === 1) {
           const body = this.buildings.create(x * ts + ts / 2, y * ts + ts / 2, texture);

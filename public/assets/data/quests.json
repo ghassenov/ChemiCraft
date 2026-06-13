@@ -37,7 +37,7 @@
   },
   "carbon_capture_1": {
     "id": "carbon_capture_1", "mapOrigin": "atomMeadows",
-    "title": "Carbon Capture", "isMainQuest": true, "npcId": "mayor_molecule",
+    "title": "Carbon Capture", "isMainQuest": true, "npcId": "carbon_researcher",
     "description": "Too much CO₂ in the air! Craft CO₂ first, then show the Mayor the molecule so we can study how to capture it.",
     "objectiveType": "craft", "target": "CO₂", "targetItemId": "molecule_CO2", "targetAmount": 1,
     "rewardCoins": 75, "rewardSkill": { "equation_balancing": 1 }, "rewardItems": [],
@@ -47,8 +47,8 @@
   "waste_crisis": {
     "id": "waste_crisis", "mapOrigin": "recyclingFields",
     "title": "Waste Crisis", "isMainQuest": true, "npcId": "waste_manager",
-    "description": "The Recycling Fields are overflowing with unsorted waste! Sort at least 15 items correctly in the sorting facility.",
-    "objectiveType": "sort", "target": "sorting_score", "targetItemId": "", "targetAmount": 15,
+    "description": "The Recycling Fields are overflowing with unsorted waste! Sort at least 3 items correctly in the sorting facility.",
+    "objectiveType": "sort", "target": "sorting_score", "targetItemId": "", "targetAmount": 3,
     "rewardCoins": 75, "rewardSkill": { "recycling_mastery": 1 }, "rewardItems": [],
     "prerequisiteQuests": [],
     "hints": ["Plastic goes in the yellow bin.", "Glass is green, metal is silver.", "Check the item description if you're unsure!"]
