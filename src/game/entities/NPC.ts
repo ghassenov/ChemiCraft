@@ -10,7 +10,7 @@ export class NPC extends Phaser.Physics.Arcade.Sprite {
   private startY: number;
   private wanderTimer: Phaser.Time.TimerEvent | null = null;
   private isWandering = false;
-  private indicator: Phaser.GameObjects.Sprite | null = null;
+  private nameLabel: Phaser.GameObjects.Text;
 
   constructor(scene: Phaser.Scene, x: number, y: number, npcId: string, name: string, spriteKey: string, questId: string | null) {
     super(scene, x, y, spriteKey);
@@ -27,8 +27,15 @@ export class NPC extends Phaser.Physics.Arcade.Sprite {
     this.setOffset(4, 4);
     this.setDepth(9);
 
+    this.nameLabel = scene.add.text(x, y - 28, name, {
+      fontFamily: '"Inter", sans-serif',
+      fontSize: '11px',
+      color: '#ffffff',
+      backgroundColor: '#00000088',
+      padding: { x: 4, y: 2 },
+    }).setOrigin(0.5).setDepth(20);
+
     this.createPrompt(scene);
-    this.createIndicator(scene);
     this.startWanderLogic(scene);
   }
 
@@ -42,22 +49,6 @@ export class NPC extends Phaser.Physics.Arcade.Sprite {
     }).setOrigin(0.5);
     this.prompt = scene.add.container(this.x, this.y - 30, [bg, text]);
     this.prompt.setDepth(20).setAlpha(0).setScale(0.8);
-  }
-
-  private createIndicator(scene: Phaser.Scene) {
-    if (this.questId) {
-      this.indicator = scene.add.sprite(this.x, this.y - 24, 'icon_particle');
-      this.indicator.setTint(0xf1c40f);
-      this.indicator.setDepth(20);
-      scene.tweens.add({
-        targets: this.indicator,
-        y: this.y - 28,
-        duration: 1000,
-        yoyo: true,
-        repeat: -1,
-        ease: 'Sine.easeInOut'
-      });
-    }
   }
 
   private startWanderLogic(scene: Phaser.Scene) {
@@ -101,12 +92,9 @@ export class NPC extends Phaser.Physics.Arcade.Sprite {
   showPrompt() {
     if (this._isPlayerNear) return;
     this._isPlayerNear = true;
-    this.setVelocity(0, 0); // Stop moving when player approaches
+    this.setVelocity(0, 0);
     if (this.prompt) {
       this.scene.tweens.add({ targets: this.prompt, alpha: 1, scale: 1, duration: 200, ease: 'Back.easeOut' });
-    }
-    if (this.indicator) {
-      this.scene.tweens.add({ targets: this.indicator, alpha: 0, duration: 200 });
     }
   }
 
@@ -116,17 +104,12 @@ export class NPC extends Phaser.Physics.Arcade.Sprite {
     if (this.prompt) {
       this.scene.tweens.add({ targets: this.prompt, alpha: 0, scale: 0.8, duration: 150 });
     }
-    if (this.indicator) {
-      this.scene.tweens.add({ targets: this.indicator, alpha: 1, duration: 200 });
-    }
   }
 
   updatePromptPosition() {
+    this.nameLabel.setPosition(this.x, this.y - 28);
     if (this.prompt) {
       this.prompt.setPosition(this.x, this.y - 30);
-    }
-    if (this.indicator) {
-      this.indicator.setPosition(this.x, this.y - 24);
     }
   }
 
@@ -141,8 +124,8 @@ export class NPC extends Phaser.Physics.Arcade.Sprite {
   }
 
   destroy(fromScene?: boolean) {
+    this.nameLabel?.destroy();
     this.prompt?.destroy();
-    this.indicator?.destroy();
     this.wanderTimer?.destroy();
     super.destroy(fromScene);
   }

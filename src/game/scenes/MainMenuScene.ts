@@ -50,8 +50,14 @@ export class MainMenuScene extends Phaser.Scene {
     avatarGlow.fillCircle(width / 2, avatarY, 50);
 
     const btnY = height * 0.62;
-    this.createMenuButton(width / 2, btnY, 'Start Adventure', () => this.startGame());
-    this.createMenuButton(width / 2, btnY + 55, 'Controls', () => this.showControls());
+    if (gameStore.hasSave()) {
+      this.createMenuButton(width / 2, btnY, 'Continue', () => this.continueGame());
+      this.createMenuButton(width / 2, btnY + 55, 'New Game', () => this.newGame());
+      this.createMenuButton(width / 2, btnY + 110, 'Controls', () => this.showControls());
+    } else {
+      this.createMenuButton(width / 2, btnY, 'Start Adventure', () => this.newGame());
+      this.createMenuButton(width / 2, btnY + 55, 'Controls', () => this.showControls());
+    }
 
     this.add.text(width - 10, height - 10, 'v1.0.0 MVP', {
       fontFamily: '"Inter", sans-serif', fontSize: '10px', color: '#5a4a3a',
@@ -95,7 +101,14 @@ export class MainMenuScene extends Phaser.Scene {
     this.tweens.add({ targets: text, y: y - 10, alpha: 0.45, duration: 2000, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
   }
 
-  private startGame() {
+  private continueGame() {
+    gameStore.loadSave();
+    this.cameras.main.fadeOut(500, 0, 0, 0);
+    this.time.delayedCall(500, () => { this.scene.start('GameScene'); });
+  }
+
+  private newGame() {
+    gameStore.newGame();
     this.cameras.main.fadeOut(500, 0, 0, 0);
     this.time.delayedCall(500, () => { this.scene.start('GameScene'); });
   }

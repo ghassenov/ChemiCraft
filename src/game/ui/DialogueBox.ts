@@ -25,32 +25,40 @@ export class DialogueBox {
   private showQuestPrompt = false;
   private questBtns: Phaser.GameObjects.Container[] = [];
   private portraitInitial: Phaser.GameObjects.Text | null = null;
+  private boxCenterY: number;
 
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
     const { width, height } = scene.cameras.main;
-    const boxY = height - 90;
+    const boxY = height - 110;
+    this.boxCenterY = boxY;
+
+    // Dialogue box spans the game area left of the right-side HUD panels
+    const panelLeftEdge = (width - 150) - 115 + 10;
+    const boxLeft = 35;
+    const boxWidth = panelLeftEdge - boxLeft - 100;
+    const boxCenterX = boxLeft + boxWidth / 2;
 
     // Background
-    const bg = scene.add.image(width / 2, boxY, 'dialogue_bg')
-      .setDisplaySize(width - 40, 150).setScrollFactor(0);
+    const bg = scene.add.image(boxCenterX, boxY, 'dialogue_bg')
+      .setDisplaySize(boxWidth, 150).setScrollFactor(0);
 
     // Portrait circle
     this.portrait = scene.add.graphics().setScrollFactor(0);
 
     // NPC name
-    this.nameText = scene.add.text(120, boxY - 50, '', {
+    this.nameText = scene.add.text(boxLeft + 100, boxY - 50, '', {
       fontFamily: '"Press Start 2P", monospace', fontSize: '11px', color: '#fdcb6e',
     }).setScrollFactor(0);
 
     // Body text
-    this.bodyText = scene.add.text(120, boxY - 25, '', {
+    this.bodyText = scene.add.text(boxLeft + 100, boxY - 25, '', {
       fontFamily: '"Inter", sans-serif', fontSize: '14px', color: '#dfe6e9',
-      wordWrap: { width: width - 200 }, lineSpacing: 6,
+      wordWrap: { width: boxWidth - 130 }, lineSpacing: 6,
     }).setScrollFactor(0);
 
     // Continue prompt
-    this.continueText = scene.add.text(width - 60, boxY + 45, '▼', {
+    this.continueText = scene.add.text(boxCenterX + boxWidth / 2 - 20, boxY + 45, '▼', {
       fontFamily: '"Inter", sans-serif', fontSize: '16px', color: '#6c5ce7',
     }).setScrollFactor(0).setOrigin(0.5);
 
@@ -159,9 +167,12 @@ export class DialogueBox {
   private showQuestAccept() {
     this.showQuestPrompt = true;
     const { width, height } = this.scene.cameras.main;
-    const y = height - 30;
+    const panelLeftEdge = (width - 150) - 115 + 10;
+    const boxWidth = panelLeftEdge - 35 - 100;
+    const boxCenterX = 35 + boxWidth / 2;
+    const y = this.boxCenterY + 45;
 
-    const acceptBtn = this.createDialogueButton(width / 2 - 80, y, 'Accept Quest', 0x00b894, () => {
+    const acceptBtn = this.createDialogueButton(boxCenterX - 80, y, 'Accept Quest', 0x00b894, () => {
       if (this.questId) {
         gameStore.acceptQuest(this.questId);
         this.scene.events.emit(GameEvents.QuestAccepted, this.questId);
@@ -170,7 +181,7 @@ export class DialogueBox {
       this.hide();
     });
 
-    const declineBtn = this.createDialogueButton(width / 2 + 80, y, 'Not Now', 0x636e72, () => {
+    const declineBtn = this.createDialogueButton(boxCenterX + 80, y, 'Not Now', 0x636e72, () => {
       this.clearQuestBtns();
       this.hide();
     });

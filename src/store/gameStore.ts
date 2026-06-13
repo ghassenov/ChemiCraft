@@ -53,15 +53,30 @@ class GameStore {
       isDialogueOpen: false,
       isPaused: false,
     };
-    this.init();
   }
 
-  private init() {
+  hasSave(): boolean {
+    return localStorage.getItem(this.SAVE_KEY) !== null;
+  }
+
+  loadSave() {
     const saved = this.loadFromStorage();
     if (saved) {
       this.state.playerData = saved;
       this.notify();
     }
+  }
+
+  newGame() {
+    this.state.playerData = { ...DEFAULT_PLAYER_DATA };
+    localStorage.removeItem(this.SAVE_KEY);
+    this.notify();
+  }
+
+  setUsername(name: string) {
+    this.state.playerData.username = name;
+    this.notify();
+    this.autoSave();
   }
 
   getState(): GameState {
