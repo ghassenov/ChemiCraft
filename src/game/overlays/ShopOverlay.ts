@@ -4,7 +4,7 @@ import { ItemData } from '../data/types';
 
 export function openShop(scene: Phaser.Scene) {
   const items = scene.cache.json.get('items') as Record<string, ItemData>;
-  const shopItems = Object.values(items).filter(i => i.price && i.price > 0);
+  const shopItems = Object.values(items).filter(i => i.price && i.price > 0 && i.type !== 'molecule');
 
   const { width, height } = scene.cameras.main;
   const overlay = scene.add.rectangle(0, 0, width, height, 0x000, 0.8).setOrigin(0).setDepth(50);

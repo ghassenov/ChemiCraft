@@ -72,8 +72,8 @@
     "questId": "know_your_materials", "mapOrigin": "recyclingFields",
     "dialogue": {
       "default": ["Education is the first step to sustainability!", "Most people can't tell plastic types apart.", "But a chemist like you? You should know your PET from your HDPE!", "Let me test you on material identification."],
-      "questActive": ["Try to get 10 perfect identifications in a row!", "Remember: PET plastic is clear and crinkly (water bottles).", "HDPE is stiff and milky (milk jugs, shampoo bottles)."],
-      "questComplete": ["100% accuracy! You're a true materials expert!", "Proper sorting increases recycling efficiency by up to 40%.", "Share this knowledge — it makes a real difference!"]
+      "questActive": ["Did you visit the Materials Recycling Center?", "Study the lessons there and earn your Materials Expert Certificate!", "Come show me the certificate once you have it!"],
+      "questComplete": ["A Materials Expert Certificate! You're a true recycling champion!", "Proper sorting increases recycling efficiency by up to 40%.", "Share this knowledge — it makes a real difference!"]
     }
   },
   "climate_scientist": {
@@ -155,6 +155,15 @@
       "default": ["Shhh... do you feel it? The invisible force around us?", "I'm Lorena, and I see the fields that others cannot.", "Iron filings reveal the hidden beauty of magnetic fields.", "Let me show you how to make field art..."],
       "questActive": ["Place the iron filings around the magnets in the studio.", "Watch how they arrange themselves along the field lines!", "The patterns are real — this is actual physics, not art!"],
       "questComplete": ["*gasps with delight* The patterns are perfect!", "Faraday first visualized magnetic fields this way in the 1800s!", "His field line concept is still used in physics today."]
+    }
+  },
+  "carbon_researcher": {
+    "id": "carbon_researcher", "name": "Dr. Carbone", "spriteColor": "#26a69a",
+    "questId": "carbon_capture_1", "mapOrigin": "atomMeadows",
+    "dialogue": {
+      "default": ["Hello there, young scientist!", "I'm Dr. Carbone, studying atmospheric carbon levels.", "I've noticed a worrying increase in CO₂ around Atom Meadows.", "Could you help me understand how to capture it?"],
+      "questActive": ["CO₂ is carbon dioxide — one carbon atom and two oxygen atoms.", "First, craft CO₂ in the lab using C + O + O.", "Then bring it to me so we can study its properties!"],
+      "questComplete": ["Fascinating! CO₂ captured and analyzed!", "This linear molecule is a major greenhouse gas.", "Understanding its structure is the first step to solving climate change!", "Here's your reward — keep up the great science!"]
     }
   },
   "core_guardian": {

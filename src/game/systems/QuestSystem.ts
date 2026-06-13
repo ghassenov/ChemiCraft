@@ -53,11 +53,9 @@ export class QuestSystem {
     const quest = this.quests[id];
     if (!quest) return;
     console.log(`Quest accepted: ${quest.title}`);
-    this.scene.events.emit(GameEvents.Notification, {
-      title: 'Quest Accepted!',
-      message: quest.title,
-      icon: '📜',
-    });
+    const data = { title: 'Quest Accepted!', message: quest.title, icon: '📜' };
+    this.scene.events.emit(GameEvents.Notification, data);
+    this.scene.game.events.emit(GameEvents.Notification, data);
   }
 
   // Note: Craft quests are now completed manually by talking to the NPC with the item in inventory
@@ -80,11 +78,9 @@ export class QuestSystem {
     try { this.scene.sound.play('sfx_coin', { volume: 0.5 }); } catch (_) {}
 
     this.scene.events.emit(GameEvents.QuestCompleted, id);
-    this.scene.events.emit(GameEvents.Notification, {
-      title: 'Quest Complete!',
-      message: `${quest.title} — +${quest.rewardCoins} coins`,
-      icon: '✅',
-    });
+    const notifData = { title: 'Quest Complete!', message: `${quest.title} — +${quest.rewardCoins} coins`, icon: '✅' };
+    this.scene.events.emit(GameEvents.Notification, notifData);
+    this.scene.game.events.emit(GameEvents.Notification, notifData);
 
     console.log(`Quest completed: ${quest.title}`);
   }
@@ -100,5 +96,18 @@ export class QuestSystem {
       return npcData.dialogue.questActive || npcData.dialogue.default;
     }
     return npcData.dialogue.default;
+  }
+
+  /** Get the name of the unmet prerequisite quest, if any */
+  getMissingPrerequisite(questId: string): string | null {
+    const quest = this.quests[questId];
+    if (!quest) return null;
+    for (const pq of quest.prerequisiteQuests) {
+      if (!gameStore.isQuestCompleted(pq)) {
+        const pqQuest = this.quests[pq];
+        return pqQuest ? pqQuest.title : pq;
+      }
+    }
+    return null;
   }
 }

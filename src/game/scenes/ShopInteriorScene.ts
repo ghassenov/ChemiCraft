@@ -4,6 +4,7 @@ import { NPC } from '../entities/NPC';
 import { DialogueBox } from '../ui/DialogueBox';
 import { SceneTransition } from '../systems/SceneTransition';
 import { gameStore } from '../../store/gameStore';
+import { MAP_SCENE_KEYS } from '../data/mapSceneKeys';
 import { openShop } from '../overlays/ShopOverlay';
 import { addHelpButton } from '../overlays/HelpOverlay';
 import { ItemData } from '../data/types';
@@ -95,7 +96,7 @@ export class ShopInteriorScene extends Phaser.Scene {
         this.searchCrate();
       }
       this.time.delayedCall(500, () => {
-        SceneTransition.fadeOutIn(this, 'GameScene');
+        SceneTransition.fadeOutIn(this, MAP_SCENE_KEYS[gameStore.getCurrentMap()] || 'AtomMeadowsScene');
       });
     }
   }
