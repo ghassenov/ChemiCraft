@@ -332,7 +332,7 @@ export class HUDScene extends Phaser.Scene {
           const ry = oy + y * tilePx;
 
           if (val === 0 || val === 5 || val === 6) {
-            g.fillStyle(0x2d5a27, 0.6);
+            g.fillStyle(0x4a9e3a, 0.6);
             g.fillRect(rx, ry, tilePx - 1, tilePx - 1);
           } else if (val === 1) {
             g.fillStyle(0x3d2b1f, 0.9);
