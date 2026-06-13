@@ -37,6 +37,7 @@ export class HUDScene extends Phaser.Scene {
     this.createMiniBtn(width - 140, height - 40, 'I', 'Inventory', () => this.showOverlay('inventory'));
     this.createMiniBtn(width - 190, height - 40, 'Q', 'Quests', () => this.showOverlay('quests'));
     this.createMiniBtn(width - 240, height - 40, 'C', 'ChemDex', () => this.showOverlay('chemdex'));
+    this.createMiniBtn(width - 290, height - 40, '⛶', 'Fullscreen', () => this.toggleFullscreen());
 
     // Active Tool
     this.add.image(width / 2, height - 30, 'hud_panel').setDisplaySize(120, 40);
@@ -54,6 +55,7 @@ export class HUDScene extends Phaser.Scene {
         this.input.keyboard.on('keydown-M', () => this.toggleOverlay('map'));
         this.input.keyboard.on('keydown-T', () => this.cycleTool());
         this.input.keyboard.on('keydown-ESC', () => this.closeOverlay());
+        this.input.keyboard.on('keydown-F', () => this.toggleFullscreen());
     }
 
     // Subscribe to store
@@ -64,7 +66,7 @@ export class HUDScene extends Phaser.Scene {
     this.overlayBg = this.add.rectangle(0, 0, width, height, 0x000, 0.8).setOrigin(0).setAlpha(0);
     this.overlayBg.setInteractive(); // block clicks
     this.overlayBg.on('pointerdown', () => this.closeOverlay());
-    
+
     this.uiContainer = this.add.container(width/2, height/2).setAlpha(0);
 
     this.updateHUD();
@@ -118,10 +120,18 @@ export class HUDScene extends Phaser.Scene {
     gameStore.setActiveTool(tools[nextIdx]);
   }
 
+  private toggleFullscreen() {
+    if (this.scale.isFullscreen) {
+      this.scale.stopFullscreen();
+    } else {
+      this.scale.startFullscreen();
+    }
+  }
+
   private createMiniBtn(x: number, y: number, key: string, label: string, cb: () => void) {
       const btn = this.add.circle(x, y, 20, 0x1a0e00).setStrokeStyle(2, 0xf39c12).setInteractive({ useHandCursor: true });
       this.add.text(x, y, key, { fontFamily: '"Press Start 2P"', fontSize: '10px', color: '#f39c12' }).setOrigin(0.5);
-      
+
       const tooltip = this.add.text(x, y - 30, label, { fontFamily: '"Inter"', fontSize: '10px', color: '#fff', backgroundColor: '#000', padding: { x: 4, y: 2 } }).setOrigin(0.5).setAlpha(0);
 
       btn.on('pointerdown', cb);
@@ -164,41 +174,41 @@ export class HUDScene extends Phaser.Scene {
   private renderInventory() {
       const items = this.cache.json.get('items') as Record<string, ItemData>;
       const inv = gameStore.getInventory();
-      
+
       let x = -230, y = -100;
       for (const item of inv) {
           const data = items[item.itemId];
           if (!data) continue;
 
           const isEquipped = gameStore.isEquipped(item.itemId);
-          
+
           const slot = this.add.image(x, y, 'inv_slot');
           if (isEquipped) {
               slot.setTint(0x00b894); // Highlight equipped
           }
-          
+
           const icon = this.add.text(x, y-5, data.symbol, { fontSize: '20px' }).setOrigin(0.5);
           const qty = this.add.text(x+15, y+15, `${item.quantity}`, { fontFamily: '"Inter"', fontSize: '10px', color: '#fff' }).setOrigin(1);
-          
+
           slot.setInteractive({ useHandCursor: true });
-          
+
           // Tooltip
           let actionLabel = data.name;
           if (data.type === 'equipment') actionLabel += '\n(Click to Equip)';
           if (data.type === 'consumable') actionLabel += '\n(Click to Consume)';
-          
-          const tooltip = this.add.text(x, y - 40, actionLabel, { 
+
+          const tooltip = this.add.text(x, y - 40, actionLabel, {
               fontFamily: '"Inter"', fontSize: '10px', color: '#fff', backgroundColor: '#000', padding: { x: 4, y: 2 }, align: 'center'
           }).setOrigin(0.5).setAlpha(0).setDepth(200);
 
           slot.on('pointerover', () => tooltip.setAlpha(1));
           slot.on('pointerout', () => tooltip.setAlpha(0));
-          
+
           slot.on('pointerdown', () => {
               if (data.type === 'equipment') {
                   // Only 1 gear can be equipped in this simple system for now, or we can just push it
                   // To simplify: clear all gear and equip this one
-                  gameStore.getState().playerData.equippedGear = []; 
+                  gameStore.getState().playerData.equippedGear = [];
                   gameStore.equipGear(item.itemId);
                   this.showOverlay('inventory'); // refresh
               } else if (data.type === 'consumable') {
@@ -218,7 +228,7 @@ export class HUDScene extends Phaser.Scene {
   private renderQuests() {
       const quests = this.cache.json.get('quests') as Record<string, QuestData>;
       const active = gameStore.getState().playerData.activeQuests;
-      
+
       let y = -120;
       if (active.length === 0) {
           this.uiContainer.add(this.add.text(0, 0, 'No active quests.', { fontFamily: '"Inter"', color: '#636e72' }).setOrigin(0.5));
@@ -242,7 +252,7 @@ export class HUDScene extends Phaser.Scene {
           const level = pSkills[id] || 0;
           this.uiContainer.add(this.add.text(x, y - 40, data.icon, { fontSize: '32px' }).setOrigin(0.5));
           this.uiContainer.add(this.add.text(x, y - 10, data.name, { fontFamily: '"Inter"', fontSize: '12px', color: '#f39c12', fontStyle: 'bold' }).setOrigin(0.5));
-          
+
           // Progress bar
           this.uiContainer.add(this.add.rectangle(x, y + 10, 100, 10, 0x2a1a0a).setOrigin(0.5));
           if (level > 0) {
@@ -260,7 +270,7 @@ export class HUDScene extends Phaser.Scene {
       const unlocked = gameStore.getState().playerData.unlockedChemDex;
 
       let x = -200, y = -100;
-      
+
       if (unlocked.length === 0) {
           this.uiContainer.add(this.add.text(0, 0, 'No molecules discovered yet.\nGo synthesize some in the Lab!', { fontFamily: '"Inter"', color: '#636e72', align: 'center' }).setOrigin(0.5));
           return;
@@ -280,7 +290,7 @@ export class HUDScene extends Phaser.Scene {
           const card = this.add.rectangle(x, y, 160, 100, 0x1a0e00, 0.85).setStrokeStyle(1, 0xf39c12);
           const icon = this.add.text(x - 50, y - 10, itemData.symbol, { fontFamily: '"Inter"', fontSize: '24px', fontStyle: 'bold', color: itemData.color }).setOrigin(0.5);
           const name = this.add.text(x + 20, y - 20, itemData.name, { fontFamily: '"Inter"', fontSize: '12px', color: '#fff', fontStyle: 'bold', wordWrap: { width: 100 } }).setOrigin(0.5);
-          
+
           const descStr = itemData.description || 'A fascinating molecule.';
           const desc = this.add.text(x + 20, y + 10, descStr, { fontFamily: '"Inter"', fontSize: '9px', color: '#dfe6e9', wordWrap: { width: 90 } }).setOrigin(0.5);
 
@@ -322,7 +332,7 @@ export class HUDScene extends Phaser.Scene {
           const ry = oy + y * tilePx;
 
           if (val === 0 || val === 5 || val === 6) {
-            g.fillStyle(0x2d5a27, 0.6);
+            g.fillStyle(0x4a9e3a, 0.6);
             g.fillRect(rx, ry, tilePx - 1, tilePx - 1);
           } else if (val === 1) {
             g.fillStyle(0x3d2b1f, 0.9);
@@ -372,7 +382,7 @@ export class HUDScene extends Phaser.Scene {
   private showNotification(data: { title: string, message: string, icon: string }) {
       const { width } = this.cameras.main;
       const c = this.add.container(width / 2, -50);
-      
+
       const bg = this.add.rectangle(0, 0, 300, 60, 0x1a0e00, 0.9).setStrokeStyle(2, 0xf39c12).setOrigin(0.5);
       const icon = this.add.text(-120, 0, data.icon, { fontSize: '24px' }).setOrigin(0.5);
       const title = this.add.text(-80, -15, data.title, { fontFamily: '"Inter"', fontSize: '12px', color: '#f39c12', fontStyle: 'bold' });

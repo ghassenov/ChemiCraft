@@ -3,35 +3,36 @@ import Phaser from 'phaser';
 export function generateTileGrass(scene: Phaser.Scene) {
   const g = scene.add.graphics();
   g.setVisible(false);
-  g.fillStyle(0x4a7c59, 1);
+  g.fillStyle(0x5a9e4a, 1);
   g.fillRect(0, 0, 32, 32);
-  g.fillStyle(0x3d6b4b, 0.5);
-  g.fillRect(0, 0, 32, 1);
-  g.fillRect(0, 0, 1, 32);
-  g.fillStyle(0x3d6b4b, 0.3);
-  g.fillRect(3, 5, 7, 4);
-  g.fillRect(20, 18, 9, 5);
-  g.fillRect(14, 28, 6, 3);
-  g.fillRect(25, 7, 5, 4);
-  g.fillStyle(0x5a9c69, 0.35);
-  g.fillRect(12, 2, 5, 3);
-  g.fillRect(26, 22, 4, 3);
-  g.fillRect(1, 20, 4, 2);
-  g.fillStyle(0x3a7349, 0.7);
-  const blades = [
-    [4, 3], [8, 12], [14, 6], [20, 14], [26, 4], [30, 10],
-    [6, 22], [11, 18], [18, 25], [24, 28], [2, 28], [29, 20],
-    [3, 10], [16, 9], [22, 3], [27, 16], [12, 25], [7, 16],
+  g.fillStyle(0x4a8e3a, 0.35);
+  g.fillRect(0, 0, 16, 16);
+  g.fillRect(16, 16, 16, 16);
+  g.fillStyle(0x6abe5a, 0.2);
+  g.fillRect(0, 16, 16, 16);
+  g.fillRect(16, 0, 16, 16);
+  g.fillStyle(0x3a7e2a, 0.25);
+  g.fillRect(4, 2, 3, 1);
+  g.fillRect(16, 8, 3, 1);
+  g.fillRect(9, 20, 4, 1);
+  g.fillRect(24, 26, 2, 1);
+  g.fillStyle(0x3a7e2a, 0.5);
+  const darkBlades = [
+    [6, 4], [12, 15], [2, 22], [18, 6], [28, 12], [22, 20],
+    [8, 28], [15, 10], [25, 4], [4, 14], [10, 24], [30, 18],
+    [20, 28], [14, 2], [26, 22], [2, 8], [28, 28], [7, 18],
   ];
-  for (const [x, y] of blades) g.fillRect(x, y, 1, 3);
-  g.fillStyle(0x6abc79, 0.5);
+  for (const [x, y] of darkBlades) g.fillRect(x, y, 1, 3);
+  g.fillStyle(0x7ace6a, 0.4);
   const lightBlades = [
-    [2, 8], [13, 4], [19, 8], [25, 12], [5, 18], [15, 21],
+    [2, 6], [10, 12], [18, 22], [26, 8], [6, 16], [14, 26],
+    [22, 4], [30, 14], [4, 26], [16, 18], [24, 10], [8, 6],
   ];
   for (const [x, y] of lightBlades) g.fillRect(x, y, 1, 2);
-  g.fillStyle(0x8b7355, 0.15);
-  g.fillRect(12, 26, 5, 4);
-  g.fillRect(6, 2, 3, 2);
+  g.fillStyle(0x8b7a55, 0.2);
+  g.fillRect(14, 28, 5, 3);
+  g.fillRect(8, 4, 3, 2);
+  g.fillRect(24, 16, 4, 2);
   g.generateTexture('tile_grass', 32, 32);
   g.destroy();
 }
@@ -39,30 +40,35 @@ export function generateTileGrass(scene: Phaser.Scene) {
 export function generateTileGrassDetail(scene: Phaser.Scene) {
   const g = scene.add.graphics();
   g.setVisible(false);
-  g.fillStyle(0x4a7c59, 1);
+  g.fillStyle(0x5a9e4a, 1);
   g.fillRect(0, 0, 32, 32);
-  g.fillStyle(0x3d6b4b, 0.3);
+  g.fillStyle(0x4a8e3a, 0.25);
   g.fillRect(1, 1, 30, 30);
-  g.fillStyle(0x3a7349, 0.6);
+  g.fillStyle(0x3a7e2a, 0.5);
   const darkBlades = [
     [3, 5], [9, 15], [16, 3], [22, 19], [28, 8], [5, 25],
     [14, 12], [20, 27], [27, 22], [1, 14], [11, 8], [25, 3],
   ];
   for (const [x, y] of darkBlades) g.fillRect(x, y, 1, 3);
-  g.fillStyle(0xffeaa7, 0.9);
+  g.fillStyle(0x7ace6a, 0.35);
+  const lightBlades = [
+    [6, 10], [18, 6], [24, 16], [2, 20], [12, 24], [29, 10],
+  ];
+  for (const [x, y] of lightBlades) g.fillRect(x, y, 1, 2);
+  g.fillStyle(0xffeaa7, 0.8);
   g.fillCircle(6, 7, 1);
   g.fillCircle(22, 5, 1);
   g.fillCircle(14, 22, 1);
   g.fillCircle(28, 18, 1);
-  g.fillStyle(0xf5cd7a, 0.9);
+  g.fillStyle(0xf5cd7a, 0.8);
   g.fillCircle(17, 6, 1);
   g.fillCircle(10, 20, 1);
   g.fillCircle(25, 27, 1);
   g.fillCircle(3, 16, 1);
-  g.fillStyle(0xff6b6b, 0.8);
+  g.fillStyle(0xff6b6b, 0.7);
   g.fillCircle(4, 26, 1);
   g.fillCircle(20, 14, 1);
-  g.fillStyle(0x5a9c69, 0.3);
+  g.fillStyle(0x8b7a55, 0.25);
   g.fillRect(8, 16, 3, 2);
   g.fillRect(24, 10, 3, 2);
   g.generateTexture('tile_grass_detail', 32, 32);

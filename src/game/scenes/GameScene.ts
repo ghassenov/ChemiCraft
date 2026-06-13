@@ -951,7 +951,8 @@ export class GameScene extends Phaser.Scene {
                 '[ Q ]       - Open Quest Log\n' +
                 '[ K ]       - View Skill Tree\n' +
                 '[ C ]       - Open ChemDex\n' +
-                '[ T ]       - Cycle Active Tool\n\n' +
+                '[ T ]       - Cycle Active Tool\n' +
+                '[ F ]       - Toggle Fullscreen\n\n' +
                 'Start by talking to Mayor Molecule in the center of the village!';
 
     const desc = this.add.text(width / 2, height / 2, txt, {
