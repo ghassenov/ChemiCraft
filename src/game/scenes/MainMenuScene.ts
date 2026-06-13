@@ -109,7 +109,7 @@ export class MainMenuScene extends Phaser.Scene {
     }).setOrigin(0.5);
     const lines = [
       'WASD / Arrows — Move', 'E — Interact', 'I — Inventory',
-      'Q — Quest Log', 'K — Skills', 'ESC — Close menus',
+      'Q — Quest Log', 'K — Skills', 'F — Fullscreen', 'ESC — Close menus',
     ];
     const texts = lines.map((l, i) =>
       this.add.text(width / 2, height / 2 - 80 + i * 30, l, {

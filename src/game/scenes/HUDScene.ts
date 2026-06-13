@@ -37,6 +37,7 @@ export class HUDScene extends Phaser.Scene {
     this.createMiniBtn(width - 140, height - 40, 'I', 'Inventory', () => this.showOverlay('inventory'));
     this.createMiniBtn(width - 190, height - 40, 'Q', 'Quests', () => this.showOverlay('quests'));
     this.createMiniBtn(width - 240, height - 40, 'C', 'ChemDex', () => this.showOverlay('chemdex'));
+    this.createMiniBtn(width - 290, height - 40, '⛶', 'Fullscreen', () => this.toggleFullscreen());
 
     // Active Tool
     this.add.image(width / 2, height - 30, 'hud_panel').setDisplaySize(120, 40);
@@ -54,6 +55,7 @@ export class HUDScene extends Phaser.Scene {
         this.input.keyboard.on('keydown-M', () => this.toggleOverlay('map'));
         this.input.keyboard.on('keydown-T', () => this.cycleTool());
         this.input.keyboard.on('keydown-ESC', () => this.closeOverlay());
+        this.input.keyboard.on('keydown-F', () => this.toggleFullscreen());
     }
 
     // Subscribe to store
@@ -116,6 +118,14 @@ export class HUDScene extends Phaser.Scene {
     const idx = tools.indexOf(current);
     const nextIdx = (idx + 1) % tools.length;
     gameStore.setActiveTool(tools[nextIdx]);
+  }
+
+  private toggleFullscreen() {
+    if (this.scale.isFullscreen) {
+      this.scale.stopFullscreen();
+    } else {
+      this.scale.startFullscreen();
+    }
   }
 
   private createMiniBtn(x: number, y: number, key: string, label: string, cb: () => void) {
@@ -322,7 +332,7 @@ export class HUDScene extends Phaser.Scene {
           const ry = oy + y * tilePx;
 
           if (val === 0 || val === 5 || val === 6) {
-            g.fillStyle(0x2d5a27, 0.6);
+            g.fillStyle(0x4a9e3a, 0.6);
             g.fillRect(rx, ry, tilePx - 1, tilePx - 1);
           } else if (val === 1) {
             g.fillStyle(0x3d2b1f, 0.9);
@@ -357,9 +367,8 @@ export class HUDScene extends Phaser.Scene {
         }
       }
 
-      const gs = gameScene.player.sprite;
-      const px = Math.floor(gs.x / ts);
-      const py = Math.floor(gs.y / ts);
+      const px = Math.floor(gameScene.player.x / ts);
+      const py = Math.floor(gameScene.player.y / ts);
       g.fillStyle(0x00b894, 1);
       g.fillCircle(ox + px * tilePx + tilePx / 2, oy + py * tilePx + tilePx / 2, 4);
 
