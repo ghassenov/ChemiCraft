@@ -15,7 +15,6 @@ export interface PlayerData {
   unlockedChemDex: string[];
   activeTool: string;
   equippedGear: string[];
-  isGuest: boolean;
   interiorVisits: Record<string, boolean>;
 }
 

@@ -5,22 +5,14 @@ import type { PlayerData, InventoryItem } from '../game/data/types';
 type Listener = () => void;
 
 export interface GameState {
-  // Auth state
-  isAuthenticated: boolean;
-  isGuest: boolean;
-  username: string;
-
-  // Player data
   playerData: PlayerData;
-
-  // UI state
   isDialogueOpen: boolean;
   isPaused: boolean;
 }
 
 const DEFAULT_PLAYER_DATA: PlayerData = {
-  userId: '',
-  username: 'Guest',
+  userId: 'local_player',
+  username: 'Player',
   currentMap: 'atomMeadows',
   coins: 0,
   skills: {
@@ -44,7 +36,6 @@ const DEFAULT_PLAYER_DATA: PlayerData = {
   unlockedChemDex: [],
   activeTool: 'none',
   equippedGear: [],
-  isGuest: true,
   interiorVisits: {},
   mapProgress: {
     atomMeadows: { unlocked: true, completed: false, completedQuests: [] },
@@ -58,13 +49,19 @@ class GameStore {
 
   constructor() {
     this.state = {
-      isAuthenticated: false,
-      isGuest: true,
-      username: 'Guest',
       playerData: { ...DEFAULT_PLAYER_DATA },
       isDialogueOpen: false,
       isPaused: false,
     };
+    this.init();
+  }
+
+  private init() {
+    const saved = this.loadFromStorage();
+    if (saved) {
+      this.state.playerData = saved;
+      this.notify();
+    }
   }
 
   getState(): GameState {
@@ -78,49 +75,6 @@ class GameStore {
 
   private notify() {
     this.listeners.forEach((l) => l());
-  }
-
-  // ===== Auth Actions =====
-  login(username: string) {
-    const userId = `local_${username.toLowerCase().replace(/\s+/g, '_')}_${Date.now()}`;
-    const saved = this.loadFromStorage(userId);
-
-    this.state = {
-      ...this.state,
-      isAuthenticated: true,
-      isGuest: false,
-      username,
-      playerData: saved || {
-        ...DEFAULT_PLAYER_DATA,
-        userId,
-        username,
-        isGuest: false,
-      },
-    };
-    this.notify();
-  }
-
-  playAsGuest() {
-    this.state = {
-      ...this.state,
-      isAuthenticated: true,
-      isGuest: true,
-      username: 'Guest',
-      playerData: { ...DEFAULT_PLAYER_DATA },
-    };
-    this.notify();
-  }
-
-  logout() {
-    this.saveToStorage();
-    this.state = {
-      ...this.state,
-      isAuthenticated: false,
-      isGuest: true,
-      username: 'Guest',
-      playerData: { ...DEFAULT_PLAYER_DATA },
-    };
-    this.notify();
   }
 
   // ===== Coins =====
@@ -365,21 +319,19 @@ class GameStore {
   }
 
   // ===== Persistence (localStorage) =====
+  private readonly SAVE_KEY = 'chemicraft_save';
+
   saveToStorage() {
-    if (this.state.isGuest) return;
-    const key = `chemicraft_save_${this.state.playerData.userId}`;
     try {
-      localStorage.setItem(key, JSON.stringify(this.state.playerData));
-      localStorage.setItem('chemicraft_last_user', this.state.playerData.userId);
+      localStorage.setItem(this.SAVE_KEY, JSON.stringify(this.state.playerData));
     } catch (e) {
       console.warn('Failed to save game:', e);
     }
   }
 
-  loadFromStorage(userId: string): PlayerData | null {
-    const key = `chemicraft_save_${userId}`;
+  loadFromStorage(): PlayerData | null {
     try {
-      const data = localStorage.getItem(key);
+      const data = localStorage.getItem(this.SAVE_KEY);
       if (data) return JSON.parse(data) as PlayerData;
     } catch (e) {
       console.warn('Failed to load save:', e);
@@ -387,13 +339,8 @@ class GameStore {
     return null;
   }
 
-  getLastUserId(): string | null {
-    return localStorage.getItem('chemicraft_last_user');
-  }
-
   private saveTimeout: ReturnType<typeof setTimeout> | null = null;
   private autoSave() {
-    if (this.state.isGuest) return;
     if (this.saveTimeout) clearTimeout(this.saveTimeout);
     this.saveTimeout = setTimeout(() => this.saveToStorage(), 2000);
   }
