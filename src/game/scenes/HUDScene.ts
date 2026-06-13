@@ -37,6 +37,7 @@ export class HUDScene extends Phaser.Scene {
     this.createMiniBtn(width - 140, height - 40, 'I', 'Inventory', () => this.showOverlay('inventory'));
     this.createMiniBtn(width - 190, height - 40, 'Q', 'Quests', () => this.showOverlay('quests'));
     this.createMiniBtn(width - 240, height - 40, 'C', 'ChemDex', () => this.showOverlay('chemdex'));
+    this.createMiniBtn(width - 290, height - 40, '⛶', 'Fullscreen', () => this.toggleFullscreen());
 
     // Active Tool
     this.add.image(width / 2, height - 30, 'hud_panel').setDisplaySize(120, 40);
@@ -54,6 +55,7 @@ export class HUDScene extends Phaser.Scene {
         this.input.keyboard.on('keydown-M', () => this.toggleOverlay('map'));
         this.input.keyboard.on('keydown-T', () => this.cycleTool());
         this.input.keyboard.on('keydown-ESC', () => this.closeOverlay());
+        this.input.keyboard.on('keydown-F', () => this.toggleFullscreen());
     }
 
     // Subscribe to store
@@ -116,6 +118,14 @@ export class HUDScene extends Phaser.Scene {
     const idx = tools.indexOf(current);
     const nextIdx = (idx + 1) % tools.length;
     gameStore.setActiveTool(tools[nextIdx]);
+  }
+
+  private toggleFullscreen() {
+    if (this.scale.isFullscreen) {
+      this.scale.stopFullscreen();
+    } else {
+      this.scale.startFullscreen();
+    }
   }
 
   private createMiniBtn(x: number, y: number, key: string, label: string, cb: () => void) {
