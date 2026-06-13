@@ -38,6 +38,10 @@ export class QuestSystem {
       .filter(Boolean);
   }
 
+  getQuestsForMap(mapKey: string): QuestData[] {
+      return Object.values(this.quests).filter(q => q.mapOrigin === mapKey);
+  }
+
   canAcceptQuest(id: string): boolean {
     const quest = this.quests[id];
     if (!quest) return false;

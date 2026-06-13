@@ -28,6 +28,10 @@ const DEFAULT_PLAYER_DATA: PlayerData = {
     equation_balancing: 0,
     precipitation: 0,
     acid_base: 0,
+    recycling_mastery: 0,
+    climate_science: 0,
+    optics_mastery: 0,
+    magnetism_mastery: 0,
   },
   inventory: [
     { itemId: 'reagent_H', quantity: 10 },
@@ -42,6 +46,10 @@ const DEFAULT_PLAYER_DATA: PlayerData = {
   equippedGear: [],
   isGuest: true,
   interiorVisits: {},
+  mapProgress: {
+    atomMeadows: { unlocked: true, completed: false, completedQuests: [] },
+  },
+  unlockedMaps: ['atomMeadows'],
 };
 
 class GameStore {
@@ -186,6 +194,14 @@ class GameStore {
     );
     if (!this.state.playerData.completedQuests.includes(questId)) {
       this.state.playerData.completedQuests.push(questId);
+      
+      // Update map-specific quest progress
+      const currentMap = this.state.playerData.currentMap;
+      if (this.state.playerData.mapProgress[currentMap]) {
+          if (!this.state.playerData.mapProgress[currentMap].completedQuests.includes(questId)) {
+              this.state.playerData.mapProgress[currentMap].completedQuests.push(questId);
+          }
+      }
     }
     this.notify();
     this.autoSave();
@@ -269,6 +285,72 @@ class GameStore {
   setPaused(paused: boolean) {
     this.state.isPaused = paused;
     this.notify();
+  }
+
+  // ===== Map Progression =====
+  travelToMap(mapKey: string) {
+    if (!this.state.playerData.unlockedMaps.includes(mapKey)) {
+        console.warn(`Cannot travel to ${mapKey} - map is not unlocked.`);
+        return false;
+    }
+    
+    this.state.playerData.currentMap = mapKey;
+    
+    // Ensure progress entry exists
+    if (!this.state.playerData.mapProgress[mapKey]) {
+        this.state.playerData.mapProgress[mapKey] = {
+            unlocked: true,
+            completed: false,
+            completedQuests: []
+        };
+    }
+    
+    this.notify();
+    this.autoSave();
+    return true;
+  }
+
+  unlockMap(mapKey: string) {
+    if (!this.state.playerData.unlockedMaps.includes(mapKey)) {
+        this.state.playerData.unlockedMaps.push(mapKey);
+        
+        if (!this.state.playerData.mapProgress[mapKey]) {
+            this.state.playerData.mapProgress[mapKey] = {
+                unlocked: true,
+                completed: false,
+                completedQuests: []
+            };
+        } else {
+             this.state.playerData.mapProgress[mapKey].unlocked = true;
+        }
+
+        this.notify();
+        this.autoSave();
+        
+        const event = new CustomEvent('chemicraft:notification', {
+            detail: { message: `New Area Unlocked!`, color: '#f1c40f' }
+        });
+        window.dispatchEvent(event);
+        
+        const unlockEvent = new CustomEvent('chemicraft:mapUnlocked', { detail: { mapKey } });
+        window.dispatchEvent(unlockEvent);
+    }
+  }
+
+  markMapCompleted(mapKey: string) {
+      if (this.state.playerData.mapProgress[mapKey] && !this.state.playerData.mapProgress[mapKey].completed) {
+          this.state.playerData.mapProgress[mapKey].completed = true;
+          this.notify();
+          this.autoSave();
+      }
+  }
+  
+  isMapUnlocked(mapKey: string): boolean {
+      return this.state.playerData.unlockedMaps.includes(mapKey);
+  }
+
+  getCurrentMap(): string {
+      return this.state.playerData.currentMap;
   }
 
   // ===== Interior Visits =====

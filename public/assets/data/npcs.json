@@ -1,96 +1,169 @@
 {
   "panting_pete": {
-    "id": "panting_pete",
-    "name": "Panting Pete",
-    "spriteColor": "#e74c3c",
-    "questId": "ventilation_crisis",
+    "id": "panting_pete", "name": "Panting Pete", "spriteColor": "#e74c3c",
+    "questId": "ventilation_crisis", "mapOrigin": "atomMeadows",
     "dialogue": {
-      "default": [
-        "*wheeze* Oh... hello there, young chemist!",
-        "The air in our village is so stale...",
-        "We desperately need the molecule that makes up most of Earth's atmosphere!",
-        "Can you help us? Head to the Laboratory and create it!"
-      ],
-      "questActive": [
-        "*cough* Have you created the molecule yet?",
-        "Remember \u2014 it\u2019s the one that makes up 78% of our atmosphere!",
-        "Try combining two nitrogen atoms in the Laboratory."
-      ],
-      "questComplete": [
-        "*deep breath* AHHH! Fresh air at last!",
-        "You did it! N\u2082 \u2014 molecular nitrogen!",
-        "Two nitrogen atoms bonded together with a triple covalent bond.",
-        "One of the most stable molecules in nature!",
-        "Here, take these coins and this new reagent as thanks!"
-      ]
+      "default": ["*wheeze* Oh... hello there, young chemist!", "The air in our village is so stale...", "We desperately need the molecule that makes up most of Earth's atmosphere!", "Can you help us? Head to the Laboratory and create it!"],
+      "questActive": ["*cough* Have you created the molecule yet?", "Remember — it's the one that makes up 78% of our atmosphere!", "Try combining two nitrogen atoms in the Laboratory."],
+      "questComplete": ["*deep breath* AHHH! Fresh air at last!", "You did it! N₂ — molecular nitrogen!", "Two nitrogen atoms bonded together with a triple covalent bond.", "One of the most stable molecules in nature!", "Here, take these coins as thanks!"]
     }
   },
   "professor_knowitall": {
-    "id": "professor_knowitall",
-    "name": "Prof. Knowitall",
-    "spriteColor": "#3498db",
-    "questId": null,
+    "id": "professor_knowitall", "name": "Prof. Knowitall", "spriteColor": "#3498db",
+    "questId": "ammonia_synthesis", "mapOrigin": "atomMeadows",
     "dialogue": {
-      "default": [
-        "Welcome to the Atom Meadows Library!",
-        "I'm Professor Knowitall, your guide to chemistry.",
-        "Would you like to learn about atoms, molecules, or chemical bonds?",
-        "Step inside and browse our collection!"
-      ]
+      "default": ["Welcome to the Atom Meadows Library!", "I'm Professor Knowitall, your guide to chemistry.", "Would you like to learn about atoms, molecules, or chemical bonds?", "Step inside and browse our collection!"],
+      "questActive": ["Ammonia, NH₃, is vital for agriculture!", "Combine 1 nitrogen with 3 hydrogen atoms.", "This is the basis of the famous Haber-Bosch process!"],
+      "questComplete": ["Excellent work! You've synthesized ammonia!", "Fritz Haber and Carl Bosch used this exact process to feed billions.", "The nitrogen in fertilizer — and in our food — comes from this reaction!"]
     }
   },
   "shopkeeper_sal": {
-    "id": "shopkeeper_sal",
-    "name": "Shopkeeper Sal",
-    "spriteColor": "#f39c12",
-    "questId": null,
+    "id": "shopkeeper_sal", "name": "Shopkeeper Sal", "spriteColor": "#f39c12",
+    "questId": null, "mapOrigin": "atomMeadows",
     "dialogue": {
-      "default": [
-        "Welcome to Sal's Science Supply!",
-        "I've got all sorts of chemistry goodies.",
-        "Lab coats, goggles, extra reagents...",
-        "Take a look at what's in stock!"
-      ]
+      "default": ["Welcome to Sal's Science Supply!", "I've got all sorts of chemistry goodies.", "Lab coats, goggles, extra reagents...", "Take a look at what's in stock!"]
     }
   },
   "mayor_molecule": {
-    "id": "mayor_molecule",
-    "name": "Mayor Molecule",
-    "spriteColor": "#9b59b6",
-    "questId": "water_of_life",
+    "id": "mayor_molecule", "name": "Mayor Molecule", "spriteColor": "#9b59b6",
+    "questId": "water_of_life", "mapOrigin": "atomMeadows",
     "dialogue": {
-      "default": [
-        "Welcome to Atom Meadows, young scientist!",
-        "Our village is built on the principles of chemistry.",
-        "Talk to the villagers, visit the laboratory, and explore!",
-        "There's so much to discover about the elements around us."
-      ],
-      "questActive": [
-        "Have you managed to create water yet?",
-        "The village well is still dry! We need H\u2082O!",
-        "Remember \u2014 water is two hydrogen atoms and one oxygen atom.",
-        "Try crafting H\u2082 first, then combine it with oxygen!"
-      ],
-      "questComplete": [
-        "You did it! Fresh, clean water!",
-        "H\u2082O \u2014 the universal solvent, essential for all life!",
-        "Two hydrogen atoms covalently bonded to one oxygen atom.",
-        "You're a true chemist! Here's your reward!"
-      ]
+      "default": ["Welcome to Atom Meadows, young scientist!", "Our village is built on the principles of chemistry.", "Talk to the villagers, visit the laboratory, and explore!", "There's so much to discover about the elements around us."],
+      "questActive": ["Have you managed to create water yet?", "The village well is still dry! We need H₂O!", "Remember — water is two hydrogen atoms and one oxygen atom.", "Try crafting H₂ first, then combine it with oxygen!"],
+      "questComplete": ["You did it! Fresh, clean water!", "H₂O — the universal solvent, essential for all life!", "Two hydrogen atoms covalently bonded to one oxygen atom.", "You're a true chemist! Here's your reward!"]
     }
   },
   "lab_assistant": {
-    "id": "lab_assistant",
-    "name": "Lab Assistant",
-    "spriteColor": "#00b894",
-    "questId": null,
+    "id": "lab_assistant", "name": "Lab Assistant Alex", "spriteColor": "#00b894",
+    "questId": "methane_harvest", "mapOrigin": "atomMeadows",
     "dialogue": {
-      "default": [
-        "Welcome to the laboratory!",
-        "Use the shelf on the left to pick up reagents.",
-        "Then bring them to the workbench in the center to craft.",
-        "I'm here if you need any help!"
-      ]
+      "default": ["Welcome to the laboratory!", "Use the shelf on the left to pick up reagents.", "Then bring them to the workbench in the center to craft.", "I'm here if you need any help!"],
+      "questActive": ["We need methane for the generator!", "CH₄ = 1 carbon + 4 hydrogen atoms.", "It should be straightforward in the lab!"],
+      "questComplete": ["Methane synthesized! The generator is running!", "CH₄ is the simplest hydrocarbon — the first in a long series!", "Ethane (C₂H₆), propane (C₃H₈)... the alkanes go on and on!"]
+    }
+  },
+  "waste_manager": {
+    "id": "waste_manager", "name": "Wally Waste", "spriteColor": "#f39c12",
+    "questId": "waste_crisis", "mapOrigin": "recyclingFields",
+    "dialogue": {
+      "default": ["*sighs* Look at this mess!", "The Recycling Fields are overflowing!", "We need someone who knows their plastics from their paper.", "Can you sort through this waste for us?"],
+      "questActive": ["Keep sorting! We're almost through it!", "Yellow bin = plastic, green = glass, grey = metal.", "Don't let anything fall off the conveyor belt!"],
+      "questComplete": ["That's what I'm talking about! Magnificent sorting!", "Did you know that contaminated recycling ruins the whole batch?", "Proper sorting is the foundation of a circular economy!"]
+    }
+  },
+  "materials_scientist": {
+    "id": "materials_scientist", "name": "Dr. Mat", "spriteColor": "#2196f3",
+    "questId": "circular_economy", "mapOrigin": "recyclingFields",
+    "dialogue": {
+      "default": ["Fascinating, isn't it? Waste is just a resource in the wrong place!", "Every material has potential for a second life.", "Join me in the Materials Lab and let's make something new!"],
+      "questActive": ["An Eco Brick requires recycled plastic AND glass.", "First, process 3 units of each waste type separately.", "Then combine the results at the crafting bench."],
+      "questComplete": ["Beautiful! An Eco Brick weighs the same as a regular brick but uses almost zero new resources.", "In developing nations, eco bricks are used to build entire schools!", "Science can truly change lives."]
+    }
+  },
+  "green_dealer": {
+    "id": "green_dealer", "name": "Green Gary", "spriteColor": "#4caf50",
+    "questId": null, "mapOrigin": "recyclingFields",
+    "dialogue": {
+      "default": ["Welcome to the Recycling Depot!", "We buy waste materials and sell recycled goods.", "Everything here has a second chance at life!", "What can I help you with today?"]
+    }
+  },
+  "eco_educator": {
+    "id": "eco_educator", "name": "Eco Emma", "spriteColor": "#8bc34a",
+    "questId": "know_your_materials", "mapOrigin": "recyclingFields",
+    "dialogue": {
+      "default": ["Education is the first step to sustainability!", "Most people can't tell plastic types apart.", "But a chemist like you? You should know your PET from your HDPE!", "Let me test you on material identification."],
+      "questActive": ["Try to get 10 perfect identifications in a row!", "Remember: PET plastic is clear and crinkly (water bottles).", "HDPE is stiff and milky (milk jugs, shampoo bottles)."],
+      "questComplete": ["100% accuracy! You're a true materials expert!", "Proper sorting increases recycling efficiency by up to 40%.", "Share this knowledge — it makes a real difference!"]
+    }
+  },
+  "climate_scientist": {
+    "id": "climate_scientist", "name": "Dr. Kai Mate", "spriteColor": "#26a69a",
+    "questId": "carbon_neutral", "mapOrigin": "ecoVille",
+    "dialogue": {
+      "default": ["Ah, a visitor! Welcome to EcoVille.", "We're working to make this the world's first carbon-neutral city.", "The Climate Calculator over there models our energy decisions.", "Care to help us meet our targets?"],
+      "questActive": ["Balance is key! Reduce emissions without crashing the economy.", "Solar and wind are your best friends here.", "Watch the approval rating — unhappy citizens means failed policies!"],
+      "questComplete": ["50% reduction achieved! Remarkable work!", "This is exactly what the Paris Agreement calls for.", "Science, policy, and public engagement — all three are essential for real change."]
+    }
+  },
+  "green_mayor": {
+    "id": "green_mayor", "name": "Mayor Verdant", "spriteColor": "#4caf50",
+    "questId": "clean_water_quest", "mapOrigin": "ecoVille",
+    "dialogue": {
+      "default": ["Welcome, young scientist! EcoVille thanks you for your help.", "Our goal: zero net carbon by 2040.", "We need clean water, clean air, and clean energy.", "Can you help us achieve all three?"],
+      "questActive": ["The filtration plant needs help!", "3 pollution samples → 3 batches of clean water.", "Remember: activated carbon is the key filtration agent."],
+      "questComplete": ["Clean water for every citizen! This is how civilizations thrive.", "Access to clean water is a human right.", "You've made a real difference to EcoVille today!"]
+    }
+  },
+  "energy_engineer": {
+    "id": "energy_engineer", "name": "Ellie Watt", "spriteColor": "#ffd54f",
+    "questId": "renewable_shift", "mapOrigin": "ecoVille",
+    "dialogue": {
+      "default": ["Hi! I'm redesigning EcoVille's power grid.", "Right now we're at 60% renewable — not good enough!", "We need solar AND biofuel to get to 100%.", "Think you can help me source the materials?"],
+      "questActive": ["Solar panels need recycled plastic and glass — check Recycling Fields.", "Biofuel needs organic waste + water — both available here.", "These cross-map materials are what make the green transition real!"],
+      "questComplete": ["100% renewable! We've done it!", "The sun and organic matter together can power a whole city.", "The energy transition is happening — one scientist at a time!"]
+    }
+  },
+  "optician": {
+    "id": "optician", "name": "Prism Patel", "spriteColor": "#ce93d8",
+    "questId": "split_the_light", "mapOrigin": "prismHeights",
+    "dialogue": {
+      "default": ["*gasps* The Prism Tower has gone dark!", "Without light dispersion, all color fades from Prism Heights!", "You must combine white light with a prism to restore the spectrum.", "Hurry — the city is turning grey!"],
+      "questActive": ["The light must be split! White + Prism = Rainbow!", "Craft the Rainbow Gem at the Light Lab.", "Isaac Newton first proved light contains all colors using a prism!"],
+      "questComplete": ["*tears up* Colors! Beautiful, beautiful colors!", "Newton was right — white light is a mixture of all wavelengths.", "Each wavelength bends differently through a prism. Genius!"]
+    }
+  },
+  "light_researcher": {
+    "id": "light_researcher", "name": "Dr. Ray Sunshine", "spriteColor": "#ffd54f",
+    "questId": "invisible_spectrum", "mapOrigin": "prismHeights",
+    "dialogue": {
+      "default": ["Light is far more than what you can see!", "The visible spectrum is just a tiny slice.", "Infrared, ultraviolet, X-rays, radio waves — all light!", "Shall we explore the invisible spectrum together?"],
+      "questActive": ["Puzzle 4 requires focused light via convex lens.", "Did you craft the Convex Lens already? You'll need it!", "UV light reveals what's hidden to the naked eye!"],
+      "questComplete": ["Extraordinary! You've seen beyond the visible!", "The full electromagnetic spectrum spans from radio waves to gamma rays.", "Humans can only see from 380nm to 740nm — a tiny fraction!"]
+    }
+  },
+  "color_artist": {
+    "id": "color_artist", "name": "Chroma", "spriteColor": "#ff8a65",
+    "questId": "color_mixing", "mapOrigin": "prismHeights",
+    "dialogue": {
+      "default": ["Welcome, welcome! Prism Heights is the most colorful place in the world!", "I'm Chroma, painter of light!", "Did you know light mixing is totally different from paint mixing?", "Let me show you something wonderful..."],
+      "questActive": ["Mix red and green light — not red and blue like paints!", "Light mixing is additive: more = brighter, all colors = white!", "Paint mixing is subtractive: more = darker, all colors = black!"],
+      "questComplete": ["Magnificent! You've mastered additive color mixing!", "This is how your phone screen works — just RGB pixels!", "Every image you've ever seen on a screen is red + green + blue light."]
+    }
+  },
+  "physicist": {
+    "id": "physicist", "name": "Dr. Max Well", "spriteColor": "#42a5f5",
+    "questId": "polar_attraction", "mapOrigin": "magnetCore",
+    "dialogue": {
+      "default": ["*adjusts glasses* Fascinating — you found Magnet Core!", "I'm Dr. Maxwell, and these fields... they're destabilizing.", "Magnetic poles are misaligned. It's causing chaos!", "Can you solve the trajectory puzzles to realign them?"],
+      "questActive": ["Puzzle 1 is basic — angle and velocity, no magnets.", "Launch angle from 0° to 90°, velocity from 1 to 10.", "Aim for the target! The preview line helps you plan."],
+      "questComplete": ["Direct hit! The poles are responding!", "James Clerk Maxwell unified electricity and magnetism into one theory.", "His equations describe ALL electromagnetic phenomena — including light!"]
+    }
+  },
+  "rocket_engineer": {
+    "id": "rocket_engineer", "name": "Rocket Rob", "spriteColor": "#ef5350",
+    "questId": "perfect_trajectory", "mapOrigin": "magnetCore",
+    "dialogue": {
+      "default": ["WOOOO! You made it to Magnet Core!", "I'm Rocket Rob, and I LOVE trajectories!", "The cannon over there needs precise calibration.", "Solve puzzle 4 with ZERO misses and we're in business!"],
+      "questActive": ["Puzzle 4 has wind AND magnets AND moving targets!", "Wind drift is to the right. Account for it in your angle!", "Check the Propulsion Device recipe while you're at it."],
+      "questComplete": ["PERFECT SCORE! You magnificent scientist!", "Projectile motion + electromagnetic forces = the future of propulsion!", "Railguns, maglev trains — it all starts with this math!"]
+    }
+  },
+  "magnetic_artist": {
+    "id": "magnetic_artist", "name": "Lorena Lines", "spriteColor": "#ce93d8",
+    "questId": "field_art", "mapOrigin": "magnetCore",
+    "dialogue": {
+      "default": ["Shhh... do you feel it? The invisible force around us?", "I'm Lorena, and I see the fields that others cannot.", "Iron filings reveal the hidden beauty of magnetic fields.", "Let me show you how to make field art..."],
+      "questActive": ["Place the iron filings around the magnets in the studio.", "Watch how they arrange themselves along the field lines!", "The patterns are real — this is actual physics, not art!"],
+      "questComplete": ["*gasps with delight* The patterns are perfect!", "Faraday first visualized magnetic fields this way in the 1800s!", "His field line concept is still used in physics today."]
+    }
+  },
+  "core_guardian": {
+    "id": "core_guardian", "name": "Guardian Gauss", "spriteColor": "#7c4dff",
+    "questId": "core_stabilization", "mapOrigin": "magnetCore",
+    "dialogue": {
+      "default": ["HALT. The Core is in crisis.", "I am Guardian Gauss, keeper of the magnetic balance.", "Only the Magnetic Shield can stabilize the Core Crystal.", "Prove your mastery of magnetism, and I will allow you to proceed."],
+      "questActive": ["The shield requires 2 steel alloys and both magnetic poles.", "Steel alloy = metal waste + carbon at the Physics Lab.", "Once crafted, bring the shield to me immediately."],
+      "questComplete": ["...Well done. The Core is stable.", "Carl Friedrich Gauss was the first to measure Earth's magnetic field precisely.", "His unit of magnetic flux density — the gauss — is named in his honor.", "You have earned the Core Crystal. The path forward is open."]
     }
   }
 }

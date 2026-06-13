@@ -5,6 +5,8 @@ export interface PlayerData {
   userId: string;
   username: string;
   currentMap: string;
+  mapProgress: MapProgress;
+  unlockedMaps: string[];
   coins: number;
   skills: Record<string, number>;
   inventory: InventoryItem[];
@@ -17,6 +19,15 @@ export interface PlayerData {
   interiorVisits: Record<string, boolean>;
 }
 
+/** Map Progression State */
+export interface MapProgress {
+  [mapKey: string]: {
+    unlocked: boolean;
+    completed: boolean;
+    completedQuests: string[];
+  };
+}
+
 /** An item in the player's inventory */
 export interface InventoryItem {
   itemId: string;
@@ -26,11 +37,13 @@ export interface InventoryItem {
 /** Quest definition from quests.json */
 export interface QuestData {
   id: string;
+  mapOrigin: string;
   title: string;
   description: string;
   npcId: string;
-  objectiveType: 'craft' | 'collect' | 'talk' | 'explore';
+  objectiveType: 'craft' | 'collect' | 'talk' | 'explore' | 'sort' | 'climate_calc' | 'light_puzzle' | 'trajectory' | 'field_nav';
   target: string;
+  targetItemId: string;
   targetAmount: number;
   rewardCoins: number;
   rewardSkill: Record<string, number>;
@@ -46,6 +59,7 @@ export interface NPCData {
   name: string;
   spriteColor: string;
   questId: string | null;
+  mapOrigin: string;
   dialogue: {
     default: string[];
     questActive?: string[];
@@ -55,11 +69,17 @@ export interface NPCData {
 
 /** Recipe definition from recipes.json */
 export interface RecipeData {
+  id: string;
   inputs: string[];
   output: string;
   outputName: string;
-  explanation: string;
+  outputItemId: string;
+  outputQuantity: number;
   difficulty: number;
+  mapOrigin: string;
+  explanation: string;
+  minSkillLevel?: Record<string, number>;
+  category?: string;
 }
 
 /** Item definition from items.json */
@@ -67,11 +87,13 @@ export interface ItemData {
   id: string;
   name: string;
   symbol: string;
-  type: 'reagent' | 'molecule' | 'equipment' | 'consumable' | 'quest_item';
+  type: 'reagent' | 'molecule' | 'equipment' | 'consumable' | 'quest_item' | 'material';
   description: string;
   color: string;
   price: number;
   stackable: boolean;
+  category?: string;
+  mapOrigin?: string;
 }
 
 /** Skill definition from skills.json */
@@ -84,37 +106,77 @@ export interface SkillData {
   levelDescriptions: string[];
 }
 
-/** Map definition from maps.json */
-export interface MapData {
-  id: string;
+/** Map Theme Configuration */
+export interface MapTheme {
+  groundColor: number;
+  wallColor: number;
+  accentColor: number;
+  bgColor: number;
+  particles: 'pollen' | 'leaves' | 'wind' | 'sparkles' | 'embers' | 'none';
+  music?: string;
+}
+
+export interface MapBuilding {
+  type: 'lab' | 'library' | 'shop';
   name: string;
-  width: number;
-  height: number;
-  tileSize: number;
-  playerSpawn: { x: number; y: number };
-  ground: number[][];
-  tileTypes: Record<string, { name: string; collision: boolean }>;
-  buildings: BuildingData[];
-  npcSpawns: NPCSpawn[];
-  portal: {
-    position: { x: number; y: number };
-    locked: boolean;
-    unlockCondition: string;
+  tileX: number;
+  tileY: number;
+  sceneKey: string;
+  tiles: number[][];
+  style?: {
+    wallColor: number;
+    roofColor: number;
+    doorColor?: number;
+    windowColor?: number;
+    accentColor?: number;
   };
 }
 
-export interface BuildingData {
-  id: string;
-  name: string;
-  entrance: { x: number; y: number };
-  scene: string;
-  tiles: number[][];
+export interface MapPortal {
+  tileX: number;
+  tileY: number;
+  targetMap: string;
+  spawnTileX: number;
+  spawnTileY: number;
+  unlockCondition: 'all_quests' | 'none';
 }
 
-export interface NPCSpawn {
+export interface MapNPC {
   npcId: string;
-  x: number;
-  y: number;
+  tileX: number;
+  tileY: number;
+}
+
+export interface MapDecoration {
+  type: 'flower' | 'grass' | 'tree' | 'rock' | 'lamp' | 'sign' | 'bin' | 'solar_panel' | 'prism' | 'magnet';
+  tileX: number;
+  tileY: number;
+}
+
+export interface ResourceNodeData {
+  type: string;
+  tileX: number;
+  tileY: number;
+  maxGathers: number;
+}
+
+/** Map definition from maps.json */
+export interface MapData {
+  key: string;
+  name: string;
+  difficulty: number;
+  requiredMap?: string;
+  theme: MapTheme;
+  width: number;
+  height: number;
+  tileSize: number;
+  playerSpawn: { tileX: number; tileY: number };
+  ground: number[][];
+  buildings: MapBuilding[];
+  portals: MapPortal[];
+  npcs: MapNPC[];
+  decorations: MapDecoration[];
+  resourceNodes: ResourceNodeData[];
 }
 
 /** Direction enum for player movement */
@@ -143,4 +205,5 @@ export enum GameEvents {
   SceneTransition = 'scene:transition',
   SaveGame = 'game:save',
   Notification = 'ui:notification',
+  MapUnlocked = 'map:unlocked',
 }

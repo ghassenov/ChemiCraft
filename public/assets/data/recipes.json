@@ -1,51 +1,139 @@
 [
   {
-    "inputs": ["H", "H"],
-    "output": "H₂",
-    "outputName": "Molecular Hydrogen",
-    "explanation": "Two hydrogen atoms share their electrons in a single covalent bond, forming H₂ — the simplest and lightest molecule in the universe. Hydrogen gas is highly flammable and is used as rocket fuel!",
-    "difficulty": 1
+    "id": "h2", "inputs": ["H", "H"], "output": "H₂", "outputName": "Molecular Hydrogen",
+    "outputItemId": "molecule_H2", "outputQuantity": 1, "difficulty": 1, "mapOrigin": "atomMeadows",
+    "explanation": "Two hydrogen atoms share their electrons in a single covalent bond, forming H₂ — the simplest and lightest molecule in the universe. Hydrogen gas is highly flammable and is used as rocket fuel!"
   },
   {
-    "inputs": ["O", "O"],
-    "output": "O₂",
-    "outputName": "Molecular Oxygen",
-    "explanation": "Two oxygen atoms form a double covalent bond to create O₂. This is the oxygen we breathe! It makes up about 21% of Earth's atmosphere and is essential for cellular respiration.",
-    "difficulty": 1
+    "id": "o2", "inputs": ["O", "O"], "output": "O₂", "outputName": "Molecular Oxygen",
+    "outputItemId": "molecule_O2", "outputQuantity": 1, "difficulty": 1, "mapOrigin": "atomMeadows",
+    "explanation": "Two oxygen atoms form a double covalent bond to create O₂. This is the oxygen we breathe! It makes up about 21% of Earth's atmosphere and is essential for cellular respiration."
   },
   {
-    "inputs": ["N", "N"],
-    "output": "N₂",
-    "outputName": "Molecular Nitrogen",
-    "explanation": "Two nitrogen atoms form a triple covalent bond — one of the strongest bonds in chemistry! N₂ makes up 78% of Earth's atmosphere. Its stability is why it's so hard to break apart, which is important in fertilizer production.",
-    "difficulty": 1
+    "id": "n2", "inputs": ["N", "N"], "output": "N₂", "outputName": "Molecular Nitrogen",
+    "outputItemId": "molecule_N2", "outputQuantity": 1, "difficulty": 1, "mapOrigin": "atomMeadows",
+    "explanation": "Two nitrogen atoms form a triple covalent bond — one of the strongest bonds in chemistry! N₂ makes up 78% of Earth's atmosphere. Its stability is why it's so hard to break apart."
   },
   {
-    "inputs": ["H₂", "O"],
-    "output": "H₂O",
-    "outputName": "Water",
-    "explanation": "Water is composed of two hydrogen atoms and one oxygen atom connected by covalent bonds. It's the universal solvent and essential for all known forms of life. The bent shape of the molecule gives it unique properties!",
-    "difficulty": 2
+    "id": "h2o", "inputs": ["H₂", "O"], "output": "H₂O", "outputName": "Water",
+    "outputItemId": "molecule_H2O", "outputQuantity": 1, "difficulty": 2, "mapOrigin": "atomMeadows",
+    "explanation": "Water is composed of two hydrogen atoms and one oxygen atom connected by covalent bonds. It's the universal solvent and essential for all known forms of life. The bent shape of the molecule gives it unique properties!"
   },
   {
-    "inputs": ["C", "O", "O"],
-    "output": "CO₂",
-    "outputName": "Carbon Dioxide",
-    "explanation": "Carbon dioxide consists of one carbon atom double-bonded to two oxygen atoms. Plants use CO₂ in photosynthesis to make glucose and oxygen. It's also what makes soda fizzy!",
-    "difficulty": 2
+    "id": "co2", "inputs": ["C", "O", "O"], "output": "CO₂", "outputName": "Carbon Dioxide",
+    "outputItemId": "molecule_CO2", "outputQuantity": 1, "difficulty": 2, "mapOrigin": "atomMeadows",
+    "explanation": "Carbon dioxide consists of one carbon atom double-bonded to two oxygen atoms. Plants use CO₂ in photosynthesis to make glucose and oxygen. It's also what makes soda fizzy!"
   },
   {
-    "inputs": ["C", "H", "H", "H", "H"],
-    "output": "CH₄",
-    "outputName": "Methane",
-    "explanation": "Methane is the simplest hydrocarbon — one carbon atom bonded to four hydrogen atoms in a tetrahedral shape. It's the main component of natural gas and is produced by decomposing organic matter.",
-    "difficulty": 3
+    "id": "ch4", "inputs": ["C", "H", "H", "H", "H"], "output": "CH₄", "outputName": "Methane",
+    "outputItemId": "molecule_CH4", "outputQuantity": 1, "difficulty": 3, "mapOrigin": "atomMeadows",
+    "explanation": "Methane is the simplest hydrocarbon — one carbon atom bonded to four hydrogen atoms in a tetrahedral shape. It's the main component of natural gas and is produced by decomposing organic matter."
   },
   {
-    "inputs": ["N", "H", "H", "H"],
-    "output": "NH₃",
-    "outputName": "Ammonia",
-    "explanation": "Ammonia has one nitrogen atom bonded to three hydrogen atoms, with a lone pair of electrons giving it a pyramidal shape. It's crucial for making fertilizers through the Haber process!",
-    "difficulty": 3
+    "id": "nh3", "inputs": ["N", "H", "H", "H"], "output": "NH₃", "outputName": "Ammonia",
+    "outputItemId": "molecule_NH3", "outputQuantity": 1, "difficulty": 3, "mapOrigin": "atomMeadows",
+    "explanation": "Ammonia has one nitrogen atom bonded to three hydrogen atoms, with a lone pair of electrons giving it a pyramidal shape. It's crucial for making fertilizers through the Haber process!"
+  },
+  {
+    "id": "recycle_plastic", "inputs": ["plastic_waste", "plastic_waste", "plastic_waste"],
+    "output": "recycled_plastic", "outputName": "Recycled Plastic Pellets",
+    "outputItemId": "recycled_plastic", "outputQuantity": 1, "difficulty": 1, "mapOrigin": "recyclingFields",
+    "explanation": "Plastic waste can be melted and reformed into pellets for reuse. Recycling plastic reduces landfill waste and lowers the energy needed to produce new plastic from crude oil."
+  },
+  {
+    "id": "recycle_glass", "inputs": ["glass_waste", "glass_waste", "glass_waste"],
+    "output": "recycled_glass", "outputName": "Glass Cullet",
+    "outputItemId": "recycled_glass", "outputQuantity": 1, "difficulty": 1, "mapOrigin": "recyclingFields",
+    "explanation": "Glass is 100% recyclable! Crushing it into cullet and remelting uses 30% less energy than making new glass from raw materials like silica sand."
+  },
+  {
+    "id": "recycle_metal", "inputs": ["metal_waste", "metal_waste", "metal_waste"],
+    "output": "recycled_metal", "outputName": "Recycled Metal Ingot",
+    "outputItemId": "recycled_metal", "outputQuantity": 1, "difficulty": 1, "mapOrigin": "recyclingFields",
+    "explanation": "Recycling metal saves up to 95% of the energy required to produce it from raw ore! Steel and aluminum are the most recycled materials in the world."
+  },
+  {
+    "id": "composting", "inputs": ["organic_waste", "organic_waste"],
+    "output": "compost", "outputName": "Compost",
+    "outputItemId": "compost", "outputQuantity": 1, "difficulty": 1, "mapOrigin": "recyclingFields",
+    "explanation": "Composting converts organic waste into nutrient-rich soil through microbial decomposition. It reduces methane emissions from landfills while creating natural fertilizer."
+  },
+  {
+    "id": "composite_wood", "inputs": ["paper_waste", "organic_waste"],
+    "output": "composite_wood", "outputName": "Composite Wood Board",
+    "outputItemId": "composite_wood", "outputQuantity": 1, "difficulty": 2, "mapOrigin": "recyclingFields",
+    "explanation": "Composite wood is made by bonding recycled wood fibers and paper with adhesives. It's stronger and more consistent than natural wood and helps reduce deforestation."
+  },
+  {
+    "id": "eco_brick", "inputs": ["recycled_plastic", "recycled_glass"],
+    "output": "eco_brick", "outputName": "Eco Brick",
+    "outputItemId": "eco_brick", "outputQuantity": 1, "difficulty": 2, "mapOrigin": "recyclingFields",
+    "explanation": "Eco bricks are building blocks made from compressed recycled materials. They're used worldwide to create schools, homes, and community centers from waste!"
+  },
+  {
+    "id": "biofuel_synthesis", "inputs": ["organic_waste", "molecule_H2O"],
+    "output": "biofuel", "outputName": "Biofuel",
+    "outputItemId": "biofuel", "outputQuantity": 1, "difficulty": 3, "mapOrigin": "ecoVille",
+    "explanation": "Biofuel is produced by breaking down organic matter through fermentation or thermochemical processes. It's carbon-neutral because plants absorb as much CO₂ as they release when burned."
+  },
+  {
+    "id": "water_filtration", "inputs": ["pollution_sample", "reagent_C"],
+    "output": "clean_water", "outputName": "Clean Water",
+    "outputItemId": "clean_water", "outputQuantity": 1, "difficulty": 2, "mapOrigin": "ecoVille",
+    "explanation": "Activated charcoal (carbon) filters remove contaminants from water through adsorption. This process is used globally to purify drinking water!"
+  },
+  {
+    "id": "co2_capture", "inputs": ["pollution_sample", "clean_water"],
+    "output": "co2_captured", "outputName": "Captured CO₂",
+    "outputItemId": "co2_captured", "outputQuantity": 1, "difficulty": 2, "mapOrigin": "ecoVille",
+    "explanation": "Carbon capture dissolves CO₂ in water to form carbonic acid, preventing it from reaching the atmosphere. This technology is key to fighting climate change."
+  },
+  {
+    "id": "carbon_offset", "inputs": ["co2_captured", "co2_captured"],
+    "output": "carbon_credit", "outputName": "Carbon Credit",
+    "outputItemId": "carbon_credit", "outputQuantity": 1, "difficulty": 2, "mapOrigin": "ecoVille",
+    "explanation": "Carbon credits represent the removal of one tonne of CO₂ from the atmosphere. Companies and countries trade these to offset their emissions."
+  },
+  {
+    "id": "solar_craft", "inputs": ["recycled_plastic", "recycled_glass"],
+    "output": "solar_panel", "outputName": "Solar Panel",
+    "outputItemId": "solar_panel", "outputQuantity": 1, "difficulty": 3, "mapOrigin": "ecoVille",
+    "explanation": "Solar panels use the photovoltaic effect to convert sunlight into electricity. Silicon semiconductors in the panels generate an electric current when photons knock electrons loose."
+  },
+  {
+    "id": "split_light", "inputs": ["white_light", "prism"],
+    "output": "rainbow_gem", "outputName": "Rainbow Gem",
+    "outputItemId": "rainbow_gem", "outputQuantity": 1, "difficulty": 2, "mapOrigin": "prismHeights",
+    "explanation": "A prism refracts white light by bending different wavelengths at different angles, splitting it into the visible spectrum: red, orange, yellow, green, blue, indigo, violet."
+  },
+  {
+    "id": "steel_alloy", "inputs": ["metal_waste", "reagent_C"],
+    "output": "steel_alloy", "outputName": "Steel Alloy",
+    "outputItemId": "steel_alloy", "outputQuantity": 1, "difficulty": 3, "mapOrigin": "magnetCore",
+    "explanation": "Steel is an alloy of iron and carbon. Adding carbon to iron dramatically increases its strength and hardness — it's the most important construction material in the world."
+  },
+  {
+    "id": "craft_electromagnet", "inputs": ["steel_alloy", "copper_wire"],
+    "output": "electromagnet", "outputName": "Electromagnet",
+    "outputItemId": "electromagnet", "outputQuantity": 1, "difficulty": 4, "mapOrigin": "magnetCore",
+    "explanation": "Wrapping a copper coil around an iron core and passing current through it creates an electromagnet. The magnetic field strength depends on the number of coil turns and current strength."
+  },
+  {
+    "id": "compass_craft", "inputs": ["magnet_n", "magnet_s", "steel_alloy"],
+    "output": "compass", "outputName": "Compass",
+    "outputItemId": "compass", "outputQuantity": 1, "difficulty": 3, "mapOrigin": "magnetCore",
+    "explanation": "A compass works because Earth has a magnetic field. A magnetized needle aligns with field lines, always pointing toward magnetic north."
+  },
+  {
+    "id": "propulsion_craft", "inputs": ["electromagnet", "steel_alloy", "biofuel"],
+    "output": "propulsion_device", "outputName": "Propulsion Device",
+    "outputItemId": "propulsion_device", "outputQuantity": 1, "difficulty": 5, "mapOrigin": "magnetCore",
+    "explanation": "Magnetic propulsion systems use alternating magnetic fields to accelerate conductive objects. This principle powers maglev trains and electromagnetic launchers!"
+  },
+  {
+    "id": "magnetic_shield_craft", "inputs": ["steel_alloy", "steel_alloy", "magnet_n", "magnet_s"],
+    "output": "magnetic_shield", "outputName": "Magnetic Shield",
+    "outputItemId": "magnetic_shield", "outputQuantity": 1, "difficulty": 4, "mapOrigin": "magnetCore",
+    "explanation": "Magnetic shielding uses high-permeability materials to redirect magnetic field lines around a protected area. It's used to protect sensitive electronics and medical equipment."
   }
 ]

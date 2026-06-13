@@ -1,142 +1,257 @@
 {
   "reagent_H": {
-    "id": "reagent_H",
-    "name": "Hydrogen",
-    "symbol": "H",
-    "type": "reagent",
+    "id": "reagent_H", "name": "Hydrogen", "symbol": "H", "type": "reagent",
     "description": "The lightest and most abundant element in the universe. Atomic number 1.",
-    "color": "#ff6b6b",
-    "price": 0,
-    "stackable": true
+    "color": "#ff6b6b", "price": 0, "stackable": true, "mapOrigin": "atomMeadows"
   },
   "reagent_O": {
-    "id": "reagent_O",
-    "name": "Oxygen",
-    "symbol": "O",
-    "type": "reagent",
+    "id": "reagent_O", "name": "Oxygen", "symbol": "O", "type": "reagent",
     "description": "Essential for respiration. Atomic number 8. Highly reactive!",
-    "color": "#4ecdc4",
-    "price": 0,
-    "stackable": true
+    "color": "#4ecdc4", "price": 0, "stackable": true, "mapOrigin": "atomMeadows"
   },
   "reagent_N": {
-    "id": "reagent_N",
-    "name": "Nitrogen",
-    "symbol": "N",
-    "type": "reagent",
+    "id": "reagent_N", "name": "Nitrogen", "symbol": "N", "type": "reagent",
     "description": "Makes up 78% of Earth's atmosphere. Atomic number 7.",
-    "color": "#45b7d1",
-    "price": 0,
-    "stackable": true
+    "color": "#45b7d1", "price": 0, "stackable": true, "mapOrigin": "atomMeadows"
   },
   "reagent_C": {
-    "id": "reagent_C",
-    "name": "Carbon",
-    "symbol": "C",
-    "type": "reagent",
+    "id": "reagent_C", "name": "Carbon", "symbol": "C", "type": "reagent",
     "description": "The building block of organic chemistry. Atomic number 6.",
-    "color": "#96ceb4",
-    "price": 0,
-    "stackable": true
+    "color": "#96ceb4", "price": 0, "stackable": true, "mapOrigin": "atomMeadows"
   },
   "reagent_Na": {
-    "id": "reagent_Na",
-    "name": "Sodium",
-    "symbol": "Na",
-    "type": "reagent",
+    "id": "reagent_Na", "name": "Sodium", "symbol": "Na", "type": "reagent",
     "description": "A soft, silvery-white alkali metal. Atomic number 11. Reacts vigorously with water!",
-    "color": "#ffd93d",
-    "price": 200,
-    "stackable": true
+    "color": "#ffd93d", "price": 200, "stackable": true, "mapOrigin": "atomMeadows"
   },
   "molecule_H2": {
-    "id": "molecule_H2",
-    "name": "Molecular Hydrogen",
-    "symbol": "H₂",
-    "type": "molecule",
+    "id": "molecule_H2", "name": "Molecular Hydrogen", "symbol": "H₂", "type": "molecule",
     "description": "The simplest molecule — two hydrogen atoms bonded together.",
-    "color": "#ff8a80",
-    "price": 25,
-    "stackable": true
+    "color": "#ff8a80", "price": 25, "stackable": true, "mapOrigin": "atomMeadows"
   },
   "molecule_O2": {
-    "id": "molecule_O2",
-    "name": "Molecular Oxygen",
-    "symbol": "O₂",
-    "type": "molecule",
+    "id": "molecule_O2", "name": "Molecular Oxygen", "symbol": "O₂", "type": "molecule",
     "description": "The oxygen we breathe — vital for life!",
-    "color": "#80cbc4",
-    "price": 25,
-    "stackable": true
+    "color": "#80cbc4", "price": 25, "stackable": true, "mapOrigin": "atomMeadows"
   },
   "molecule_N2": {
-    "id": "molecule_N2",
-    "name": "Molecular Nitrogen",
-    "symbol": "N₂",
-    "type": "molecule",
+    "id": "molecule_N2", "name": "Molecular Nitrogen", "symbol": "N₂", "type": "molecule",
     "description": "The most abundant gas in our atmosphere.",
-    "color": "#81d4fa",
-    "price": 25,
-    "stackable": true
+    "color": "#81d4fa", "price": 25, "stackable": true, "mapOrigin": "atomMeadows"
   },
   "molecule_H2O": {
-    "id": "molecule_H2O",
-    "name": "Water",
-    "symbol": "H₂O",
-    "type": "molecule",
+    "id": "molecule_H2O", "name": "Water", "symbol": "H₂O", "type": "molecule",
     "description": "The universal solvent — essential for all life.",
-    "color": "#4fc3f7",
-    "price": 40,
-    "stackable": true
+    "color": "#4fc3f7", "price": 40, "stackable": true, "mapOrigin": "atomMeadows"
   },
   "molecule_CO2": {
-    "id": "molecule_CO2",
-    "name": "Carbon Dioxide",
-    "symbol": "CO₂",
-    "type": "molecule",
+    "id": "molecule_CO2", "name": "Carbon Dioxide", "symbol": "CO₂", "type": "molecule",
     "description": "Used by plants in photosynthesis. Makes soda fizzy!",
-    "color": "#a5d6a7",
-    "price": 40,
-    "stackable": true
+    "color": "#a5d6a7", "price": 40, "stackable": true, "mapOrigin": "atomMeadows"
+  },
+  "molecule_CH4": {
+    "id": "molecule_CH4", "name": "Methane", "symbol": "CH₄", "type": "molecule",
+    "description": "A potent greenhouse gas and the main component of natural gas.",
+    "color": "#ffcc80", "price": 60, "stackable": true, "mapOrigin": "atomMeadows"
+  },
+  "molecule_NH3": {
+    "id": "molecule_NH3", "name": "Ammonia", "symbol": "NH₃", "type": "molecule",
+    "description": "A nitrogen-hydrogen compound crucial for fertilizer production via the Haber process.",
+    "color": "#b0bec5", "price": 60, "stackable": true, "mapOrigin": "atomMeadows"
   },
   "lab_coat": {
-    "id": "lab_coat",
-    "name": "Lab Coat",
-    "symbol": "🥼",
-    "type": "equipment",
+    "id": "lab_coat", "name": "Lab Coat", "symbol": "🥼", "type": "equipment",
     "description": "Professional chemistry attire. +10% crafting speed.",
-    "color": "#ffffff",
-    "price": 100,
-    "stackable": false
+    "color": "#ffffff", "price": 100, "stackable": false
   },
   "goggles": {
-    "id": "goggles",
-    "name": "Safety Goggles",
-    "symbol": "🥽",
-    "type": "equipment",
+    "id": "goggles", "name": "Safety Goggles", "symbol": "🥽", "type": "equipment",
     "description": "Protect your eyes! Shows recipe hints in the lab.",
-    "color": "#ffeb3b",
-    "price": 150,
-    "stackable": false
+    "color": "#ffeb3b", "price": 150, "stackable": false
   },
   "speed_potion": {
-    "id": "speed_potion",
-    "name": "Crafting Speed Potion",
-    "symbol": "⚗️",
-    "type": "consumable",
+    "id": "speed_potion", "name": "Crafting Speed Potion", "symbol": "⚗️", "type": "consumable",
     "description": "Speeds up crafting animations for 5 minutes.",
-    "color": "#ce93d8",
-    "price": 50,
-    "stackable": true
+    "color": "#ce93d8", "price": 50, "stackable": true
   },
   "mystery_molecule": {
-    "id": "mystery_molecule",
-    "name": "Mystery Molecule",
-    "symbol": "❓",
-    "type": "quest_item",
+    "id": "mystery_molecule", "name": "Mystery Molecule", "symbol": "❓", "type": "quest_item",
     "description": "A strange, unidentified molecule. What could it be?",
-    "color": "#b39ddb",
-    "price": 500,
-    "stackable": false
+    "color": "#b39ddb", "price": 500, "stackable": false
+  },
+  "plastic_waste": {
+    "id": "plastic_waste", "name": "Plastic Waste", "symbol": "♻️", "type": "material",
+    "category": "plastic", "description": "Discarded plastic items collected for recycling.",
+    "color": "#ffcc02", "price": 0, "stackable": true, "mapOrigin": "recyclingFields"
+  },
+  "glass_waste": {
+    "id": "glass_waste", "name": "Glass Waste", "symbol": "🪟", "type": "material",
+    "category": "glass", "description": "Broken glass pieces collected for recycling.",
+    "color": "#80deea", "price": 0, "stackable": true, "mapOrigin": "recyclingFields"
+  },
+  "metal_waste": {
+    "id": "metal_waste", "name": "Metal Waste", "symbol": "🔩", "type": "material",
+    "category": "metal", "description": "Scrap metal awaiting processing.",
+    "color": "#b0bec5", "price": 0, "stackable": true, "mapOrigin": "recyclingFields"
+  },
+  "paper_waste": {
+    "id": "paper_waste", "name": "Paper Waste", "symbol": "📄", "type": "material",
+    "category": "paper", "description": "Used paper and cardboard for recycling.",
+    "color": "#fff9c4", "price": 0, "stackable": true, "mapOrigin": "recyclingFields"
+  },
+  "organic_waste": {
+    "id": "organic_waste", "name": "Organic Waste", "symbol": "🌿", "type": "material",
+    "category": "organic", "description": "Food scraps and plant matter for composting.",
+    "color": "#a5d6a7", "price": 0, "stackable": true, "mapOrigin": "recyclingFields"
+  },
+  "recycled_plastic": {
+    "id": "recycled_plastic", "name": "Recycled Plastic Pellets", "symbol": "🔵", "type": "molecule",
+    "description": "Processed plastic ready for reuse in manufacturing.",
+    "color": "#ffcc02", "price": 30, "stackable": true, "mapOrigin": "recyclingFields"
+  },
+  "recycled_glass": {
+    "id": "recycled_glass", "name": "Glass Cullet", "symbol": "💎", "type": "molecule",
+    "description": "Crushed and cleaned glass ready for new products.",
+    "color": "#80deea", "price": 30, "stackable": true, "mapOrigin": "recyclingFields"
+  },
+  "recycled_metal": {
+    "id": "recycled_metal", "name": "Recycled Metal Ingot", "symbol": "⬛", "type": "molecule",
+    "description": "Melted and purified metal ready for reuse.",
+    "color": "#b0bec5", "price": 40, "stackable": true, "mapOrigin": "recyclingFields"
+  },
+  "composite_wood": {
+    "id": "composite_wood", "name": "Composite Wood Board", "symbol": "🪵", "type": "molecule",
+    "description": "Recycled wood fibers bonded together — stronger than regular wood!",
+    "color": "#8d6e63", "price": 50, "stackable": true, "mapOrigin": "recyclingFields"
+  },
+  "compost": {
+    "id": "compost", "name": "Compost", "symbol": "🌱", "type": "molecule",
+    "description": "Nutrient-rich organic compost — great for plants!",
+    "color": "#6d4c41", "price": 25, "stackable": true, "mapOrigin": "recyclingFields"
+  },
+  "eco_brick": {
+    "id": "eco_brick", "name": "Eco Brick", "symbol": "🧱", "type": "quest_item",
+    "description": "A building brick made from recycled materials — the future of construction!",
+    "color": "#8bc34a", "price": 80, "stackable": true, "mapOrigin": "recyclingFields"
+  },
+  "biofuel": {
+    "id": "biofuel", "name": "Biofuel", "symbol": "⛽", "type": "molecule",
+    "description": "Renewable fuel derived from organic matter — a clean energy alternative!",
+    "color": "#66bb6a", "price": 70, "stackable": true, "mapOrigin": "ecoVille"
+  },
+  "carbon_credit": {
+    "id": "carbon_credit", "name": "Carbon Credit", "symbol": "🌍", "type": "consumable",
+    "description": "Offset 1 ton of CO₂ emissions from the atmosphere.",
+    "color": "#26a69a", "price": 100, "stackable": true, "mapOrigin": "ecoVille"
+  },
+  "solar_panel": {
+    "id": "solar_panel", "name": "Solar Panel", "symbol": "☀️", "type": "equipment",
+    "description": "Harness the sun's energy to generate clean electricity.",
+    "color": "#ffd54f", "price": 200, "stackable": false, "mapOrigin": "ecoVille"
+  },
+  "clean_water": {
+    "id": "clean_water", "name": "Clean Water", "symbol": "💧", "type": "reagent",
+    "description": "Filtered, drinkable water — a precious resource.",
+    "color": "#29b6f6", "price": 30, "stackable": true, "mapOrigin": "ecoVille"
+  },
+  "co2_captured": {
+    "id": "co2_captured", "name": "Captured CO₂", "symbol": "🫧", "type": "molecule",
+    "description": "CO₂ removed from the atmosphere through carbon capture technology.",
+    "color": "#80cbc4", "price": 60, "stackable": true, "mapOrigin": "ecoVille"
+  },
+  "pollution_sample": {
+    "id": "pollution_sample", "name": "Pollution Sample", "symbol": "☁️", "type": "reagent",
+    "description": "A sample of contaminated air or water from an industrial area.",
+    "color": "#78909c", "price": 0, "stackable": true, "mapOrigin": "ecoVille"
+  },
+  "green_certificate": {
+    "id": "green_certificate", "name": "Green Certificate", "symbol": "🏆", "type": "quest_item",
+    "description": "Proof of sustainable practices — EcoVille is now carbon neutral!",
+    "color": "#4caf50", "price": 500, "stackable": false, "mapOrigin": "ecoVille"
+  },
+  "prism": {
+    "id": "prism", "name": "Prism", "symbol": "🔷", "type": "reagent",
+    "description": "Splits white light into the full spectrum of colors.",
+    "color": "#ce93d8", "price": 50, "stackable": true, "mapOrigin": "prismHeights"
+  },
+  "red_filter": {
+    "id": "red_filter", "name": "Red Filter", "symbol": "🔴", "type": "reagent",
+    "description": "Only passes red wavelengths of light.",
+    "color": "#ef5350", "price": 30, "stackable": true, "mapOrigin": "prismHeights"
+  },
+  "blue_filter": {
+    "id": "blue_filter", "name": "Blue Filter", "symbol": "🔵", "type": "reagent",
+    "description": "Only passes blue wavelengths of light.",
+    "color": "#42a5f5", "price": 30, "stackable": true, "mapOrigin": "prismHeights"
+  },
+  "green_filter": {
+    "id": "green_filter", "name": "Green Filter", "symbol": "🟢", "type": "reagent",
+    "description": "Only passes green wavelengths of light.",
+    "color": "#66bb6a", "price": 30, "stackable": true, "mapOrigin": "prismHeights"
+  },
+  "white_light": {
+    "id": "white_light", "name": "White Light", "symbol": "💡", "type": "reagent",
+    "description": "Full-spectrum light containing all visible wavelengths.",
+    "color": "#f5f5f5", "price": 0, "stackable": true, "mapOrigin": "prismHeights"
+  },
+  "convex_lens": {
+    "id": "convex_lens", "name": "Convex Lens", "symbol": "🔍", "type": "equipment",
+    "description": "Focuses light to a point — used to unlock advanced light puzzles.",
+    "color": "#b3e5fc", "price": 120, "stackable": false, "mapOrigin": "prismHeights"
+  },
+  "rainbow_gem": {
+    "id": "rainbow_gem", "name": "Rainbow Gem", "symbol": "🌈", "type": "quest_item",
+    "description": "A gem that shines with all the colors of the visible spectrum.",
+    "color": "#ce93d8", "price": 300, "stackable": false, "mapOrigin": "prismHeights"
+  },
+  "magnet_n": {
+    "id": "magnet_n", "name": "North Magnet", "symbol": "🔵", "type": "reagent",
+    "description": "Magnetic north pole — attracts south poles, repels north poles.",
+    "color": "#42a5f5", "price": 40, "stackable": true, "mapOrigin": "magnetCore"
+  },
+  "magnet_s": {
+    "id": "magnet_s", "name": "South Magnet", "symbol": "🔴", "type": "reagent",
+    "description": "Magnetic south pole — attracts north poles, repels south poles.",
+    "color": "#ef5350", "price": 40, "stackable": true, "mapOrigin": "magnetCore"
+  },
+  "iron_filings": {
+    "id": "iron_filings", "name": "Iron Filings", "symbol": "⚫", "type": "reagent",
+    "description": "Fine iron particles that align with magnetic field lines.",
+    "color": "#757575", "price": 20, "stackable": true, "mapOrigin": "magnetCore"
+  },
+  "copper_wire": {
+    "id": "copper_wire", "name": "Copper Wire", "symbol": "🟤", "type": "reagent",
+    "description": "Conductive wire used to build electromagnets.",
+    "color": "#ff8f00", "price": 30, "stackable": true, "mapOrigin": "magnetCore"
+  },
+  "compass": {
+    "id": "compass", "name": "Compass", "symbol": "🧭", "type": "equipment",
+    "description": "Points to magnetic north and reveals magnetic field lines in navigator puzzles.",
+    "color": "#ff8f00", "price": 150, "stackable": false, "mapOrigin": "magnetCore"
+  },
+  "electromagnet": {
+    "id": "electromagnet", "name": "Electromagnet", "symbol": "🧲", "type": "equipment",
+    "description": "A magnet controlled by electricity — its strength can be varied.",
+    "color": "#42a5f5", "price": 200, "stackable": false, "mapOrigin": "magnetCore"
+  },
+  "steel_alloy": {
+    "id": "steel_alloy", "name": "Steel Alloy", "symbol": "⬜", "type": "molecule",
+    "description": "A strong iron-carbon alloy — the foundation of industrial machinery.",
+    "color": "#90a4ae", "price": 80, "stackable": true, "mapOrigin": "magnetCore"
+  },
+  "propulsion_device": {
+    "id": "propulsion_device", "name": "Propulsion Device", "symbol": "🚀", "type": "equipment",
+    "description": "Generates thrust via magnetic fields — key to solving Magnet Core's ultimate challenge.",
+    "color": "#ef5350", "price": 350, "stackable": false, "mapOrigin": "magnetCore"
+  },
+  "magnetic_shield": {
+    "id": "magnetic_shield", "name": "Magnetic Shield", "symbol": "🛡️", "type": "equipment",
+    "description": "Deflects magnetic interference — essential to stabilize the Core.",
+    "color": "#42a5f5", "price": 300, "stackable": false, "mapOrigin": "magnetCore"
+  },
+  "core_crystal": {
+    "id": "core_crystal", "name": "Core Crystal", "symbol": "💠", "type": "quest_item",
+    "description": "The heart of Magnet Core — a perfectly balanced magnetic crystal.",
+    "color": "#7c4dff", "price": 1000, "stackable": false, "mapOrigin": "magnetCore"
   }
 }

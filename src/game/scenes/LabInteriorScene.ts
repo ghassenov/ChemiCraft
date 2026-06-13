@@ -76,6 +76,10 @@ export class LabInteriorScene extends Phaser.Scene {
 
     this.drawDecor();
     this.createAnimatedDecor();
+    this.createShelfPrompt();
+    this.createShelfFloorMarker();
+    this.createBenchFloorMarker();
+    this.createBenchPrompt();
     addHelpButton(this, [
       'Pick up reagents from the shelf\non the left wall.',
       'Bring them to the workbench\nin the center to craft molecules.',
@@ -254,9 +258,9 @@ export class LabInteriorScene extends Phaser.Scene {
     g.create(320, 20, 'tile_wall')?.setVisible(false).setSize(640, 10);
     g.create(320, 615, 'tile_wall')?.setVisible(false).setSize(640, 10);
 
-    g.create(75, 180, 'tile_wall')?.setVisible(false).setSize(80, 150);
+    g.create(55, 180, 'tile_wall')?.setVisible(false).setSize(20, 140);
     g.create(560, 180, 'tile_wall')?.setVisible(false).setSize(90, 150);
-    g.create(320, 365, 'tile_wall')?.setVisible(false).setSize(290, 60);
+    g.create(320, 350, 'tile_wall')?.setVisible(false).setSize(290, 24);
   }
 
   private drawDecor() {
@@ -457,6 +461,156 @@ export class LabInteriorScene extends Phaser.Scene {
     });
   }
 
+  private createShelfFloorMarker() {
+    const g = this.add.graphics().setDepth(4);
+    const zx = 70, zy = 170, zw = 80, zh = 60;
+
+    g.fillStyle(0x00cec9, 0.06);
+    g.fillRoundedRect(zx, zy, zw, zh, 6);
+    g.lineStyle(1, 0x00cec9, 0.15);
+    g.strokeRoundedRect(zx, zy, zw, zh, 6);
+
+    this.tweens.add({
+      targets: g,
+      alpha: 0.2,
+      duration: 1500,
+      yoyo: true,
+      repeat: -1,
+      ease: 'Sine.easeInOut',
+    });
+
+    const standHere = this.add.text(110, 200, 'Stand here & press [E]', {
+      fontFamily: '"Inter"', fontSize: '8px', color: '#00cec9',
+    }).setOrigin(0.5).setDepth(5).setAlpha(0.4);
+
+    this.tweens.add({
+      targets: standHere,
+      alpha: 0.1,
+      duration: 1500,
+      yoyo: true,
+      repeat: -1,
+    });
+  }
+
+  private createBenchFloorMarker() {
+    const g = this.add.graphics().setDepth(4);
+    const zx = 170, zy = 365, zw = 300, zh = 40;
+
+    g.fillStyle(0xf1c40f, 0.06);
+    g.fillRoundedRect(zx, zy, zw, zh, 6);
+    g.lineStyle(1, 0xf1c40f, 0.15);
+    g.strokeRoundedRect(zx, zy, zw, zh, 6);
+
+    this.tweens.add({
+      targets: g,
+      alpha: 0.2,
+      duration: 1500,
+      yoyo: true,
+      repeat: -1,
+      ease: 'Sine.easeInOut',
+    });
+
+    const standHere = this.add.text(320, 390, 'Stand here & press [E]', {
+      fontFamily: '"Inter"', fontSize: '8px', color: '#f1c40f',
+    }).setOrigin(0.5).setDepth(5).setAlpha(0.4);
+
+    this.tweens.add({
+      targets: standHere,
+      alpha: 0.1,
+      duration: 1500,
+      yoyo: true,
+      repeat: -1,
+    });
+  }
+
+  private createShelfPrompt() {
+    const cx = 75;
+    const cy = 160;
+
+    const bg = this.add.graphics().setDepth(20);
+    bg.fillStyle(0x000000, 0.55);
+    bg.fillRoundedRect(cx - 66, cy - 18, 132, 36, 8);
+    bg.lineStyle(2, 0x00cec9, 0.6);
+    bg.strokeRoundedRect(cx - 66, cy - 18, 132, 36, 8);
+
+    const icon = this.add.text(cx - 42, cy, '📋', { fontSize: '20px' }).setOrigin(0.5).setDepth(21);
+
+    const label = this.add.text(cx + 8, cy, 'Take Reagent', {
+      fontFamily: '"Inter"', fontSize: '12px', color: '#dfe6e9', fontStyle: 'bold',
+    }).setOrigin(0.5).setDepth(21);
+
+    const keyHint = this.add.text(cx + 8, cy - 20, '[ E ]', {
+      fontFamily: '"Press Start 2P"', fontSize: '10px', color: '#00cec9',
+    }).setOrigin(0.5).setDepth(21);
+
+    const arrow = this.add.text(cx, cy + 28, '▼', {
+      fontFamily: '"Inter"', fontSize: '18px', color: '#00cec9',
+    }).setOrigin(0.5).setDepth(21);
+
+    this.tweens.add({
+      targets: [bg, icon, label, keyHint, arrow],
+      y: '+=6',
+      duration: 1200,
+      yoyo: true,
+      repeat: -1,
+      ease: 'Sine.easeInOut',
+    });
+
+    const glow = this.add.circle(cx, cy, 80, 0x00cec9, 0.04).setDepth(19);
+    this.tweens.add({
+      targets: glow,
+      scaleX: 1.4,
+      scaleY: 1.4,
+      alpha: 0.01,
+      duration: 1800,
+      yoyo: true,
+      repeat: -1,
+      ease: 'Sine.easeInOut',
+    });
+
+    this.add.particles(cx, cy, 'icon_particle', {
+      speed: { min: 6, max: 16 },
+      angle: { min: 220, max: 320 },
+      scale: { start: 0.2, end: 0 },
+      alpha: { start: 0.5, end: 0 },
+      lifespan: 1400,
+      blendMode: 'ADD',
+      tint: [0x00cec9, 0x6c5ce7, 0x00b894],
+      frequency: 400,
+    }).setDepth(20);
+  }
+
+  private createBenchPrompt() {
+    const cx = 320;
+    const cy = 330;
+
+    const arrow = this.add.text(cx, cy - 10, '▼', {
+      fontFamily: '"Inter"', fontSize: '16px', color: '#f1c40f',
+    }).setOrigin(0.5).setDepth(20).setAlpha(0);
+
+    this.tweens.add({
+      targets: arrow,
+      y: cy - 22,
+      alpha: 0.7,
+      duration: 1000,
+      yoyo: true,
+      repeat: -1,
+      ease: 'Sine.easeInOut',
+      delay: 3000,
+    });
+
+    const pulse = this.add.circle(cx, cy + 20, 18, 0x6c5ce7, 0.08).setDepth(19);
+    this.tweens.add({
+      targets: pulse,
+      scaleX: 2,
+      scaleY: 2,
+      alpha: 0,
+      duration: 2000,
+      repeat: -1,
+      delay: 3000,
+    });
+  }
+
   private handleInteraction() {
     const px = this.player.x;
     const py = this.player.y;
@@ -472,7 +626,7 @@ export class LabInteriorScene extends Phaser.Scene {
       return;
     }
 
-    if (this.isInZone(px, py, 40, 110, 70, 140) || this.isInZone(px, py, 24, 100, 100, 6)) {
+    if (this.isInZone(px, py, 70, 115, 80, 140)) {
       if (this.state === 'idle') {
         openReagentSelector(this, {
           onSelectReagent: (symbol) => {
@@ -489,7 +643,7 @@ export class LabInteriorScene extends Phaser.Scene {
       return;
     }
 
-    if (this.isInZone(px, py, 180, 340, 280, 50)) {
+    if (this.isInZone(px, py, 170, 355, 300, 55)) {
       if (this.state === 'carrying' && this.carriedReagent) {
         this.addToBench();
       } else if (this.state === 'idle' && this.benchReagents.length > 0) {

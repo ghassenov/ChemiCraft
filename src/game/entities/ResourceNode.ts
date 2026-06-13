@@ -1,32 +1,45 @@
 import Phaser from 'phaser';
 
-export type ResourceType = 'coal' | 'water' | 'crystal' | 'air';
+export type ResourceType = 'coal' | 'water' | 'crystal' | 'air'
+  | 'plastic_pile' | 'glass_pile' | 'metal_pile' | 'paper_pile' | 'compost_heap'
+  | 'pollution_vent' | 'clean_water_spring' | 'biomass_pile'
+  | 'crystal_cluster' | 'light_well' | 'prism_shard'
+  | 'iron_vein' | 'magnetic_crystal' | 'copper_wire_spool' | 'energy_geyser';
 
 export class ResourceNode extends Phaser.Physics.Arcade.Sprite {
-  public resourceType: ResourceType;
+  public resourceType: string;
   public amount: number;
   private prompt: Phaser.GameObjects.Container | null = null;
   private _isPlayerNear = false;
   
-  constructor(scene: Phaser.Scene, x: number, y: number, type: ResourceType, amount: number) {
-    let texture = 'tile_wall'; // fallback
-    if (type === 'coal') texture = 'tile_wall'; // Can be colored differently
-    if (type === 'water') texture = 'tile_portal';
-    if (type === 'crystal') texture = 'tile_square';
-    if (type === 'air') texture = 'tile_square';
+  constructor(scene: Phaser.Scene, x: number, y: number, type: string, amount: number) {
+    let texture = 'tile_wall';
+    if (['coal', 'metal_pile', 'iron_vein', 'copper_wire_spool'].includes(type)) texture = 'tile_wall';
+    else if (['water', 'air', 'clean_water_spring', 'light_well', 'energy_geyser'].includes(type)) texture = 'tile_portal';
+    else texture = 'tile_square';
     
     super(scene, x, y, texture);
     this.resourceType = type;
     this.amount = amount;
 
     scene.add.existing(this);
-    scene.physics.add.existing(this, true); // Static body
+    scene.physics.add.existing(this, true);
     this.setSize(32, 32);
     
-    if (type === 'coal') this.setTint(0x2d3436);
-    if (type === 'water') this.setTint(0x0984e3).setAlpha(0.7);
-    if (type === 'crystal') this.setTint(0x00cec9);
-    if (type === 'air') this.setTint(0xffffff).setAlpha(0.4);
+    const tints: Record<string, number> = {
+      coal: 0x2d3436, water: 0x0984e3, crystal: 0x00cec9, air: 0xffffff,
+      plastic_pile: 0xf1c40f, glass_pile: 0x80deea, metal_pile: 0xb0bec5,
+      paper_pile: 0xfff9c4, compost_heap: 0x6d4c41,
+      pollution_vent: 0x78909c, clean_water_spring: 0x29b6f6, biomass_pile: 0x66bb6a,
+      crystal_cluster: 0xce93d8, light_well: 0xf5f5f5, prism_shard: 0xce93d8,
+      iron_vein: 0x757575, magnetic_crystal: 0x7c4dff, copper_wire_spool: 0xff8f00,
+      energy_geyser: 0xffd54f,
+    };
+    const alpha: Record<string, number> = {
+      water: 0.7, air: 0.4, light_well: 0.6, energy_geyser: 0.8, pollution_vent: 0.8,
+    };
+    this.setTint(tints[type] || 0x636e72);
+    if (alpha[type] !== undefined) this.setAlpha(alpha[type]);
 
     this.createPrompt(scene);
   }
@@ -62,19 +75,24 @@ export class ResourceNode extends Phaser.Physics.Arcade.Sprite {
   gather(activeTool: string) {
     if (this.amount <= 0) return null;
 
-    let requiredTool = 'pickaxe';
-    if (this.resourceType === 'water' || this.resourceType === 'air') {
-      requiredTool = 'flask';
-    }
+    const toolMap: Record<string, string> = {
+      coal: 'pickaxe', metal_pile: 'pickaxe', iron_vein: 'pickaxe',
+      magnetic_crystal: 'pickaxe', copper_wire_spool: 'pickaxe',
+      crystal_cluster: 'pickaxe', prism_shard: 'pickaxe',
+      water: 'flask', air: 'flask', pollution_vent: 'flask',
+      clean_water_spring: 'flask', light_well: 'flask',
+      energy_geyser: 'flask', compost_heap: 'flask',
+      plastic_pile: 'none', glass_pile: 'none', paper_pile: 'none',
+      biomass_pile: 'none',
+    };
 
+    const requiredTool = toolMap[this.resourceType] || 'pickaxe';
     if (activeTool !== requiredTool) {
-      // Return a specific object or string to indicate wrong tool
       return 'wrong_tool';
     }
 
     this.amount--;
     
-    // Simple visual effect
     this.scene.tweens.add({
       targets: this,
       scaleX: 1.2,
@@ -96,14 +114,29 @@ export class ResourceNode extends Phaser.Physics.Arcade.Sprite {
       });
     }
     
-    let itemId = '';
-    // Note: item IDs should match what is in items.json (e.g., reagent_C, reagent_H)
-    if (this.resourceType === 'coal') itemId = 'reagent_C';
-    if (this.resourceType === 'water') itemId = ['reagent_H', 'reagent_O'][Math.floor(Math.random() * 2)];
-    if (this.resourceType === 'crystal') itemId = 'reagent_Na';
-    if (this.resourceType === 'air') itemId = ['reagent_N', 'reagent_O'][Math.floor(Math.random() * 2)];
+    const itemMap: Record<string, string> = {
+      coal: 'reagent_C',
+      water: ['reagent_H', 'reagent_O'][Math.floor(Math.random() * 2)],
+      crystal: 'reagent_Na',
+      air: ['reagent_N', 'reagent_O'][Math.floor(Math.random() * 2)],
+      plastic_pile: 'plastic_waste',
+      glass_pile: 'glass_waste',
+      metal_pile: 'metal_waste',
+      paper_pile: 'paper_waste',
+      compost_heap: 'organic_waste',
+      pollution_vent: 'pollution_sample',
+      clean_water_spring: 'clean_water',
+      biomass_pile: 'organic_waste',
+      crystal_cluster: 'prism',
+      light_well: 'white_light',
+      prism_shard: 'prism',
+      iron_vein: 'iron_filings',
+      magnetic_crystal: ['magnet_n', 'magnet_s'][Math.floor(Math.random() * 2)],
+      copper_wire_spool: 'copper_wire',
+      energy_geyser: 'biofuel',
+    };
     
-    return itemId;
+    return itemMap[this.resourceType] || '';
   }
 
   destroy(fromScene?: boolean) {

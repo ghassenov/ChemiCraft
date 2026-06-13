@@ -51,6 +51,7 @@ export class HUDScene extends Phaser.Scene {
         this.input.keyboard.on('keydown-Q', () => this.toggleOverlay('quests'));
         this.input.keyboard.on('keydown-K', () => this.toggleOverlay('skills'));
         this.input.keyboard.on('keydown-C', () => this.toggleOverlay('chemdex'));
+        this.input.keyboard.on('keydown-M', () => this.toggleOverlay('map'));
         this.input.keyboard.on('keydown-T', () => this.cycleTool());
         this.input.keyboard.on('keydown-ESC', () => this.closeOverlay());
     }
@@ -148,6 +149,7 @@ export class HUDScene extends Phaser.Scene {
       else if (type === 'quests') this.renderQuests();
       else if (type === 'skills') this.renderSkills();
       else if (type === 'chemdex') this.renderChemDex();
+      else if (type === 'map') this.renderMap();
 
       this.tweens.add({ targets: [this.overlayBg, this.uiContainer], alpha: 1, duration: 200 });
   }
@@ -291,9 +293,9 @@ export class HUDScene extends Phaser.Scene {
 
   private renderMap() {
       const gameScene = this.scene.get('GameScene') as any;
-      if (!gameScene.player) return;
+      if (!gameScene.player || !gameScene.mapData) return;
 
-      const mapData = this.cache.json.get('maps').atomMeadows as MapData;
+      const mapData = gameScene.mapData as MapData;
 
       const mapW = mapData.width;
       const mapH = mapData.height;
@@ -319,7 +321,7 @@ export class HUDScene extends Phaser.Scene {
           const rx = ox + x * tilePx;
           const ry = oy + y * tilePx;
 
-          if (val === 0 || val === 5) {
+          if (val === 0 || val === 5 || val === 6) {
             g.fillStyle(0x2d5a27, 0.6);
             g.fillRect(rx, ry, tilePx - 1, tilePx - 1);
           } else if (val === 1) {
@@ -330,26 +332,30 @@ export class HUDScene extends Phaser.Scene {
       }
 
       const buildingColors: Record<string, number> = {
-        laboratory: 0x8B4513,
+        lab: 0x8B4513,
         library: 0x4a6741,
         shop: 0x6B4226,
       };
       for (const b of mapData.buildings) {
-        const col = buildingColors[b.id] || 0x555555;
+        const col = buildingColors[b.type] || 0x555555;
         for (const [bx, by] of b.tiles) {
           g.fillStyle(col, 0.85);
           g.fillRect(ox + bx * tilePx, oy + by * tilePx, tilePx - 1, tilePx - 1);
         }
         g.fillStyle(0xffffff, 0.95);
-        const label = this.add.text(ox + b.entrance.x * tilePx + tilePx / 2, oy + b.entrance.y * tilePx - 4, b.name, {
+        const label = this.add.text(ox + b.tileX * tilePx + tilePx / 2, oy + b.tileY * tilePx - 4, b.name, {
           fontFamily: '"Inter"', fontSize: '8px', color: '#ffffff', backgroundColor: '#000000aa',
           padding: { x: 2, y: 1 },
         }).setOrigin(0.5, 1);
         container.add(label);
       }
 
-      g.fillStyle(0xf39c12, 1);
-      g.fillRect(ox + mapData.portal.position.x * tilePx - 1, oy + mapData.portal.position.y * tilePx - 1, tilePx + 1, tilePx + 1);
+      if (mapData.portals && mapData.portals.length > 0) {
+        for (const portal of mapData.portals) {
+          g.fillStyle(0xf39c12, 1);
+          g.fillRect(ox + portal.tileX * tilePx - 1, oy + portal.tileY * tilePx - 1, tilePx + 1, tilePx + 1);
+        }
+      }
 
       const gs = gameScene.player.sprite;
       const px = Math.floor(gs.x / ts);

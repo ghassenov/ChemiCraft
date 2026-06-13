@@ -55,4 +55,9 @@ export class CraftingSystem {
   getAllRecipes(): RecipeData[] {
     return this.recipes;
   }
+  
+  /** Gets recipes available for the current map */
+  getRecipesForMap(mapKey: string): RecipeData[] {
+      return this.recipes.filter(r => r.mapOrigin === mapKey);
+  }
 }

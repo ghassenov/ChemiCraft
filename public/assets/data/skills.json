@@ -1,58 +1,90 @@
 {
   "bonding": {
-    "id": "bonding",
-    "name": "Bonding",
-    "icon": "🔗",
-    "maxLevel": 5,
-    "description": "Understanding of chemical bonds. Provides molecule hints in the laboratory.",
+    "id": "bonding", "name": "Bonding", "icon": "⚗️", "maxLevel": 5,
+    "description": "Mastery of chemical bonding improves crafting speed and cooling efficiency.",
     "levelDescriptions": [
-      "Novice — No hints available",
-      "Apprentice — See bond type hints",
-      "Journeyman — See element compatibility",
-      "Expert — See partial recipes",
-      "Master — See full recipe suggestions"
+      "Lv.1: +5% cooling rate in crafting minigame.",
+      "Lv.2: +10% cooling rate. Reaction time reduced.",
+      "Lv.3: +15% cooling rate. Unlock faster crafting animations.",
+      "Lv.4: +20% cooling rate. Double-bond recipes available.",
+      "Lv.5: +25% cooling rate. Master Chemist status."
     ]
   },
   "equation_balancing": {
-    "id": "equation_balancing",
-    "name": "Equation Balancing",
-    "icon": "⚖️",
-    "maxLevel": 5,
-    "description": "Skill in balancing chemical equations. Provides balancing hints.",
+    "id": "equation_balancing", "name": "Equation Balancing", "icon": "⚖️", "maxLevel": 5,
+    "description": "Balancing chemical equations gives a wider target zone in the crafting minigame.",
     "levelDescriptions": [
-      "Novice — No balancing help",
-      "Apprentice — See atom counts",
-      "Journeyman — See imbalanced elements",
-      "Expert — See suggested coefficients",
-      "Master — Auto-balance simple equations"
+      "Lv.1: +2°C target zone width.",
+      "Lv.2: +4°C target zone width. Reaction hints shown.",
+      "Lv.3: +6°C target zone width. Trajectory angle precision +5%.",
+      "Lv.4: +8°C target zone width. Stoichiometry hints in lab.",
+      "Lv.5: +10°C target zone width. Perfect balance bonus."
     ]
   },
   "precipitation": {
-    "id": "precipitation",
-    "name": "Precipitation Mastery",
-    "icon": "💎",
-    "maxLevel": 5,
-    "description": "Knowledge of solubility and precipitation. Highlights compatible reagents.",
+    "id": "precipitation", "name": "Precipitation Mastery", "icon": "🌧️", "maxLevel": 5,
+    "description": "Mastery of precipitation reactions speeds up crafting progress.",
     "levelDescriptions": [
-      "Novice — No highlights",
-      "Apprentice — See solubility hints",
-      "Journeyman — Compatible reagents glow",
-      "Expert — See reaction products preview",
-      "Master — Predict all precipitation reactions"
+      "Lv.1: +5% crafting progress per tick.",
+      "Lv.2: +10% crafting progress. Sorting bonus time +2s.",
+      "Lv.3: +15% crafting progress. Precipitation reactions highlighted.",
+      "Lv.4: +20% crafting progress. Bonus resource drops.",
+      "Lv.5: +25% crafting progress. Instant precipitation reactions."
     ]
   },
   "acid_base": {
-    "id": "acid_base",
-    "name": "Acid-Base Sense",
-    "icon": "🧪",
-    "maxLevel": 5,
-    "description": "Intuition for acids and bases. Displays estimated pH values.",
+    "id": "acid_base", "name": "Acid-Base Sense", "icon": "🧪", "maxLevel": 5,
+    "description": "Understanding acid-base chemistry reduces crafting failure risk.",
     "levelDescriptions": [
-      "Novice — No pH info",
-      "Apprentice — See acid/base/neutral labels",
-      "Journeyman — See approximate pH range",
-      "Expert — See exact pH values",
-      "Master — Predict neutralization reactions"
+      "Lv.1: -5% risk of critical crafting failure.",
+      "Lv.2: -10% failure risk. pH indicators in lab.",
+      "Lv.3: -15% failure risk. Carbon calculator insight shown.",
+      "Lv.4: -20% failure risk. Neutralization reactions auto-succeed.",
+      "Lv.5: -25% failure risk. Master alchemist bonus."
+    ]
+  },
+  "recycling_mastery": {
+    "id": "recycling_mastery", "name": "Recycling Mastery", "icon": "♻️", "maxLevel": 5,
+    "description": "Expert knowledge of material recycling improves sorting efficiency and speed.",
+    "levelDescriptions": [
+      "Lv.1: +5 bonus points per correct sort.",
+      "Lv.2: +10 bonus points. Belt speed penalty reduced.",
+      "Lv.3: +15 bonus points. Material categories highlighted on hover.",
+      "Lv.4: +20 bonus points. Streak multiplier increased.",
+      "Lv.5: +25 bonus points. Perfect sort bonus doubled."
+    ]
+  },
+  "climate_science": {
+    "id": "climate_science", "name": "Climate Science", "icon": "🌍", "maxLevel": 5,
+    "description": "Understanding climate systems makes carbon calculator actions more efficient.",
+    "levelDescriptions": [
+      "Lv.1: +1 action slot in Climate Calculator.",
+      "Lv.2: +2 action slots. CO₂ impact shown before selecting.",
+      "Lv.3: +3 action slots. Delayed actions resolve faster.",
+      "Lv.4: +4 action slots. Synergy bonuses between actions.",
+      "Lv.5: +5 action slots. Master climate strategist bonus."
+    ]
+  },
+  "optics_mastery": {
+    "id": "optics_mastery", "name": "Optics Mastery", "icon": "🔍", "maxLevel": 5,
+    "description": "Knowledge of light and optics provides hints in light puzzles.",
+    "levelDescriptions": [
+      "Lv.1: Hint available in light puzzles (1 per puzzle).",
+      "Lv.2: 2 hints per puzzle. Beam color shown on hover.",
+      "Lv.3: 3 hints per puzzle. Incorrect paths highlighted.",
+      "Lv.4: 4 hints per puzzle. Components auto-suggest placements.",
+      "Lv.5: 5 hints per puzzle. Master optician — all components unlocked from start."
+    ]
+  },
+  "magnetism_mastery": {
+    "id": "magnetism_mastery", "name": "Magnetism Mastery", "icon": "🧲", "maxLevel": 5,
+    "description": "Mastery of magnetic fields improves trajectory puzzle precision and navigator speed.",
+    "levelDescriptions": [
+      "Lv.1: Magnetic field lines shown when compass equipped.",
+      "Lv.2: +5% magnet force preview accuracy in trajectory.",
+      "Lv.3: +10% navigator movement speed along field lines.",
+      "Lv.4: +15% accuracy. Repulsion forces visualized.",
+      "Lv.5: +20% accuracy. Master physicist — max trajectory preview shown."
     ]
   }
 }

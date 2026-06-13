@@ -1,40 +1,218 @@
 {
   "ventilation_crisis": {
-    "id": "ventilation_crisis",
-    "title": "Ventilation Crisis",
+    "id": "ventilation_crisis", "mapOrigin": "atomMeadows",
+    "title": "Ventilation Crisis", "isMainQuest": true, "npcId": "panting_pete",
     "description": "The village air is stale! Create N₂ (molecular nitrogen) in the Laboratory to fix the ventilation.",
-    "npcId": "panting_pete",
-    "objectiveType": "craft",
-    "target": "N₂",
-    "targetAmount": 1,
-    "rewardCoins": 50,
-    "rewardSkill": { "bonding": 1 },
-    "rewardItems": ["reagent_O"],
+    "objectiveType": "craft", "target": "N₂", "targetItemId": "molecule_N2", "targetAmount": 1,
+    "rewardCoins": 50, "rewardSkill": { "bonding": 1 }, "rewardItems": ["reagent_O"],
     "prerequisiteQuests": [],
-    "isMainQuest": true,
-    "hints": [
-      "Nitrogen makes up about 78% of Earth's atmosphere.",
-      "Try combining two nitrogen atoms (N + N).",
-      "Head to the Laboratory building — it's the large blue building."
-    ]
+    "hints": ["Nitrogen makes up about 78% of Earth's atmosphere.", "Try combining two nitrogen atoms (N + N).", "Head to the Laboratory building."]
   },
   "water_of_life": {
-    "id": "water_of_life",
-    "title": "Water of Life",
+    "id": "water_of_life", "mapOrigin": "atomMeadows",
+    "title": "Water of Life", "isMainQuest": true, "npcId": "mayor_molecule",
     "description": "The village well has dried up! Create H₂O in the Laboratory.",
-    "npcId": "mayor_molecule",
-    "objectiveType": "craft",
-    "target": "H₂O",
-    "targetAmount": 1,
-    "rewardCoins": 75,
-    "rewardSkill": { "bonding": 1, "equation_balancing": 1 },
-    "rewardItems": ["reagent_C"],
+    "objectiveType": "craft", "target": "H₂O", "targetItemId": "molecule_H2O", "targetAmount": 1,
+    "rewardCoins": 75, "rewardSkill": { "bonding": 1, "equation_balancing": 1 }, "rewardItems": ["reagent_C"],
     "prerequisiteQuests": ["ventilation_crisis"],
-    "isMainQuest": true,
-    "hints": [
-      "Water is H₂O — two hydrogen and one oxygen.",
-      "First create H₂, then combine it with O.",
-      "You'll need to craft in two steps!"
-    ]
+    "hints": ["Water is H₂O — two hydrogen and one oxygen.", "First create H₂, then combine it with O.", "You'll need to craft in two steps!"]
+  },
+  "methane_harvest": {
+    "id": "methane_harvest", "mapOrigin": "atomMeadows",
+    "title": "Methane Harvest", "isMainQuest": true, "npcId": "lab_assistant",
+    "description": "The new energy generator needs fuel! Synthesize CH₄ (methane) in the lab.",
+    "objectiveType": "craft", "target": "CH₄", "targetItemId": "molecule_CH4", "targetAmount": 1,
+    "rewardCoins": 100, "rewardSkill": { "bonding": 1 }, "rewardItems": ["reagent_Na"],
+    "prerequisiteQuests": ["water_of_life"],
+    "hints": ["Methane = 1 carbon + 4 hydrogen atoms.", "CH₄ is the main component of natural gas.", "Use C + H + H + H + H in the lab."]
+  },
+  "ammonia_synthesis": {
+    "id": "ammonia_synthesis", "mapOrigin": "atomMeadows",
+    "title": "Ammonia Synthesis", "isMainQuest": true, "npcId": "professor_knowitall",
+    "description": "We need fertilizer for the meadow crops! Synthesize NH₃ (ammonia) using the Haber process.",
+    "objectiveType": "craft", "target": "NH₃", "targetItemId": "molecule_NH3", "targetAmount": 1,
+    "rewardCoins": 100, "rewardSkill": { "precipitation": 1 }, "rewardItems": [],
+    "prerequisiteQuests": ["methane_harvest"],
+    "hints": ["Ammonia = 1 nitrogen + 3 hydrogen atoms.", "NH₃ is pyramidal due to its lone electron pair.", "This is how we make most of the world's fertilizer!"]
+  },
+  "carbon_capture_1": {
+    "id": "carbon_capture_1", "mapOrigin": "atomMeadows",
+    "title": "Carbon Capture", "isMainQuest": true, "npcId": "mayor_molecule",
+    "description": "Too much CO₂ in the air! Craft CO₂ first, then show the Mayor the molecule so we can study how to capture it.",
+    "objectiveType": "craft", "target": "CO₂", "targetItemId": "molecule_CO2", "targetAmount": 1,
+    "rewardCoins": 75, "rewardSkill": { "equation_balancing": 1 }, "rewardItems": [],
+    "prerequisiteQuests": ["water_of_life"],
+    "hints": ["CO₂ = 1 carbon + 2 oxygen atoms.", "Carbon dioxide is what plants absorb during photosynthesis.", "Craft it at the lab bench."]
+  },
+  "waste_crisis": {
+    "id": "waste_crisis", "mapOrigin": "recyclingFields",
+    "title": "Waste Crisis", "isMainQuest": true, "npcId": "waste_manager",
+    "description": "The Recycling Fields are overflowing with unsorted waste! Sort at least 15 items correctly in the sorting facility.",
+    "objectiveType": "sort", "target": "sorting_score", "targetItemId": "", "targetAmount": 15,
+    "rewardCoins": 75, "rewardSkill": { "recycling_mastery": 1 }, "rewardItems": [],
+    "prerequisiteQuests": [],
+    "hints": ["Plastic goes in the yellow bin.", "Glass is green, metal is silver.", "Check the item description if you're unsure!"]
+  },
+  "know_your_materials": {
+    "id": "know_your_materials", "mapOrigin": "recyclingFields",
+    "title": "Know Your Materials", "isMainQuest": true, "npcId": "eco_educator",
+    "description": "Before you can recycle efficiently, you need to identify materials correctly. Complete the material identification quiz with 100% accuracy.",
+    "objectiveType": "sort", "target": "sorting_perfect", "targetItemId": "", "targetAmount": 10,
+    "rewardCoins": 50, "rewardSkill": { "recycling_mastery": 1 }, "rewardItems": [],
+    "prerequisiteQuests": ["waste_crisis"],
+    "hints": ["Read each item's description carefully.", "When in doubt, think about what the item is made of.", "Plastics float, metals are heavy and shiny."]
+  },
+  "circular_economy": {
+    "id": "circular_economy", "mapOrigin": "recyclingFields",
+    "title": "Circular Economy", "isMainQuest": true, "npcId": "materials_scientist",
+    "description": "Prove that waste can become a resource! Craft 1 Eco Brick from recycled plastic and glass.",
+    "objectiveType": "craft", "target": "eco_brick", "targetItemId": "eco_brick", "targetAmount": 1,
+    "rewardCoins": 125, "rewardSkill": { "recycling_mastery": 1, "bonding": 1 }, "rewardItems": [],
+    "prerequisiteQuests": ["know_your_materials"],
+    "hints": ["First recycle plastic waste × 3 to get plastic pellets.", "Then recycle glass waste × 3 to get glass cullet.", "Combine them at the Materials Lab bench."]
+  },
+  "composite_creation": {
+    "id": "composite_creation", "mapOrigin": "recyclingFields",
+    "title": "Composite Creation", "isMainQuest": true, "npcId": "materials_scientist",
+    "description": "Advanced materials can be made from everyday waste! Craft 1 Composite Wood Board and 1 Recycled Metal Ingot.",
+    "objectiveType": "craft", "target": "composite_wood", "targetItemId": "composite_wood", "targetAmount": 1,
+    "rewardCoins": 100, "rewardSkill": { "recycling_mastery": 1 }, "rewardItems": ["recycled_metal"],
+    "prerequisiteQuests": ["circular_economy"],
+    "hints": ["Composite wood needs paper waste + organic waste.", "Gather these from the resource nodes on the map.", "The Materials Lab handles all composite crafting."]
+  },
+  "carbon_neutral": {
+    "id": "carbon_neutral", "mapOrigin": "ecoVille",
+    "title": "Carbon Neutral", "isMainQuest": true, "npcId": "climate_scientist",
+    "description": "Use the Climate Calculator to reduce EcoVille's carbon footprint by 50% in 10 actions or fewer.",
+    "objectiveType": "climate_calc", "target": "carbon_reduction", "targetItemId": "", "targetAmount": 50,
+    "rewardCoins": 100, "rewardSkill": { "climate_science": 1 }, "rewardItems": [],
+    "prerequisiteQuests": [],
+    "hints": ["Solar Farms and Wind Turbines reduce CO₂ while boosting approval.", "Carbon Tax is free but unpopular.", "Reforestation is cheap and boosts public approval!"]
+  },
+  "greenhouse_gases": {
+    "id": "greenhouse_gases", "mapOrigin": "ecoVille",
+    "title": "Greenhouse Gases", "isMainQuest": true, "npcId": "climate_scientist",
+    "description": "Study greenhouse gases firsthand! Craft CO₂ and CH₄, then capture the CO₂.",
+    "objectiveType": "craft", "target": "co2_captured", "targetItemId": "co2_captured", "targetAmount": 1,
+    "rewardCoins": 125, "rewardSkill": { "climate_science": 1, "bonding": 1 }, "rewardItems": [],
+    "prerequisiteQuests": ["carbon_neutral"],
+    "hints": ["You already know how to craft CO₂ and CH₄ from Atom Meadows.", "To capture CO₂, combine a pollution sample with clean water.", "Gather pollution samples from the vents around EcoVille."]
+  },
+  "clean_water_quest": {
+    "id": "clean_water_quest", "mapOrigin": "ecoVille",
+    "title": "Clean Water", "isMainQuest": true, "npcId": "green_mayor",
+    "description": "EcoVille's water supply is contaminated! Filter 3 pollution samples into clean water.",
+    "objectiveType": "craft", "target": "clean_water", "targetItemId": "clean_water", "targetAmount": 3,
+    "rewardCoins": 100, "rewardSkill": { "precipitation": 1 }, "rewardItems": [],
+    "prerequisiteQuests": ["greenhouse_gases"],
+    "hints": ["Activated carbon (charcoal) is the secret to water filtration.", "Combine a pollution sample with C at the Climate Lab.", "The water source springs on the east side are infinite!"]
+  },
+  "renewable_shift": {
+    "id": "renewable_shift", "mapOrigin": "ecoVille",
+    "title": "Renewable Shift", "isMainQuest": true, "npcId": "energy_engineer",
+    "description": "Power EcoVille with clean energy! Craft 1 Solar Panel and 1 Biofuel.",
+    "objectiveType": "craft", "target": "solar_panel", "targetItemId": "solar_panel", "targetAmount": 1,
+    "rewardCoins": 150, "rewardSkill": { "climate_science": 1, "equation_balancing": 1 }, "rewardItems": ["biofuel"],
+    "prerequisiteQuests": ["clean_water_quest"],
+    "hints": ["Solar panels need recycled plastic and glass from Recycling Fields.", "Biofuel is made from organic waste + water.", "These materials cross over from earlier maps — check your inventory!"]
+  },
+  "sustainable_city": {
+    "id": "sustainable_city", "mapOrigin": "ecoVille",
+    "title": "Sustainable City", "isMainQuest": true, "npcId": "green_mayor",
+    "description": "EcoVille is nearly carbon neutral! Earn the Green Certificate by completing all city initiatives.",
+    "objectiveType": "craft", "target": "green_certificate", "targetItemId": "green_certificate", "targetAmount": 1,
+    "rewardCoins": 200, "rewardSkill": { "climate_science": 1, "bonding": 1, "recycling_mastery": 1 }, "rewardItems": [],
+    "prerequisiteQuests": ["renewable_shift"],
+    "hints": ["The Green Certificate is awarded automatically when all EcoVille quests are complete.", "Make sure you've finished the Climate Calculator quest.", "Check the Quest Log to see what's still pending."]
+  },
+  "split_the_light": {
+    "id": "split_the_light", "mapOrigin": "prismHeights",
+    "title": "Split the Light", "isMainQuest": true, "npcId": "optician",
+    "description": "The Prism Tower has gone dark! Solve light puzzle 1 in the Light Lab and craft a Rainbow Gem.",
+    "objectiveType": "craft", "target": "rainbow_gem", "targetItemId": "rainbow_gem", "targetAmount": 1,
+    "rewardCoins": 125, "rewardSkill": { "optics_mastery": 1 }, "rewardItems": [],
+    "prerequisiteQuests": [],
+    "hints": ["A prism bends light by different amounts for different wavelengths.", "White light + Prism = full spectrum!", "Go to the Light Lab and use the puzzle terminal."]
+  },
+  "color_mixing": {
+    "id": "color_mixing", "mapOrigin": "prismHeights",
+    "title": "Color Mixing", "isMainQuest": true, "npcId": "color_artist",
+    "description": "Create secondary colors of light! Solve light puzzles 2 and 3 to mix colored light beams.",
+    "objectiveType": "light_puzzle", "target": "light_puzzle_3", "targetItemId": "", "targetAmount": 1,
+    "rewardCoins": 100, "rewardSkill": { "optics_mastery": 1 }, "rewardItems": [],
+    "prerequisiteQuests": ["split_the_light"],
+    "hints": ["Red + Green light = Yellow!", "Blue + Green = Cyan, Red + Blue = Magenta.", "In light mixing, combining colors makes brighter colors — opposite of pigments!"]
+  },
+  "lens_creation": {
+    "id": "lens_creation", "mapOrigin": "prismHeights",
+    "title": "Lens Creation", "isMainQuest": true, "npcId": "lens_crafter",
+    "description": "The Observatory needs new lenses! Craft 1 Convex Lens at the Light Lab.",
+    "objectiveType": "craft", "target": "convex_lens", "targetItemId": "convex_lens", "targetAmount": 1,
+    "rewardCoins": 150, "rewardSkill": { "bonding": 1 }, "rewardItems": [],
+    "prerequisiteQuests": ["color_mixing"],
+    "hints": ["Convex lenses need recycled glass from the Recycling Fields.", "A prism shard is also needed — gather them from the crystal clusters.", "Convex lenses make things appear larger by bending light inward."]
+  },
+  "invisible_spectrum": {
+    "id": "invisible_spectrum", "mapOrigin": "prismHeights",
+    "title": "The Invisible Spectrum", "isMainQuest": true, "npcId": "light_researcher",
+    "description": "Beyond visible light lies the invisible spectrum! Solve light puzzle 4 and reveal hidden UV messages.",
+    "objectiveType": "light_puzzle", "target": "light_puzzle_4", "targetItemId": "", "targetAmount": 1,
+    "rewardCoins": 175, "rewardSkill": { "optics_mastery": 1, "equation_balancing": 1 }, "rewardItems": [],
+    "prerequisiteQuests": ["lens_creation"],
+    "hints": ["Light exists beyond what we can see — infrared and ultraviolet.", "You'll need your Convex Lens to complete puzzle 4.", "Focus the beam through the lens to amplify its power!"]
+  },
+  "rainbow_bridge": {
+    "id": "rainbow_bridge", "mapOrigin": "prismHeights",
+    "title": "Rainbow Bridge", "isMainQuest": true, "npcId": "optician",
+    "description": "Complete all 5 light puzzles to restore the Rainbow Bridge and unlock the path to Magnet Core!",
+    "objectiveType": "light_puzzle", "target": "light_puzzle_5", "targetItemId": "", "targetAmount": 1,
+    "rewardCoins": 250, "rewardSkill": { "optics_mastery": 2 }, "rewardItems": [],
+    "prerequisiteQuests": ["invisible_spectrum"],
+    "hints": ["The final puzzle uses all optical components.", "Plan your beam path before placing components.", "Remember: mirrors reflect at 45°, splitters divide into 3 beams."]
+  },
+  "polar_attraction": {
+    "id": "polar_attraction", "mapOrigin": "magnetCore",
+    "title": "Polar Attraction", "isMainQuest": true, "npcId": "physicist",
+    "description": "The Core's magnetic poles are out of alignment! Solve trajectory puzzle 1 and craft a Compass.",
+    "objectiveType": "craft", "target": "compass", "targetItemId": "compass", "targetAmount": 1,
+    "rewardCoins": 150, "rewardSkill": { "magnetism_mastery": 1 }, "rewardItems": [],
+    "prerequisiteQuests": [],
+    "hints": ["Opposites attract — north and south poles pull each other.", "A compass needle is just a tiny magnet!", "Trajectory puzzle 1 has no magnets — just angle and velocity."]
+  },
+  "magnetic_fields": {
+    "id": "magnetic_fields", "mapOrigin": "magnetCore",
+    "title": "Magnetic Fields", "isMainQuest": true, "npcId": "physicist",
+    "description": "Navigate the invisible magnetic field maze and craft an Electromagnet to power the Core.",
+    "objectiveType": "craft", "target": "electromagnet", "targetItemId": "electromagnet", "targetAmount": 1,
+    "rewardCoins": 175, "rewardSkill": { "magnetism_mastery": 1, "bonding": 1 }, "rewardItems": [],
+    "prerequisiteQuests": ["polar_attraction"],
+    "hints": ["Your Compass reveals field lines — equip it!", "Walking along field lines is faster than crossing them.", "Electromagnets need steel alloy + copper wire."]
+  },
+  "field_art": {
+    "id": "field_art", "mapOrigin": "magnetCore",
+    "title": "Field Art", "isMainQuest": true, "npcId": "magnetic_artist",
+    "description": "Create a beautiful magnetic field pattern by placing iron filings around magnets in the Core studio.",
+    "objectiveType": "field_nav", "target": "field_pattern", "targetItemId": "", "targetAmount": 1,
+    "rewardCoins": 125, "rewardSkill": { "magnetism_mastery": 1 }, "rewardItems": [],
+    "prerequisiteQuests": ["magnetic_fields"],
+    "hints": ["Iron filings align along magnetic field lines.", "North and south poles create beautiful curved patterns.", "The field density shows where the force is strongest."]
+  },
+  "perfect_trajectory": {
+    "id": "perfect_trajectory", "mapOrigin": "magnetCore",
+    "title": "Perfect Trajectory", "isMainQuest": true, "npcId": "rocket_engineer",
+    "description": "The launch cannon needs precise calibration! Solve trajectory puzzle 4 without missing, then craft the Propulsion Device.",
+    "objectiveType": "trajectory", "target": "trajectory_puzzle_4", "targetItemId": "", "targetAmount": 1,
+    "rewardCoins": 225, "rewardSkill": { "magnetism_mastery": 1, "equation_balancing": 1 }, "rewardItems": [],
+    "prerequisiteQuests": ["field_art"],
+    "hints": ["Remember: gravity always pulls down.", "Magnets can redirect your projectile's path.", "Try the preview trajectory line before firing — it shows your path!"]
+  },
+  "core_stabilization": {
+    "id": "core_stabilization", "mapOrigin": "magnetCore",
+    "title": "Core Stabilization", "isMainQuest": true, "npcId": "core_guardian",
+    "description": "The Magnet Core is destabilizing! Craft the Magnetic Shield and complete all trajectory puzzles to save it.",
+    "objectiveType": "craft", "target": "magnetic_shield", "targetItemId": "magnetic_shield", "targetAmount": 1,
+    "rewardCoins": 300, "rewardSkill": { "magnetism_mastery": 2, "bonding": 1 }, "rewardItems": ["core_crystal"],
+    "prerequisiteQuests": ["perfect_trajectory"],
+    "hints": ["The Magnetic Shield needs 2× steel alloy + north magnet + south magnet.", "Steel alloy comes from metal waste + carbon in the Physics Lab.", "Once you have the shield, bring it to Guardian Gauss at the Core!"]
   }
 }
