@@ -249,4 +249,9 @@ export function generateNPCSprites(scene: Phaser.Scene) {
   generateNPC(scene, 'npc_green_mayor', 0x4caf50, 0x388e3c, 'mayor');
   generateNPC(scene, 'npc_energy_engineer', 0xffd54f, 0xffa726, 'worker');
   generateNPC(scene, 'npc_eco_activist', 0x00b894, 0x009874, 'assistant');
+  generateNPC(scene, 'npc_optician', 0xce93d8, 0xab47bc, 'scholar');
+  generateNPC(scene, 'npc_light_researcher', 0xffd54f, 0xffa726, 'scholar');
+  generateNPC(scene, 'npc_color_artist', 0xff8a65, 0xff5722, 'worker');
+  generateNPC(scene, 'npc_lens_crafter', 0xce93d8, 0xba68c8, 'worker');
+  generateNPC(scene, 'npc_optics_librarian', 0xce93d8, 0xab47bc, 'scholar');
 }

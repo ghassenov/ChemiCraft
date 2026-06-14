@@ -927,7 +927,7 @@ export abstract class BaseGameScene extends Phaser.Scene {
       }
 
       const buildingSceneKey = data.id === 'lab_assistant' ? 'LabInteriorScene'
-        : (data.id === 'professor_knowitall' || data.id === 'eco_educator' || data.id === 'eco_activist') ? 'LibraryInteriorScene'
+        : (data.id === 'professor_knowitall' || data.id === 'eco_educator' || data.id === 'eco_activist' || data.id === 'optics_librarian') ? 'LibraryInteriorScene'
         : null;
 
       if (data.questId && gameStore.isQuestActive(data.questId) && !gameStore.isQuestCompleted(data.questId)) {

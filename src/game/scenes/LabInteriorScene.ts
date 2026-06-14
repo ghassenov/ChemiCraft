@@ -8,6 +8,7 @@ import { gameStore } from '../../store/gameStore';
 import { RecipeData, ItemData, Direction } from '../data/types';
 import { MAP_SCENE_KEYS } from '../data/mapSceneKeys';
 import { openReagentSelector, ReagentSelectorCallbacks } from '../overlays/ReagentSelector';
+import { openLightPuzzle } from '../overlays/LightPuzzle';
 import { addHelpButton } from '../overlays/HelpOverlay';
 
 type LabState = 'idle' | 'carrying' | 'craft_prompt';
@@ -89,6 +90,45 @@ export class LabInteriorScene extends Phaser.Scene {
       'Bring them to the workbench\nin the center to craft molecules.',
       'Exit through the corridor —\ndecontamination runs automatically.',
     ]);
+
+    if (gameStore.getCurrentMap() === 'prismHeights') {
+      this.createLightTableZone();
+    }
+  }
+
+  private createLightTableZone() {
+    const g = this.add.graphics().setDepth(4);
+    g.fillStyle(0xce93d8, 0.12);
+    g.fillRoundedRect(440, 350, 120, 60, 8);
+    g.lineStyle(2, 0xce93d8, 0.4);
+    g.strokeRoundedRect(440, 350, 120, 60, 8);
+
+    g.fillStyle(0xb39ddb, 0.08);
+    g.fillCircle(500, 380, 16);
+
+    const icon = this.add.text(500, 365, '💡', {
+      fontSize: '22px',
+    }).setOrigin(0.5).setDepth(5);
+    icon.setAlpha(0.7);
+
+    this.tweens.add({
+      targets: icon, alpha: 0.3, duration: 1200, yoyo: true, repeat: -1, ease: 'Sine.easeInOut',
+    });
+
+    const markerG = this.add.graphics().setDepth(4);
+    markerG.fillStyle(0xce93d8, 0.06);
+    markerG.fillRoundedRect(440, 410, 120, 20, 4);
+
+    const markerT = this.add.text(500, 420, 'Light Table', {
+      fontFamily: '"Inter"', fontSize: '8px', color: '#ce93d8',
+    }).setOrigin(0.5).setDepth(5).setAlpha(0.4);
+    this.tweens.add({
+      targets: markerT, alpha: 0.15, duration: 1500, yoyo: true, repeat: -1, ease: 'Sine.easeInOut',
+    });
+  }
+
+  private isAtLightTable(px: number, py: number): boolean {
+    return px >= 440 && px <= 560 && py >= 350 && py <= 410;
   }
 
   update(_time: number, delta: number) {
@@ -610,6 +650,11 @@ export class LabInteriorScene extends Phaser.Scene {
   private handleInteraction() {
     const px = this.player.x;
     const py = this.player.y;
+
+    if (gameStore.getCurrentMap() === 'prismHeights' && this.isAtLightTable(px, py)) {
+      openLightPuzzle(this);
+      return;
+    }
 
     if (this.isNear(px, py, this.assistant.x, this.assistant.y, 40)) {
       if (!gameStore.hasVisitedInterior('LabInteriorScene')) {
