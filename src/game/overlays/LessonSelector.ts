@@ -116,6 +116,102 @@ const mapLessonSets: Record<string, MapLessonSet> = {
     },
     completionItem: 'materials_certificate',
   },
+
+  ecoVille: {
+    lessons: [
+      { id: 'climate_basics', title: 'Climate Science Basics', desc: 'Greenhouse effect and global warming.', reward: 15 },
+      { id: 'carbon_cycle', title: 'The Carbon Cycle', desc: 'How carbon moves through Earth.', reward: 15 },
+      { id: 'carbon_capture', title: 'Carbon Capture Tech', desc: 'Removing CO₂ from the air.', reward: 20 },
+      { id: 'renewable_energy', title: 'Renewable Energy', desc: 'Solar, biofuel, wind, and more.', reward: 20 },
+      { id: 'sustainable_city', title: 'Sustainable Cities', desc: 'Building a carbon-neutral future.', reward: 25 },
+    ],
+    quizzes: {
+      climate_basics: [
+        { q: 'Which gas is the primary greenhouse gas from human activity?', opts: ['Oxygen', 'Carbon Dioxide', 'Nitrogen'], ans: 1 },
+        { q: 'What does the greenhouse effect do?', opts: ['Cools the planet', 'Traps heat in the atmosphere', 'Blocks all sunlight'], ans: 1 },
+        { q: 'Which is a stronger greenhouse gas, molecule for molecule?', opts: ['CO₂', 'CH₄ (Methane)', 'O₂'], ans: 1 },
+        { q: 'What human activity produces the most greenhouse gases?', opts: ['Burning fossil fuels', 'Growing food', 'Using phones'], ans: 0 },
+        { q: 'What percentage of Earth\'s atmosphere is CO₂?', opts: ['About 0.04%', 'About 4%', 'About 21%'], ans: 0 },
+      ],
+      carbon_cycle: [
+        { q: 'Where is most of Earth\'s carbon stored?', opts: ['In the atmosphere', 'In the oceans and rocks', 'In living things'], ans: 1 },
+        { q: 'What process removes CO₂ from the atmosphere?', opts: ['Respiration', 'Photosynthesis', 'Combustion'], ans: 1 },
+        { q: 'What happens when oceans absorb more CO₂?', opts: ['They become more alkaline', 'They become more acidic', 'Nothing changes'], ans: 1 },
+        { q: 'How does deforestation affect the carbon cycle?', opts: ['Increases CO₂ in the atmosphere', 'Decreases CO₂', 'No effect'], ans: 0 },
+        { q: 'What is the Keeling Curve?', opts: ['A graph of rising CO₂ levels', 'A type of solar panel', 'A weather pattern'], ans: 0 },
+      ],
+      carbon_capture: [
+        { q: 'What is carbon capture?', opts: ['Trapping CO₂ before it reaches the atmosphere', 'Growing more plants', 'Using less energy'], ans: 0 },
+        { q: 'What material is commonly used to filter pollutants?', opts: ['Plastic', 'Activated carbon', 'Aluminum'], ans: 1 },
+        { q: 'What happens to captured CO₂ in this game?', opts: ['Released into space', 'Converted into carbon credits', 'Stored underground forever'], ans: 1 },
+        { q: 'In the game, what do you combine to capture CO₂?', opts: ['O₂ + H₂', 'Pollution sample + clean water', 'C + H + H + H + H'], ans: 1 },
+        { q: 'How many captured CO₂ units make a carbon credit?', opts: ['1', '2', '3'], ans: 1 },
+      ],
+      renewable_energy: [
+        { q: 'Which energy source is considered renewable?', opts: ['Coal', 'Natural gas', 'Solar'], ans: 2 },
+        { q: 'What do solar panels convert sunlight into?', opts: ['Heat', 'Electricity', 'Fuel'], ans: 1 },
+        { q: 'Why is biofuel considered carbon-neutral?', opts: ['It produces no CO₂', 'Plants absorbed CO₂ while growing', 'It uses no energy to make'], ans: 1 },
+        { q: 'What materials make a solar panel in the game?', opts: ['Plastic + metal', 'Recycled plastic + recycled glass', 'Wood + water'], ans: 1 },
+        { q: 'Which renewable source provides the most energy worldwide?', opts: ['Solar', 'Wind', 'Hydropower'], ans: 2 },
+      ],
+      sustainable_city: [
+        { q: 'What does carbon neutral mean?', opts: ['Zero CO₂ produced', 'CO₂ emitted equals CO₂ removed', 'Only using renewable energy'], ans: 1 },
+        { q: 'What is the final quest reward in EcoVille?', opts: ['Biofuel', 'Solar panel', 'Green Certificate'], ans: 2 },
+        { q: 'What three items make the Green Certificate?', opts: ['Biofuel + solar + carbon credit', 'Water + air + soil', 'Plastic + glass + metal'], ans: 0 },
+        { q: 'Where do recycled plastic and glass come from?', opts: ['EcoVille shops', 'Recycling Fields', 'Atom Meadows'], ans: 1 },
+        { q: 'What unlocks after completing all EcoVille quests?', opts: ['Portal to Prism Heights', 'Portal back to Atom Meadows', 'The Green Certificate'], ans: 0 },
+      ],
+    },
+    completionItem: null,
+  },
+
+  prismHeights: {
+    lessons: [
+      { id: 'light_basics', title: 'The Nature of Light', desc: 'Wave-particle duality and the EM spectrum.', reward: 15 },
+      { id: 'refraction', title: 'Refraction & Prisms', desc: 'Snell\'s law, dispersion, and rainbows.', reward: 15 },
+      { id: 'lenses', title: 'Lenses & Focusing', desc: 'Convex/concave, focal point, telescopes.', reward: 20 },
+      { id: 'color_theory', title: 'Color & the Spectrum', desc: 'Additive vs subtractive, RGB, complementary.', reward: 20 },
+      { id: 'optics_tech', title: 'Optics in Technology', desc: 'Microscopes, fiber optics, lasers, cameras.', reward: 25 },
+    ],
+    quizzes: {
+      light_basics: [
+        { q: 'What is light?', opts: ['A particle only', 'A wave only', 'Both a wave and a particle'], ans: 2 },
+        { q: 'What is the speed of light in a vacuum?', opts: ['300,000 km/s', '150,000 km/s', '3,000 km/s'], ans: 0 },
+        { q: 'Which color has the longest wavelength?', opts: ['Blue', 'Red', 'Green'], ans: 1 },
+        { q: 'What part of the EM spectrum is visible?', opts: ['380nm - 740nm', '100nm - 400nm', '700nm - 1mm'], ans: 0 },
+        { q: 'What did Newton call the seven colors of light?', opts: ['The Spectrum', 'The Rainbow', 'The Prismatic Colors'], ans: 0 },
+      ],
+      refraction: [
+        { q: 'What happens when light enters a prism?', opts: ['It reflects', 'It bends (refracts)', 'It stops moving'], ans: 1 },
+        { q: 'Why does a prism split white light?', opts: ['Different colors travel at different speeds', 'The prism has filters inside', 'Light gets hotter inside the prism'], ans: 0 },
+        { q: 'What is Snell\'s Law about?', opts: ['Light reflection', 'Light refraction at boundaries', 'Light absorption'], ans: 1 },
+        { q: 'Which color bends the most through a prism?', opts: ['Red', 'Green', 'Violet'], ans: 2 },
+        { q: 'What creates a rainbow in nature?', opts: ['Raindrops refracting sunlight', 'Clouds reflecting moonlight', 'Wind scattering light'], ans: 0 },
+      ],
+      lenses: [
+        { q: 'What does a convex lens do to parallel light?', opts: ['Spreads it out', 'Focuses it to a point', 'Blocks it completely'], ans: 1 },
+        { q: 'What is the focal point?', opts: ['Where light rays converge', 'The center of the lens', 'The edge of the lens'], ans: 0 },
+        { q: 'What shape is a concave lens?', opts: ['Thicker in the middle', 'Thinner in the middle', 'Flat on both sides'], ans: 1 },
+        { q: 'Which device uses a convex lens?', opts: ['Mirror', 'Telescope', 'Window'], ans: 1 },
+        { q: 'What happens when you combine two convex lenses?', opts: ['They cancel out', 'They create a telescope or microscope', 'They block all light'], ans: 1 },
+      ],
+      color_theory: [
+        { q: 'What are the primary additive colors?', opts: ['Red, yellow, blue', 'Red, green, blue', 'Cyan, magenta, yellow'], ans: 1 },
+        { q: 'What do you get mixing red and green light?', opts: ['Yellow', 'Brown', 'White'], ans: 0 },
+        { q: 'What is additive color mixing?', opts: ['Mixing paints', 'Mixing colored lights', 'Mixing filters'], ans: 1 },
+        { q: 'What color is created by all RGB light combined?', opts: ['Black', 'White', 'Gray'], ans: 1 },
+        { q: 'How do screens create all colors?', opts: ['Using RGB pixels', 'Using CMYK ink', 'Using colored glass'], ans: 0 },
+      ],
+      optics_tech: [
+        { q: 'What does a microscope use to magnify?', opts: ['Prisms', 'Multiple lenses', 'Mirrors only'], ans: 1 },
+        { q: 'How does fiber optics transmit data?', opts: ['Using electricity', 'Using total internal reflection of light', 'Using radio waves'], ans: 1 },
+        { q: 'What does LASER stand for?', opts: ['Light amplification by stimulated emission of radiation', 'Light and sound energy ray', 'Large aperture spectrum emitter ray'], ans: 0 },
+        { q: 'What part of a camera focuses light?', opts: ['The sensor', 'The lens', 'The shutter'], ans: 1 },
+        { q: 'What technology uses optics to read data?', opts: ['Hard drives', 'CD/DVD drives', 'USB drives'], ans: 1 },
+      ],
+    },
+    completionItem: null,
+  },
 };
 
 export function openLessonSelector(scene: Phaser.Scene, mapKey?: string) {
@@ -130,7 +226,7 @@ export function openLessonSelector(scene: Phaser.Scene, mapKey?: string) {
   panel.lineStyle(2, 0x8b6914, 0.5);
   panel.strokeRoundedRect(width / 2 - 200, height / 2 - 160, 400, 320, 12);
 
-  const titleText = effectiveMapKey === 'recyclingFields' ? 'MATERIALS STUDY CENTER' : 'SELECT A LESSON';
+  const titleText = effectiveMapKey === 'recyclingFields' ? 'MATERIALS STUDY CENTER' : effectiveMapKey === 'ecoVille' ? 'ECO CLIMATE LIBRARY' : effectiveMapKey === 'prismHeights' ? 'OPTICS STUDY CENTER' : 'SELECT A LESSON';
   const title = scene.add.text(width / 2, height / 2 - 140, titleText, {
     fontFamily: '"Press Start 2P"', fontSize: '12px', color: '#d4a855',
   }).setOrigin(0.5).setDepth(52);
@@ -197,6 +293,16 @@ function openLessonContent(scene: Phaser.Scene, lesson: Lesson, remaining: Quest
   else if (lesson.id === 'glass_metal') content = 'Glass is made from silica sand, soda ash, and limestone. It\'s infinitely recyclable without quality loss. Metals like aluminum are the most energy-efficient to recycle — aluminum recycling uses 95% less energy than primary production! Steel, copper, and brass are also valuable recyclables.';
   else if (lesson.id === 'paper_organic') content = 'Paper fibers weaken each time they\'re recycled, so paper can typically be recycled 5-7 times. Composting turns organic waste into nutrient-rich soil through thermophilic microbial activity. The right balance of greens (nitrogen), browns (carbon), air, and moisture is key to successful composting.';
   else if (lesson.id === 'circular_eco') content = 'A circular economy keeps resources in use for as long as possible, extracting maximum value, then recovering and regenerating products at end of life. This contrasts with the traditional linear economy (take-make-dispose). Eco bricks, upcycling, and industrial symbiosis are circular economy innovations.';
+  else if (lesson.id === 'climate_basics') content = 'The greenhouse effect is a natural process where gases like CO\u2082 and CH\u2084 trap heat in Earth\u2019s atmosphere. Without it, our planet would be frozen. However, human activities \u2014 especially burning fossil fuels \u2014 have increased CO\u2082 levels by 50% since the Industrial Revolution, causing global temperatures to rise. This is climate change. The main greenhouse gases are CO\u2082 (carbon dioxide), CH\u2084 (methane), N\u2082O (nitrous oxide), and fluorinated gases.';
+  else if (lesson.id === 'carbon_cycle') content = 'Carbon moves continuously through Earth\u2019s systems \u2014 the atmosphere, oceans, soil, and living things. Plants absorb CO\u2082 through photosynthesis, animals release it through respiration, and the oceans absorb vast amounts. The Keeling Curve, started by Charles David Keeling in 1958, shows atmospheric CO\u2082 rising from 315 ppm to over 420 ppm today. Deforestation and fossil fuel burning have disrupted this natural cycle, releasing carbon that was locked underground for millions of years.';
+  else if (lesson.id === 'carbon_capture') content = 'Carbon capture technology traps CO\u2082 before it reaches the atmosphere. In this game, you combine a pollution sample (\u2601\uFE0F) with clean water (\uD83D\uDCA7) to capture CO\u2082 (\uD83E\uDEEB). Two captured CO\u2082 units can be combined into a carbon credit (\uD83C\uDF0D), which represents removing 1 tonne of CO\u2082 from the atmosphere. Real-world methods include chemical absorption, direct air capture, and bioenergy with carbon capture and storage (BECCS).';
+  else if (lesson.id === 'renewable_energy') content = 'Renewable energy comes from sources that naturally replenish. Solar panels convert sunlight into electricity using photovoltaic cells. Biofuel is made from organic matter and is carbon-neutral because the plants absorbed CO\u2082 as they grew. Wind turbines, hydropower, and geothermal energy are other major renewables. In EcoVille, you craft solar panels from recycled plastic and glass, and biofuel from organic waste and water \u2014 showing how waste can become energy.';
+  else if (lesson.id === 'sustainable_city') content = 'A sustainable city balances environmental, social, and economic needs. Carbon neutrality means the CO\u2082 a city emits is equal to what it removes. EcoVille\u2019s path to carbon neutrality requires: renewable energy (solar + biofuel), carbon capture and offsetting, clean water filtration, and sustainable materials. The Green Certificate (\uD83C\uDFC6) represents the final synthesis of all these technologies. Real cities like Copenhagen and Vancouver have set 2040-2050 carbon neutrality targets.';
+  else if (lesson.id === 'light_basics') content = 'Light is electromagnetic radiation that behaves as both a wave and a particle (wave-particle duality). It travels at 299,792,458 m/s in a vacuum \u2014 the fastest speed in the universe. The visible spectrum (380nm to 740nm) is tiny compared to the full EM spectrum, which includes radio waves, microwaves, infrared, ultraviolet, X-rays, and gamma rays. Isaac Newton was the first to prove white light contains all colors by using a prism.';
+  else if (lesson.id === 'refraction') content = 'Refraction is the bending of light when it passes between different media. Snell\u2019s Law (n\u2081sin\u03B8\u2081 = n\u2082sin\u03B8\u2082) predicts the angle change. When white light enters a prism, different wavelengths bend by different amounts (dispersion). Red bends the least, violet the most. This is why prisms split white light into a rainbow. In nature, raindrops act as tiny prisms, creating rainbows when sunlight passes through them at the right angle.';
+  else if (lesson.id === 'lenses') content = 'A convex lens is thicker in the middle and focuses parallel light rays to a single focal point. A concave lens is thinner in the middle and spreads light rays apart. The focal length determines the lens\u2019s power \u2014 shorter focal length = stronger magnification. Telescopes use two convex lenses to magnify distant objects. Microscopes use a short-focal-length objective lens and a longer-focal-length eyepiece. Corrective eyeglasses use precisely shaped lenses to fix vision problems.';
+  else if (lesson.id === 'color_theory') content = 'Additive color mixing combines colored lights: red + green = yellow, red + blue = magenta, green + blue = cyan, and all three = white. This is how screens work \u2014 every pixel has red, green, and blue subpixels. Subtractive color mixing (paints and filters) works differently: each layer subtracts wavelengths, so more layers = darker. A red filter blocks green and blue, passing only red. A Color Filter Set combines all three primary filters for precise wavelength control.';
+  else if (lesson.id === 'optics_tech') content = 'Optics powers modern technology. Fiber optic cables use total internal reflection to transmit data as light pulses over long distances with minimal loss. Lasers (Light Amplification by Stimulated Emission of Radiation) produce coherent, monochromatic beams used in surgery, cutting, barcodes, and fiber optics. Cameras use compound lenses to focus light onto sensors. CD/DVD drives use lasers to read data from reflective pits. The Hubble Space Telescope is essentially a large reflecting telescope in orbit.';
 
   const overlay = scene.add.rectangle(0, 0, width, height, 0x000, 0.85).setOrigin(0).setDepth(60);
 
@@ -288,6 +394,7 @@ function openLessonContent(scene: Phaser.Scene, lesson: Lesson, remaining: Quest
           const skillMap: Record<string, string> = {
             recyclingFields: 'recycling_mastery',
             atomMeadows: 'equation_balancing',
+            prismHeights: 'optics_mastery',
           };
           gameStore.addSkillPoints(skillMap[mapKey] || 'equation_balancing', 1);
 

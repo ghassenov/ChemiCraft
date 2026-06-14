@@ -178,6 +178,27 @@
       ]
     }
   },
+  "lens_crafter": {
+    "id": "lens_crafter", "name": "Lena Lens", "spriteColor": "#ce93d8",
+    "questId": "lens_creation", "mapOrigin": "prismHeights",
+    "dialogue": {
+      "default": ["The observatory lenses are cracked!", "Without perfect lenses, the light won't focus!", "Can you craft a Convex Lens at the Light Lab?", "You'll need a prism shard and some recycled glass."],
+      "questActive": ["A Convex Lens needs: 1 prism (🔷) + 1 recycled glass (💎).", "Prisms come from crystal clusters around Prism Heights.", "Recycled glass can be brought from Recycling Fields!", "Shape it at the Light Lab workbench."],
+      "questComplete": ["A perfect Convex Lens! Light bends beautifully through it.", "Convex lenses focus parallel rays to a single point.", "This is how telescopes, microscopes, and eyeglasses work!"]
+    }
+  },
+  "optics_librarian": {
+    "id": "optics_librarian", "name": "Spectra", "spriteColor": "#ce93d8",
+    "questId": null, "mapOrigin": "prismHeights",
+    "dialogue": {
+      "default": [
+        "Welcome to the Optics Library!",
+        "Light is fascinating — it behaves as both a wave and a particle!",
+        "Browse the bookshelves to learn about reflection, refraction, and color.",
+        "The prism over there shows the hidden colors in white light."
+      ]
+    }
+  },
   "core_guardian": {
     "id": "core_guardian", "name": "Guardian Gauss", "spriteColor": "#7c4dff",
     "questId": "core_stabilization", "mapOrigin": "magnetCore",
