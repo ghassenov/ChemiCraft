@@ -56,8 +56,8 @@
     "questId": "circular_economy", "mapOrigin": "recyclingFields",
     "dialogue": {
       "default": ["Fascinating, isn't it? Waste is just a resource in the wrong place!", "Every material has potential for a second life.", "Join me in the Materials Lab and let's make something new!"],
-      "questActive": ["An Eco Brick requires recycled plastic AND glass.", "First, process 3 units of each waste type separately.", "Then combine the results at the crafting bench."],
-      "questComplete": ["Beautiful! An Eco Brick weighs the same as a regular brick but uses almost zero new resources.", "In developing nations, eco bricks are used to build entire schools!", "Science can truly change lives."]
+      "questActive": ["A Recycled Composite Brick needs two inputs: plastic pellets AND glass cullet.", "First, recycle 3 units of each waste type at the lab bench.", "Then combine the pellets and cullet together to form the brick."],
+      "questComplete": ["Beautiful! The Recycled Composite Brick uses melted plastic as a binder for glass aggregate.", "Real companies use this exact process to make sustainable building blocks!", "Science can truly change lives."]
     }
   },
   "green_dealer": {

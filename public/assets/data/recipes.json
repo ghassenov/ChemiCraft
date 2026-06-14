@@ -65,10 +65,10 @@
     "explanation": "Composite wood is made by bonding recycled wood fibers and paper with adhesives. It's stronger and more consistent than natural wood and helps reduce deforestation."
   },
   {
-    "id": "eco_brick", "inputs": ["🔄", "💎"],
-    "output": "eco_brick", "outputName": "Eco Brick",
-    "outputItemId": "eco_brick", "outputQuantity": 1, "difficulty": 2, "mapOrigin": "recyclingFields",
-    "explanation": "Eco bricks are building blocks made from compressed recycled materials. They're used worldwide to create schools, homes, and community centers from waste!"
+    "id": "recycled_composite_brick", "inputs": ["🔄", "💎"],
+    "output": "recycled_composite_brick", "outputName": "Recycled Composite Brick",
+    "outputItemId": "recycled_composite_brick", "outputQuantity": 1, "difficulty": 2, "mapOrigin": "recyclingFields",
+    "explanation": "A Recycled Composite Brick fuses plastic pellets (thermoplastic binder) with glass cullet (mineral aggregate) through heating and compression. This is real-world technology — companies use recycled plastic and sand/fly ash to create sustainable building blocks!"
   },
   {
     "id": "biofuel_synthesis", "inputs": ["🌿", "H₂O"],

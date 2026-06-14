@@ -450,14 +450,7 @@ export class LaboratoryScene extends Phaser.Scene {
     const result = this.craftingSystem.craft(this.selectedReagents);
 
     if (result.success && result.result) {
-      const outSymbol = result.result.output;
-      let craftedItemId = '';
-      for (const [id, data] of Object.entries(items)) {
-        if (data.type === 'molecule' && data.symbol === outSymbol) {
-          craftedItemId = id;
-          break;
-        }
-      }
+      const craftedItemId = result.result.outputItemId;
 
       if (craftedItemId) {
         const symbolToId: Record<string, string> = {};

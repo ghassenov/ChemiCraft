@@ -899,7 +899,7 @@ export class LabInteriorScene extends Phaser.Scene {
       fontFamily: '"Press Start 2P"', fontSize: '12px', color: '#f1c40f'
     }).setOrigin(0.5).setDepth(102);
     
-    const inst = this.add.text(width / 2, height / 2 - 105, 'Mash [SPACE] to heat.\nKeep in green zone.', {
+    const inst = this.add.text(width / 2, height / 2 - 105, 'Hold [SPACE] to heat.\nKeep in green zone.', {
       fontFamily: '"Inter"', fontSize: '10px', color: '#fff', align: 'center'
     }).setOrigin(0.5).setDepth(102);
 
@@ -928,6 +928,8 @@ export class LabInteriorScene extends Phaser.Scene {
     const progFill = this.add.rectangle(width / 2 - 80, height / 2 + 110, 10, 0, 0x0984e3).setOrigin(0.5, 1).setDepth(103);
 
     let isPlaying = true;
+    const spaceKey = this.input.keyboard!.addKey('SPACE');
+    let lastFlameTime = 0;
     
     const minigameUpdate = (time: number, delta: number) => {
       if (!isPlaying) return;
@@ -936,16 +938,19 @@ export class LabInteriorScene extends Phaser.Scene {
       temp -= delta * coolingRate;
       if (temp < 0) temp = 0;
       
-      // Heating
-      if (Phaser.Input.Keyboard.JustDown(this.input.keyboard!.addKey('SPACE'))) {
-        temp += 12;
+      // Heating (hold SPACE for continuous)
+      if (spaceKey.isDown) {
+        temp += delta * 0.04;
         if (temp > 100) temp = 100;
         
-        // Small flame effect
-        const f = this.add.particles(width / 2, height / 2 + 120, 'icon_particle', {
-          speed: 20, angle: {min: 250, max: 290}, scale: {start:0.3, end:0}, lifespan: 300, blendMode: 'ADD', tint: 0xe74c3c
-        }).setDepth(105);
-        this.time.delayedCall(300, () => f.destroy());
+        // Flame particle every ~200ms while held
+        if (time - lastFlameTime > 200) {
+          lastFlameTime = time;
+          const f = this.add.particles(width / 2, height / 2 + 120, 'icon_particle', {
+            speed: 20, angle: {min: 250, max: 290}, scale: {start:0.3, end:0}, lifespan: 300, blendMode: 'ADD', tint: 0xe74c3c
+          }).setDepth(105);
+          this.time.delayedCall(300, () => f.destroy());
+        }
       }
       
       // Update indicator Y
@@ -985,18 +990,11 @@ export class LabInteriorScene extends Phaser.Scene {
   }
 
   private finishCraft(result: any) {
-    const outSymbol = result.result.output;
-    let craftedItemId = '';
-    for (const [id, data] of Object.entries(this.craftingItems)) {
-      if (data.type === 'molecule' && data.symbol === outSymbol) {
-        craftedItemId = id;
-        break;
-      }
-    }
+    const craftedItemId = result.result.outputItemId;
 
     if (craftedItemId) {
       gameStore.addToInventory(craftedItemId, 1);
-      gameStore.unlockChemDex(outSymbol);
+      gameStore.unlockChemDex(result.result.output);
 
       this.sound.play('sfx_craft', { volume: 0.6 });
       this.cameras.main.flash(200, 100, 255, 200);

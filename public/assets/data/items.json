@@ -129,9 +129,9 @@
     "description": "Nutrient-rich organic compost — great for plants!",
     "color": "#6d4c41", "price": 25, "stackable": true, "mapOrigin": "recyclingFields"
   },
-  "eco_brick": {
-    "id": "eco_brick", "name": "Eco Brick", "symbol": "🧱", "type": "quest_item",
-    "description": "A building brick made from recycled materials — the future of construction!",
+  "recycled_composite_brick": {
+    "id": "recycled_composite_brick", "name": "Recycled Composite Brick", "symbol": "🧱", "type": "quest_item",
+    "description": "A building brick made by fusing recycled plastic pellets with glass cullet aggregate — strong, sustainable, and 100% recycled!",
     "color": "#8bc34a", "price": 80, "stackable": true, "mapOrigin": "recyclingFields"
   },
   "biofuel": {

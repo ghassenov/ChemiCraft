@@ -65,8 +65,8 @@
   "circular_economy": {
     "id": "circular_economy", "mapOrigin": "recyclingFields",
     "title": "Circular Economy", "isMainQuest": true, "npcId": "materials_scientist",
-    "description": "Prove that waste can become a resource! Craft 1 Eco Brick from recycled plastic and glass.",
-    "objectiveType": "craft", "target": "eco_brick", "targetItemId": "eco_brick", "targetAmount": 1,
+    "description": "Prove that waste can become a resource! Craft 1 Recycled Composite Brick from plastic pellets and glass cullet.",
+    "objectiveType": "craft", "target": "recycled_composite_brick", "targetItemId": "recycled_composite_brick", "targetAmount": 1,
     "rewardCoins": 125, "rewardSkill": { "recycling_mastery": 1, "bonding": 1 }, "rewardItems": [],
     "prerequisiteQuests": ["know_your_materials"],
     "hints": ["First recycle plastic waste × 3 to get plastic pellets.", "Then recycle glass waste × 3 to get glass cullet.", "Combine them at the Materials Lab bench."]
