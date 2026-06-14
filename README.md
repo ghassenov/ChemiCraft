@@ -13,6 +13,8 @@ npm run dev
 
 Open `http://localhost:5173` in your browser. Click **Play as Guest** to jump straight in.
 
+Or try live demo at `http://lo3ba.louaydardouri.me/`
+
 ## Commands
 
 | Command | Description |
