@@ -384,7 +384,7 @@ export class LaboratoryScene extends Phaser.Scene {
     const flicker = Math.sin(time * 0.02) * 2 + Math.sin(time * 0.05) * 1;
 
     this.flameGfx.fillStyle(0xff6b35, 0.4);
-    this.flameGfx.fillCircle(cx, cy + 60 + flicker, 10 + flicker * 0.3);
+    this.flameGfx.fillCircle(cx, cy + 60 - flicker, 10 + flicker * 0.3);
 
     this.flameGfx.fillStyle(0xffa502, 0.3);
     this.flameGfx.fillCircle(cx, cy + 60, 7 + flicker * 0.2);

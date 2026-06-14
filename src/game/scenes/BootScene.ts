@@ -56,7 +56,7 @@ export class BootScene extends Phaser.Scene {
     this.load.json('items', 'assets/data/items.json');
     this.load.json('skills', 'assets/data/skills.json');
 
-    this.load.audio('bgm', 'assets/audio/bgm.wav');
+    this.load.audio('bgm', 'assets/audio/FallingSky.mp3');
     this.load.audio('sfx_coin', 'assets/audio/sfx_coin.wav');
     this.load.audio('sfx_craft', 'assets/audio/sfx_craft.wav');
 

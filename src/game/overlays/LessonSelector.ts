@@ -927,7 +927,7 @@ export function openLessonSelector(scene: Phaser.Scene, mapKey?: string) {
                 ? "OPTICS STUDY CENTER"
                 : "SELECT A LESSON";
     const title = scene.add
-        .text(width / 2 - 120, height / 2 - 130, titleText, {
+        .text(cx, height / 2 - 130, titleText, {
             fontFamily: '"Press Start 2P"',
             fontSize: "12px",
             color: "#d4a855",

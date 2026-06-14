@@ -22,31 +22,32 @@ export function openReagentSelector(scene: Phaser.Scene, callbacks: ReagentSelec
   }
 
   const { width, height } = scene.cameras.main;
+  const cx = width * 0.5 - 120;
   const overlay = scene.add.rectangle(0, 0, width, height, 0x000, 0.7).setOrigin(0).setDepth(50);
 
   const panel = scene.add.graphics();
   panel.fillStyle(0x1a1a3e, 0.95);
-  panel.fillRoundedRect(width / 2 - 160, height / 2 - 150, 320, 300, 12);
+  panel.fillRoundedRect(cx - 160, height / 2 - 150, 320, 300, 12);
   panel.lineStyle(2, 0x6c5ce7, 0.5);
-  panel.strokeRoundedRect(width / 2 - 160, height / 2 - 150, 320, 300, 12);
+  panel.strokeRoundedRect(cx - 160, height / 2 - 150, 320, 300, 12);
   panel.setDepth(51);
 
-  const titleTxt = scene.add.text(width / 2, height / 2 - 130, 'SELECT ITEM', {
+  const titleTxt = scene.add.text(cx, height / 2 - 130, 'SELECT ITEM', {
     fontFamily: '"Inter"', fontSize: '14px', color: '#a29bfe', fontStyle: 'bold',
   }).setOrigin(0.5).setDepth(52);
 
-  const closeIcn = scene.add.text(width / 2 + 140, height / 2 - 140, '✕', {
+  const closeIcn = scene.add.text(cx + 140, height / 2 - 140, '✕', {
     fontFamily: '"Inter"', fontSize: '16px', color: '#ff7675',
   }).setOrigin(0.5).setDepth(55).setInteractive({ useHandCursor: true });
 
   const allElements: Phaser.GameObjects.GameObject[] = [overlay, panel, titleTxt, closeIcn];
   closeIcn.on('pointerdown', () => allElements.forEach(e => e.destroy()));
 
-  const scrollUp = scene.add.text(width / 2, height / 2 - 90, '▲', {
+  const scrollUp = scene.add.text(cx, height / 2 - 90, '▲', {
     fontFamily: '"Inter"', fontSize: '12px', color: '#636e72',
   }).setOrigin(0.5).setDepth(52).setAlpha(0);
 
-  const scrollDown = scene.add.text(width / 2, height / 2 + 115, '▼', {
+  const scrollDown = scene.add.text(cx, height / 2 + 115, '▼', {
     fontFamily: '"Inter"', fontSize: '12px', color: '#636e72',
   }).setOrigin(0.5).setDepth(52).setAlpha(0);
 
@@ -56,7 +57,7 @@ export function openReagentSelector(scene: Phaser.Scene, callbacks: ReagentSelec
 
   const maskShape = scene.add.graphics().setDepth(51);
   maskShape.fillStyle(0xffffff);
-  maskShape.fillRect(width / 2 - 155, height / 2 - 85, 310, 195);
+  maskShape.fillRect(cx - 155, height / 2 - 85, 310, 195);
   const mask = maskShape.createGeometryMask();
   itemContainer.setMask(mask);
   allElements.push(maskShape);
@@ -78,8 +79,8 @@ export function openReagentSelector(scene: Phaser.Scene, callbacks: ReagentSelec
 
   for (const invItem of available) {
     const data = callbacks.getCraftingItems()[invItem.itemId];
-    const bx = width / 2 - 120 + col * 110;
-    const by = height / 2 - 90 + row * rowHeight;
+    const bx = cx - 105 + col * 110;
+    const by = height / 2 - 77 + row * rowHeight;
 
     const bg = scene.add.graphics();
     bg.fillStyle(0x2a2a4f, 0.9);
@@ -126,7 +127,7 @@ export function openReagentSelector(scene: Phaser.Scene, callbacks: ReagentSelec
   const pointerDownHandler = (p: Phaser.Input.Pointer) => {
     const px = p.x;
     const py = p.y;
-    const inBounds = px >= width / 2 - 155 && px <= width / 2 + 155 &&
+    const inBounds = px >= cx - 155 && px <= cx + 155 &&
                      py >= height / 2 - 85 && py <= height / 2 + 110;
     if (inBounds) {
       dragging = true;
@@ -159,7 +160,7 @@ export function openReagentSelector(scene: Phaser.Scene, callbacks: ReagentSelec
     scene.input.off('pointerup', pointerUpHandler);
   };
 
-  const closeBtn = scene.add.text(width / 2, height / 2 + 130, 'Cancel', {
+  const closeBtn = scene.add.text(cx, height / 2 + 130, 'Cancel', {
     fontFamily: '"Inter"', fontSize: '12px', color: '#ff7675',
   }).setOrigin(0.5).setDepth(53).setInteractive({ useHandCursor: true });
   closeBtn.on('pointerdown', () => {

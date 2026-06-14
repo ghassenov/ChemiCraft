@@ -12,7 +12,7 @@ export class NPC extends Phaser.Physics.Arcade.Sprite {
   private isWandering = false;
   private nameLabel: Phaser.GameObjects.Text;
 
-  constructor(scene: Phaser.Scene, x: number, y: number, npcId: string, name: string, spriteKey: string, questId: string | null) {
+  constructor(scene: Phaser.Scene, x: number, y: number, npcId: string, name: string, spriteKey: string, questId: string | null, staticNpc = false) {
     super(scene, x, y, spriteKey);
     this.npcId = npcId;
     this.npcName = name;
@@ -36,7 +36,7 @@ export class NPC extends Phaser.Physics.Arcade.Sprite {
     }).setOrigin(0.5).setDepth(20);
 
     this.createPrompt(scene);
-    this.startWanderLogic(scene);
+    if (!staticNpc) this.startWanderLogic(scene);
   }
 
   get isPlayerNear(): boolean { return this._isPlayerNear; }
@@ -114,6 +114,7 @@ export class NPC extends Phaser.Physics.Arcade.Sprite {
   }
 
   update() {
+    if (!this.wanderTimer) return; // static NPCs
     // If we've strayed too far, head back to start
     if (this.isWandering) {
       const dist = Phaser.Math.Distance.Between(this.x, this.y, this.startX, this.startY);
