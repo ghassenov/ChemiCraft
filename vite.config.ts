@@ -1,21 +1,21 @@
-import { defineConfig } from 'vite';
-import tailwindcss from '@tailwindcss/vite';
+import { defineConfig } from "vite";
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
-  plugins: [
-    tailwindcss(),
-  ],
-  resolve: {
-    alias: {
-      '@': '/src',
+    plugins: [tailwindcss()],
+    resolve: {
+        alias: {
+            "@": "/src",
+        },
     },
-  },
-  server: {
-    port: 5173,
-    open: true,
-  },
-  build: {
-    target: 'ES2022',
-    sourcemap: true,
-  },
+    server: {
+        host: true,
+        allowedHosts: true,
+        port: 5173,
+        open: true,
+    },
+    build: {
+        target: "ES2022",
+        sourcemap: true,
+    },
 });

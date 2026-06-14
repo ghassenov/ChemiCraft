@@ -21,7 +21,7 @@ export abstract class BaseGameScene extends Phaser.Scene {
   protected buildingPrompt!: Phaser.GameObjects.Text;
 
   protected resourceNodes!: Phaser.Physics.Arcade.StaticGroup;
-  protected binZones: { x: number; y: number; wasteType: string; color: string; prompt: Phaser.GameObjects.Container }[] = [];
+  protected binZones: { x: number; y: number; wasteType: string; color: string; prompt: Phaser.GameObjects.Container; graphics: Phaser.GameObjects.Graphics[] }[] = [];
 
   constructor(key: string) {
     super({ key });
@@ -448,19 +448,53 @@ export abstract class BaseGameScene extends Phaser.Scene {
             };
             const color = decor.color || 'green';
             const bodyColor = binColors[color] || 0x4a7c59;
+            const binGraphics: Phaser.GameObjects.Graphics[] = [];
             const g = this.add.graphics().setDepth(2);
-            g.fillStyle(bodyColor, 0.9);
-            g.fillRoundedRect(dx - 9, dy - 7, 18, 16, 3);
-            g.fillStyle(0xffffff, 0.3);
-            g.fillRoundedRect(dx - 11, dy - 11, 22, 5, 2);
+            binGraphics.push(g);
+            
+            // Drop shadow
+            g.fillStyle(0x000000, 0.2);
+            g.fillEllipse(dx, dy + 8, 24, 8);
+            
+            // Main body
+            g.fillStyle(bodyColor, 1);
+            g.fillRoundedRect(dx - 10, dy - 8, 20, 16, 4);
+            
+            // Darker shading on the right for 3D effect
             g.fillStyle(0x000000, 0.15);
-            g.fillCircle(dx, dy, 6);
+            g.fillRoundedRect(dx + 2, dy - 8, 8, 16, { tl: 0, tr: 4, bl: 0, br: 4 } as any);
+            
+            // Bin lid
+            g.fillStyle(0xffffff, 0.9);
+            g.fillRoundedRect(dx - 12, dy - 12, 24, 6, 2);
+            
+            // Lid shading
+            g.fillStyle(0x000000, 0.2);
+            g.fillRoundedRect(dx + 2, dy - 12, 10, 6, { tl: 0, tr: 2, bl: 0, br: 2 } as any);
+            
+            // Glowing rim on the lid
+            g.lineStyle(1, bodyColor, 0.8);
+            g.strokeRoundedRect(dx - 11, dy - 11, 22, 4, 1);
+
+            // Center recycling logo (simple circle + triangle)
+            g.fillStyle(0xffffff, 0.8);
+            g.fillCircle(dx, dy, 5);
+            g.fillStyle(bodyColor, 1);
+            g.fillCircle(dx, dy, 3);
+            
             const binPrompt = this.add.text(0, 0, '[E] Sort', {
               fontFamily: '"Inter"', fontSize: '10px', fontStyle: 'bold', color: '#00cec9',
+              stroke: '#000000', strokeThickness: 2
             }).setOrigin(0.5);
-            const promptContainer = this.add.container(dx, dy - 30, [binPrompt]);
+            const promptContainer = this.add.container(dx, dy - 32, [binPrompt]);
             promptContainer.setDepth(20).setAlpha(0).setScale(0.8);
-            this.binZones.push({ x: dx, y: dy, wasteType: wasteByColor[color] || 'plastic_waste', color, prompt: promptContainer });
+            
+            this.tweens.add({
+              targets: promptContainer, y: dy - 36,
+              duration: 1000, yoyo: true, repeat: -1, ease: 'Sine.easeInOut'
+            });
+
+            this.binZones.push({ x: dx, y: dy, wasteType: wasteByColor[color] || 'plastic_waste', color, prompt: promptContainer, graphics: binGraphics });
             break;
           }
           case 'tree': {
@@ -660,7 +694,18 @@ export abstract class BaseGameScene extends Phaser.Scene {
     }
   }
 
-  protected applyTileTint(tile: Phaser.GameObjects.Image, _tileVal: number, _x: number, _y: number) {
+  protected applyTileTint(tile: Phaser.GameObjects.Image, tileVal: number, _x: number, _y: number) {
+    const theme = this.mapData.theme;
+    if (tileVal === 0 || (tileVal >= 2 && tileVal <= 4)) {
+      tile.setTint(theme.groundColor);
+    } else if (tileVal === 1) {
+      tile.setTint(theme.wallColor);
+    } else if (tileVal === 5) {
+      const c = Phaser.Display.Color.ValueToColor(theme.accentColor);
+      tile.setTint(Phaser.Display.Color.GetColor(c.red * 0.6, c.green * 0.6, c.blue * 0.6));
+    } else if (tileVal === 6) {
+      tile.setTint(theme.accentColor);
+    }
   }
 
   protected drawBuildingFacades() {
@@ -877,20 +922,18 @@ export abstract class BaseGameScene extends Phaser.Scene {
         : (data.id === 'professor_knowitall' || data.id === 'eco_educator' || data.id === 'eco_activist') ? 'LibraryInteriorScene'
         : null;
 
-      if (data.questId && gameStore.isQuestActive(data.questId)) {
+      if (data.questId && gameStore.isQuestActive(data.questId) && !gameStore.isQuestCompleted(data.questId)) {
         const quest = this.questSystem.getQuest(data.questId);
         if (quest && (quest.objectiveType === 'craft' || quest.objectiveType === 'collect')) {
           const targetItemId = quest.targetItemId;
           if (targetItemId && gameStore.hasItem(targetItemId, quest.targetAmount || 1)) {
             gameStore.removeFromInventory(targetItemId, quest.targetAmount || 1);
             this.questSystem.completeQuest(data.questId);
-            if (data.questId === 'waste_crisis') this.clearRecyclingNodes();
           }
         } else if (quest && quest.objectiveType === 'sort') {
           if (gameStore.getSortingScore() >= (quest.targetAmount || 1)) {
             gameStore.resetSortingScore();
             this.questSystem.completeQuest(data.questId);
-            this.clearRecyclingNodes();
           }
         }
       }
@@ -926,6 +969,9 @@ export abstract class BaseGameScene extends Phaser.Scene {
     if (this.mapData.key !== 'recyclingFields') return;
     for (const zone of this.binZones) {
       zone.prompt.destroy();
+      for (const g of zone.graphics) {
+        g.destroy();
+      }
     }
     this.binZones = [];
   }

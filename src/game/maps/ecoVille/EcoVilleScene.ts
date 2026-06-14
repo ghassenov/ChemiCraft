@@ -1,4 +1,3 @@
-import Phaser from 'phaser';
 import { BaseGameScene } from '../../BaseGameScene';
 import { gameStore } from '../../../store/gameStore';
 
