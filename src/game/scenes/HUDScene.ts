@@ -36,7 +36,7 @@ export class HUDScene extends Phaser.Scene {
             .text(
                 panelCX - panelW / 2 + 16,
                 28,
-                `🪙 ${gameStore.getState().playerData.coins}`,
+                `$ ${gameStore.getState().playerData.coins}`,
                 {
                     fontFamily: '"Press Start 2P", monospace',
                     fontSize: "11px",
@@ -256,7 +256,12 @@ export class HUDScene extends Phaser.Scene {
         document.body.appendChild(this.inputEl);
         updatePosition();
 
+        document.addEventListener("fullscreenchange", updatePosition);
+        document.addEventListener("webkitfullscreenchange", updatePosition);
+
         this.events.on(Phaser.Scenes.Events.SHUTDOWN, () => {
+            document.removeEventListener("fullscreenchange", updatePosition);
+            document.removeEventListener("webkitfullscreenchange", updatePosition);
             if (this.inputEl.parentNode)
                 this.inputEl.parentNode.removeChild(this.inputEl);
         });
@@ -264,7 +269,7 @@ export class HUDScene extends Phaser.Scene {
 
     private updateHUD() {
         const state = gameStore.getState();
-        this.coinText.setText(`🪙 ${state.playerData.coins}`);
+        this.coinText.setText(`$ ${state.playerData.coins}`);
 
         // Update quest tracker
         const active = state.playerData.activeQuests;
