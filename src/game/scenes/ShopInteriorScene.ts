@@ -37,7 +37,7 @@ export class ShopInteriorScene extends Phaser.Scene {
     this.player.setCollideWorldBounds(true);
     this.physics.add.collider(this.player, this.walls);
 
-    this.sal = new NPC(this, 320, 190, 'shopkeeper_sal', 'Sal', 'npc_shopkeeper_sal', null);
+    this.sal = new NPC(this, 320, 190, 'shopkeeper_sal', 'Sal', 'npc_shopkeeper_sal', null, true);
     this.physics.add.collider(this.player, this.sal);
 
     this.dialogueBox = new DialogueBox(this);

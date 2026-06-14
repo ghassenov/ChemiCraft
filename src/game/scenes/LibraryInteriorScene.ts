@@ -46,7 +46,7 @@ export class LibraryInteriorScene extends Phaser.Scene {
     const npcId = recycling ? 'eco_educator' : ecoVille ? 'eco_activist' : prismHeights ? 'optics_librarian' : 'professor_knowitall';
     const npcName = recycling ? 'Eco Emma' : ecoVille ? 'Zara Green' : prismHeights ? 'Spectra' : 'Prof. Knowitall';
 
-    this.professor = new NPC(this, 480, 200, npcId, npcName, `npc_${npcId}`, null);
+    this.professor = new NPC(this, 320, 190, npcId, npcName, `npc_${npcId}`, null, true);
     this.physics.add.collider(this.player, this.professor);
 
     this.dialogueBox = new DialogueBox(this);

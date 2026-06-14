@@ -67,7 +67,7 @@ export class LabInteriorScene extends Phaser.Scene {
     this.player.setCollideWorldBounds(true);
     this.physics.add.collider(this.player, this.walls);
 
-    this.assistant = new NPC(this, 480, 240, 'lab_assistant', 'Lab Assistant', 'npc_lab_assistant', null);
+    this.assistant = new NPC(this, 480, 240, 'lab_assistant', 'Lab Assistant', 'npc_lab_assistant', null, true);
     this.physics.add.collider(this.player, this.assistant);
 
     this.dialogueBox = new DialogueBox(this);
