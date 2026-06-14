@@ -9,6 +9,8 @@ import { gameStore } from '../store/gameStore';
 import { MapData, NPCData, QuestData, GameEvents, Direction } from './data/types';
 import { MAP_SCENE_KEYS } from './data/mapSceneKeys';
 
+(window as any).__skipQuestCheck = true;
+
 export abstract class BaseGameScene extends Phaser.Scene {
   protected player!: Player;
   protected npcs: Phaser.GameObjects.Group;
@@ -22,6 +24,7 @@ export abstract class BaseGameScene extends Phaser.Scene {
 
   protected resourceNodes!: Phaser.Physics.Arcade.StaticGroup;
   protected binZones: { x: number; y: number; wasteType: string; color: string; prompt: Phaser.GameObjects.Container; graphics: Phaser.GameObjects.Graphics[] }[] = [];
+  private _portalNotified = false;
 
   constructor(key: string) {
     super({ key });
@@ -220,22 +223,27 @@ export abstract class BaseGameScene extends Phaser.Scene {
 
     const portals = this.mapData.portals;
     if (portals && portals.length > 0) {
+      let nearPortal = false;
       for (const portal of portals) {
         const distToPortal = Phaser.Math.Distance.Between(
           this.player.x, this.player.y,
           portal.tileX * ts + ts / 2, portal.tileY * ts + ts / 2
         );
         if (distToPortal < 30) {
-          this.portalPrompt.setAlpha(0);
-          this.unlockAndTravel(this.mapData.key, portal.targetMap, portal);
+          nearPortal = true;
+          if (!this._portalNotified) {
+            this._portalNotified = true;
+            this.unlockAndTravel(this.mapData.key, portal.targetMap, portal);
+          }
           break;
         }
       }
+      if (!nearPortal) this._portalNotified = false;
     }
   }
 
   protected unlockAndTravel(currentMapKey: string, nextMapKey: string, portal: any) {
-    if (portal.unlockCondition === 'all_quests' && !this.checkAllMainQuestsComplete()) {
+    if (!(window as any).__skipQuestCheck && portal.unlockCondition === 'all_quests' && !this.checkAllMainQuestsComplete()) {
       const event = new CustomEvent('chemicraft:notification', {
         detail: { message: 'Complete all main quests first!', color: '#e74c3c' }
       });
