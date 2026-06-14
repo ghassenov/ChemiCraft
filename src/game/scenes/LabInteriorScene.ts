@@ -79,7 +79,6 @@ export class LabInteriorScene extends Phaser.Scene {
       wordWrap: { width: 180 }, lineSpacing: 3,
     }).setOrigin(0.5);
 
-    this.drawDecor();
     this.createAnimatedDecor();
     this.createShelfPrompt();
     this.createShelfFloorMarker();
@@ -148,112 +147,128 @@ export class LabInteriorScene extends Phaser.Scene {
   private drawRoom() {
     const g = this.add.graphics();
 
-    g.fillStyle(0x1a1a2e, 1);
+    // Base pristine floor
+    g.fillStyle(0x1a252c, 1);
     g.fillRect(0, 0, 640, 640);
 
-    g.fillStyle(0x2a2a44, 1);
+    // Floor texture - Clean tiles
+    g.fillStyle(0x23313a, 1);
     g.fillRect(20, 20, 600, 520);
 
-    g.fillStyle(0x3a3a54, 0.3);
+    // Sci-fi grid floor
+    g.lineStyle(1, 0x00cec9, 0.15); // Cyan glow lines
     for (let row = 0; row < 13; row++) {
       for (let col = 0; col < 15; col++) {
-        if ((row + col) % 2 === 0) {
-          g.fillRect(24 + col * 40, 24 + row * 40, 40, 40);
+        g.strokeRect(20 + col * 40, 20 + row * 40, 40, 40);
+        // Little corner nodes
+        if (row > 0 && col > 0) {
+          g.fillStyle(0x00cec9, 0.3);
+          g.fillRect(19 + col * 40, 19 + row * 40, 2, 2);
         }
       }
     }
 
-    g.fillStyle(0x2a1a0e, 0.5);
-    g.fillRect(20, 20, 600, 4);
-    g.fillRect(20, 20, 4, 520);
-    g.fillRect(616, 20, 4, 520);
-    g.fillRect(20, 536, 600, 4);
+    // High-tech glowing room borders
+    g.fillStyle(0x0a151c, 0.9);
+    g.fillRect(20, 20, 600, 6);
+    g.fillRect(20, 20, 6, 520);
+    g.fillRect(614, 20, 6, 520);
+    g.fillRect(20, 534, 600, 6);
+    
+    // Neon accent strips
+    g.fillStyle(0x00cec9, 0.6);
+    g.fillRect(22, 22, 596, 2);
+    g.fillRect(22, 536, 596, 2);
 
-    g.fillStyle(0x3d2b1f, 0.6);
-    for (let i = 0; i < 3; i++) {
-      g.fillRect(24, 100 + i * 140, 100, 6);
+    // Chemical Storage Racks (Metal, clean)
+    g.fillStyle(0x34495e, 1); // Steel frame
+    g.fillRect(30, 80, 70, 170);
+    g.fillStyle(0x2c3e50, 1);
+    g.fillRect(540, 80, 70, 170);
+    
+    // Metallic trim and shelves
+    g.lineStyle(2, 0xbdc3c7, 0.8);
+    g.strokeRect(30, 80, 70, 170);
+    g.strokeRect(540, 80, 70, 170);
+
+    for (let i = 0; i < 4; i++) {
+      g.fillStyle(0x7f8c8d, 1);
+      g.fillRect(30, 110 + i * 40, 70, 4);
+      g.fillRect(540, 110 + i * 40, 70, 4);
+      // Under-shelf LED strip
+      g.fillStyle(0x00cec9, 0.3);
+      g.fillRect(30, 114 + i * 40, 70, 2);
+      g.fillRect(540, 114 + i * 40, 70, 2);
     }
 
-    g.fillStyle(0x8B4513, 0.8);
-    g.fillRect(40, 110, 70, 140);
-
-    g.fillStyle(0x3d2b1f, 0.4);
-    g.fillRect(40, 110, 70, 4);
-    g.fillRect(40, 140, 70, 4);
-    g.fillRect(40, 170, 70, 4);
-    g.fillRect(40, 200, 70, 4);
-    g.fillRect(40, 230, 70, 4);
-
-    g.fillStyle(0x4a3a2a, 0.8);
-    g.fillRect(520, 110, 80, 140);
-
-    g.fillStyle(0x5a4a3a, 0.4);
-    g.fillRect(524, 114, 72, 132);
-
-    g.fillStyle(0x3a2a1a, 0.5);
-    g.fillRect(520, 110, 80, 3);
-
-    g.fillStyle(0x4a3a2a, 0.5);
-    g.fillRect(180, 340, 280, 50);
-
-    g.lineStyle(2, 0x3a3a4a, 0.5);
-    g.strokeRect(180, 340, 280, 50);
-
-    g.fillStyle(0x5a5a6a, 0.2);
-    g.fillRect(200, 350, 240, 30);
-
-    g.fillStyle(0xff6b35, 0.08);
-    g.fillCircle(320, 380, 14);
+    // Main Lab Workbench (Stainless steel and glass)
+    g.fillStyle(0x95a5a6, 1); // Steel base
+    g.fillRoundedRect(180, 320, 280, 70, 6);
+    g.fillStyle(0x7f8c8d, 1); // Bevel
+    g.fillRoundedRect(180, 320, 280, 70, { tl: 0, tr: 0, bl: 6, br: 6 } as any);
+    
+    // Glass top
+    g.fillStyle(0xecf0f1, 0.85);
+    g.fillRoundedRect(185, 325, 270, 60, 4);
+    // Glass reflection
+    g.fillStyle(0xffffff, 0.4);
+    g.fillRect(185, 330, 270, 10);
+    g.lineStyle(2, 0x00cec9, 0.5);
+    g.strokeRoundedRect(185, 325, 270, 60, 4);
 
     this.drawCorridor(g);
+    this.drawDecor(g);
   }
 
   private drawCorridor(g: Phaser.GameObjects.Graphics) {
     const cy = 540;
 
-    g.fillStyle(0x1a1a2e, 1);
+    g.fillStyle(0x0a151c, 1);
     g.fillRect(20, cy, 600, 100);
 
-    g.fillStyle(0x2a2a44, 0.5);
+    g.fillStyle(0x1a252c, 0.8);
     g.fillRect(20, cy, 600, 100);
 
-    g.fillStyle(0x2a1a0e, 0.5);
-    g.fillRect(20, cy, 600, 4);
-    g.fillRect(20, cy, 4, 100);
-    g.fillRect(616, cy, 4, 100);
-    g.fillRect(20, cy + 96, 600, 4);
-
-    g.fillStyle(0xffd700, 0.15);
-    for (let x = 30; x < 620; x += 40) {
-      g.fillTriangle(x, cy, x + 20, cy, x + 10, cy + 12);
-      g.fillStyle(0x2d3436, 0.15);
-      g.fillTriangle(x + 20, cy, x + 40, cy, x + 30, cy + 12);
-      g.fillStyle(0xffd700, 0.15);
+    // Decon Chamber Floor Grates
+    g.lineStyle(1, 0x34495e, 0.8);
+    for (let x = 30; x < 610; x += 10) {
+      g.lineBetween(x, cy, x, cy + 96);
     }
 
-    g.fillStyle(0x4a4a5a, 0.6);
+    g.fillStyle(0x0a151c, 0.9);
+    g.fillRect(20, cy, 600, 6);
+    g.fillRect(20, cy, 6, 100);
+    g.fillRect(614, cy, 6, 100);
+    g.fillRect(20, cy + 94, 600, 6);
+
+    // Hazard Stripes
+    g.fillStyle(0xf1c40f, 0.6);
+    for (let x = 30; x < 620; x += 40) {
+      g.fillTriangle(x, cy + 6, x + 20, cy + 6, x + 10, cy + 18);
+      g.fillStyle(0x2d3436, 0.6);
+      g.fillTriangle(x + 20, cy + 6, x + 40, cy + 6, x + 30, cy + 18);
+      g.fillStyle(0xf1c40f, 0.6);
+    }
+
+    // Airlock Doors
+    g.fillStyle(0x2c3e50, 0.9);
     g.fillRect(40, cy + 16, 60, 68);
     g.fillRect(540, cy + 16, 60, 68);
-    g.fillStyle(0x3a3a4a, 0.4);
-    for (let i = 0; i < 4; i++) {
-      g.fillRect(44, cy + 20 + i * 16, 10, 10);
-      g.fillRect(586, cy + 20 + i * 16, 10, 10);
-    }
+    g.lineStyle(2, 0x00cec9, 0.4);
+    g.strokeRect(40, cy + 16, 60, 68);
+    g.strokeRect(540, cy + 16, 60, 68);
 
-    g.fillStyle(0x2d3436, 0.8);
+    // Center Door Lock Mechanism
+    g.fillStyle(0x34495e, 0.9);
     g.fillRect(300, cy + 20, 40, 56);
+    g.lineStyle(1, 0xbdc3c7, 0.5);
+    g.strokeRect(300, cy + 20, 40, 56);
 
-    g.fillStyle(0x636e72, 0.6);
-    g.fillCircle(320, cy + 28, 6);
-    g.fillStyle(this.exitLocked ? 0xe74c3c : 0x00b894, 0.8);
-    g.fillCircle(320, cy + 28, 4);
-
-    g.fillStyle(0x4a4a5a, 0.8);
-    g.fillRect(300, cy + 72, 40, 12);
-    g.fillStyle(0x636e72, 0.4);
-    g.fillCircle(310, cy + 78, 2);
-    g.fillCircle(320, cy + 78, 2);
-    g.fillCircle(330, cy + 78, 2);
+    // Indicator Light
+    g.fillStyle(0x636e72, 0.8);
+    g.fillCircle(320, cy + 30, 8);
+    g.fillStyle(this.exitLocked ? 0xe74c3c : 0x00b894, 0.9);
+    g.fillCircle(320, cy + 30, 5);
   }
 
   private addCollisionWalls() {
@@ -268,99 +283,75 @@ export class LabInteriorScene extends Phaser.Scene {
     g.create(320, 350, 'tile_wall')?.setVisible(false).setSize(290, 24);
   }
 
-  private drawDecor() {
-    const g = this.add.graphics();
+  private drawDecor(g: Phaser.GameObjects.Graphics) {
+    // Holographic Displays / Monitors on the back wall
+    g.fillStyle(0x2c3e50, 0.8); // Monitor frames
+    g.fillRoundedRect(150, 40, 160, 100, 4);
+    g.fillRoundedRect(330, 40, 160, 100, 4);
 
-    g.fillStyle(0x6a8aaa, 0.15);
-    g.fillCircle(75, 170, 14);
-    g.fillCircle(75, 200, 14);
-    g.fillCircle(75, 230, 14);
-
-    const bottleColors = [0x3498db, 0xe74c3c, 0x2ecc71, 0xf39c12, 0x9b59b6];
+    // Monitor screens (glowing)
+    g.fillStyle(0x0984e3, 0.15);
+    g.fillRect(155, 45, 150, 90);
+    g.fillStyle(0x00cec9, 0.15);
+    g.fillRect(335, 45, 150, 90);
+    
+    // Screen contents (data lines)
+    g.lineStyle(2, 0x74b9ff, 0.8);
     for (let i = 0; i < 5; i++) {
-      const bx = 42 + i * 14;
-      const by = 118 + (i % 2) * 28;
-      const bc = bottleColors[i];
-      g.fillStyle(bc, 0.3);
-      g.fillRoundedRect(bx, by, 10, 18, 3);
-      g.fillStyle(0xffffff, 0.08);
-      g.fillRect(bx + 2, by + 2, 3, 12);
-      g.fillStyle(bc, 0.2);
-      g.fillCircle(bx + 5, by - 2, 3);
+      g.lineBetween(160, 60 + i * 15, 160 + Phaser.Math.Between(20, 130), 60 + i * 15);
+    }
+    // Sine wave on the second monitor
+    g.lineStyle(2, 0x55efc4, 0.8);
+    g.beginPath();
+    for (let x = 0; x < 140; x += 5) {
+      if (x === 0) g.moveTo(340 + x, 90 + Math.sin(x * 0.1) * 20);
+      else g.lineTo(340 + x, 90 + Math.sin(x * 0.1) * 20);
+    }
+    g.strokePath();
+
+    // Beautiful Beakers & Vials on the left shelf
+    const vialColors = [0x0984e3, 0xd63031, 0x00b894, 0xfdc128, 0x9b59b6];
+    for (let i = 0; i < 12; i++) {
+      const rx = 35 + (i % 3) * 18;
+      const ry = 90 + Math.floor(i / 3) * 40;
+      const col = vialColors[i % vialColors.length];
+      
+      // Glass body
+      g.fillStyle(0xffffff, 0.2);
+      g.fillRoundedRect(rx, ry, 12, 16, 3);
+      // Liquid
+      g.fillStyle(col, 0.8);
+      g.fillRoundedRect(rx + 1, ry + 6, 10, 9, 2);
+      // Highlight
+      g.fillStyle(0xffffff, 0.5);
+      g.fillRect(rx + 2, ry + 2, 2, 12);
+      // Cap/Cork
+      g.fillStyle(0x2d3436, 1);
+      g.fillRect(rx + 3, ry - 3, 6, 4);
     }
 
-    g.fillStyle(0x4a6a8a, 0.15);
-    g.fillRect(530, 125, 8, 36);
-    g.fillRect(560, 120, 8, 42);
-    g.fillRect(575, 130, 8, 30);
+    // Equipment on the right shelf (Microscopes / Centrifuges)
+    g.fillStyle(0xbdc3c7, 1);
+    g.fillRect(550, 90, 20, 16); // Centrifuge base
+    g.fillStyle(0xecf0f1, 1);
+    g.fillEllipse(560, 90, 20, 8); // Centrifuge top
+    
+    g.fillStyle(0x34495e, 1);
+    g.fillRect(555, 130, 20, 16); // Storage box
+    g.lineStyle(1, 0x00cec9, 0.5);
+    g.strokeRect(555, 130, 20, 16);
 
-    g.lineStyle(1, 0x6c5ce7, 0.2);
-    g.lineBetween(40, 340, 250, 340);
-    g.lineBetween(390, 340, 600, 340);
-
-    g.fillStyle(0x2d3436, 0.3);
-    g.fillRect(160, 55, 200, 120);
-    g.lineStyle(1, 0x636e72, 0.2);
-    g.strokeRect(160, 55, 200, 120);
-
-    g.fillStyle(0x3498db, 0.12);
-    const elements = [
-      [170, 65], [195, 65], [220, 65], [245, 65], [270, 65],
-      [170, 85], [195, 85], [220, 85], [245, 85], [270, 85],
-      [170, 105], [195, 105], [220, 105], [245, 105], [270, 105],
-      [170, 125], [195, 125], [220, 125], [245, 125], [270, 125],
-      [170, 145], [195, 145], [220, 145], [245, 145], [270, 145],
-    ];
-    const elColors = [0xe74c3c, 0x3498db, 0x2ecc71, 0xf39c12, 0x9b59b6, 0x1abc9c, 0xe67e22, 0x2c3e50];
-    for (const [ex, ey] of elements) {
-      g.fillStyle(elColors[Math.floor(Math.random() * elColors.length)], 0.2);
-      g.fillRect(ex, ey, 18, 14);
-    }
-
-    g.fillStyle(0xf1c40f, 0.1);
-    g.fillCircle(320, 52, 8);
-    g.fillCircle(320, 52, 12);
-
-    g.fillStyle(0x3d2b1f, 0.6);
-    g.fillRect(155, 52, 4, 124);
-    g.fillRect(355, 52, 4, 124);
-
-    g.fillStyle(0x8B4513, 0.5);
-    g.fillRect(140, 320, 30, 14);
-    g.fillCircle(155, 314, 8);
-    g.fillStyle(0x3d2b1f, 0.3);
-    g.fillRect(140, 334, 30, 20);
-
-    g.fillStyle(0xe74c3c, 0.3);
-    g.fillRect(580, 440, 16, 50);
-    g.fillStyle(0xffffff, 0.08);
-    g.fillRect(584, 445, 8, 4);
-    g.fillRect(584, 455, 8, 4);
-    g.fillRect(584, 465, 8, 4);
-    g.fillRect(584, 475, 8, 4);
-
-    g.fillStyle(0x4a6a8a, 0.08);
-    for (let i = 0; i < 5; i++) {
-      g.fillRect(100 + i * 100, 48, 60, 4);
-    }
-
-    g.fillStyle(0x00b894, 0.1);
-    g.fillRect(260, 240, 120, 80);
-
-    g.lineStyle(1, 0x00b894, 0.15);
-    for (let i = 0; i < 6; i++) {
-      g.lineBetween(260 + i * 20, 240, 260 + i * 20, 320);
-    }
-    for (let i = 0; i < 4; i++) {
-      g.lineBetween(260, 240 + i * 20, 380, 240 + i * 20);
-    }
-
-    g.fillStyle(0x636e72, 0.3);
-    g.fillCircle(320, 230, 4);
-    g.fillStyle(0x2d3436, 0.4);
-    g.fillRect(318, 230, 4, 8);
-    g.fillStyle(0xf1c40f, 0.15);
-    g.fillCircle(320, 230, 6);
+    // High-tech Workbench Decor
+    g.fillStyle(0x2d3436, 0.9);
+    g.fillRoundedRect(280, 335, 80, 30, 4); // Heating plate
+    g.lineStyle(1, 0x00cec9, 0.5);
+    g.strokeRoundedRect(280, 335, 80, 30, 4);
+    
+    // Circular burner/reactor core
+    g.fillStyle(0x0a151c, 1);
+    g.fillCircle(320, 350, 12);
+    g.lineStyle(2, 0x0984e3, 0.8);
+    g.strokeCircle(320, 350, 12);
   }
 
   private createAnimatedDecor() {
