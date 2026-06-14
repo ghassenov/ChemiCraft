@@ -911,8 +911,6 @@ export class LabInteriorScene extends Phaser.Scene {
 
     const coolingRate = 0.03 - (bonding * 0.003); 
     const targetWidth = 60 + (equationBalancing * 10); 
-    const targetMin = 50 - (targetWidth / 2) * (100 / 180); // map from pixels to 0-100 scale? No, temp is 0-100.
-    // Wait, temp is 0 to 100. The target zone was 60 pixels out of 180 (which is 33% to 66% temp).
     const targetTempWidth = targetWidth / 1.8; 
     const minTemp = 50 - (targetTempWidth / 2);
     const maxTemp = 50 + (targetTempWidth / 2);
@@ -925,12 +923,17 @@ export class LabInteriorScene extends Phaser.Scene {
 
     let temp = 0; // 0 to 100
     let progress = 0;
-    const progBg = this.add.rectangle(width / 2 - 80, height / 2 + 20, 10, 180, 0x2d3436).setDepth(102);
-    const progFill = this.add.rectangle(width / 2 - 80, height / 2 + 110, 10, 0, 0x0984e3).setOrigin(0.5, 1).setDepth(103);
+
+    const BAR_BOTTOM = height / 2 + 110;
+    const BAR_HEIGHT = 180;
+
+    const progBg = this.add.rectangle(width / 2 - 80, height / 2 + 20, 10, BAR_HEIGHT, 0x2d3436).setDepth(102);
+    const progFill = this.add.rectangle(width / 2 - 80, BAR_BOTTOM, 10, 0, 0x0984e3)
+      .setDepth(103);
 
     let isPlaying = true;
     
-    const minigameUpdate = (time: number, delta: number) => {
+    const minigameUpdate = (_time: number, delta: number) => {
       if (!isPlaying) return;
       
       // Cooling
@@ -950,8 +953,8 @@ export class LabInteriorScene extends Phaser.Scene {
       }
       
       // Update indicator Y
-      // 0 is height/2 + 90, 100 is height/2 - 90
-      indicator.y = (height / 2 + 90) - (temp / 100) * 180;
+      // temp 0 => bottom (height/2 + 110), temp 100 => top (height/2 - 70)
+      indicator.y = (height / 2 + 110) - (temp / 100) * 180;
       
       // Check if in target zone
       if (temp > minTemp && temp < maxTemp) {
@@ -963,7 +966,9 @@ export class LabInteriorScene extends Phaser.Scene {
       }
       if (progress < 0) progress = 0;
       
-      progFill.height = (progress / 100) * 180;
+      const fillHeight = (progress / 100) * BAR_HEIGHT;
+      progFill.height = fillHeight;
+      progFill.y = BAR_BOTTOM - fillHeight;
       
       if (progress >= 100) {
         isPlaying = false;
