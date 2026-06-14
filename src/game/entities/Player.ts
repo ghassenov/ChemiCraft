@@ -15,6 +15,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   private _canMove = true;
   private interactionCallback: (() => void) | null = null;
   private nameLabel!: Phaser.GameObjects.Text;
+  private _prevPadA = false;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, 'player_sheet', 0);
@@ -115,10 +116,26 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       return;
     }
 
-    const up = this.cursors?.up.isDown || this.wasd?.W.isDown;
-    const down = this.cursors?.down.isDown || this.wasd?.S.isDown;
-    const left = this.cursors?.left.isDown || this.wasd?.A.isDown;
-    const right = this.cursors?.right.isDown || this.wasd?.D.isDown;
+    let up = this.cursors?.up.isDown || this.wasd?.W.isDown;
+    let down = this.cursors?.down.isDown || this.wasd?.S.isDown;
+    let left = this.cursors?.left.isDown || this.wasd?.A.isDown;
+    let right = this.cursors?.right.isDown || this.wasd?.D.isDown;
+
+    // Gamepad support (left stick indices 0/1, D-pad indices 12-15)
+    const pad = this.scene.input.gamepad?.pad1;
+    if (pad) {
+      const deadZone = 0.3;
+      const ax = pad.leftStick?.x ?? 0;
+      const ay = pad.leftStick?.y ?? 0;
+      if (ay < -deadZone) up = true;
+      else if (ay > deadZone) down = true;
+      if (ax < -deadZone) left = true;
+      else if (ax > deadZone) right = true;
+      if (pad.buttons[12]?.pressed) up = true;
+      if (pad.buttons[13]?.pressed) down = true;
+      if (pad.buttons[14]?.pressed) left = true;
+      if (pad.buttons[15]?.pressed) right = true;
+    }
 
     let vx = 0, vy = 0;
     if (left) vx = -1;
@@ -148,8 +165,13 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       this.anims.play(`player_idle_${dirKey}`, true);
     }
 
-    // Interaction
-    if (Phaser.Input.Keyboard.JustDown(this._interactKey) && this.interactionCallback) {
+    // Interaction (keyboard E or gamepad A button index 0)
+    const keyInteract = Phaser.Input.Keyboard.JustDown(this._interactKey);
+    const padA = pad ? (pad.buttons[0]?.pressed ?? false) : false;
+    const padInteract = padA && !this._prevPadA;
+    this._prevPadA = padA;
+
+    if ((keyInteract || padInteract) && this.interactionCallback) {
       this.interactionCallback();
     }
   }

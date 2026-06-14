@@ -19,6 +19,9 @@ export class HUDScene extends Phaser.Scene {
     private isOverlayOpen = false;
     private inputEl!: HTMLInputElement;
     private keyboardGuard = false;
+    private _prevPadStart = false;
+    private _prevPadB = false;
+    private _prevPadY = false;
 
     constructor() {
         super({ key: "HUDScene" });
@@ -178,6 +181,27 @@ export class HUDScene extends Phaser.Scene {
                 icon: "💡",
             });
         });
+    }
+
+    update() {
+        const pad = this.input.gamepad?.pad1;
+        if (!pad) return;
+
+        // Button indices: 9=Start, 1=B, 3=Y
+        const startPressed = pad.buttons[9]?.pressed ?? false;
+        const bPressed = pad.buttons[1]?.pressed ?? false;
+        const yPressed = pad.buttons[3]?.pressed ?? false;
+
+        if (startPressed && !this._prevPadStart) {
+            if (this.isOverlayOpen) this.closeOverlay();
+            else this.toggleOverlay('inventory');
+        }
+        if (bPressed && !this._prevPadB) this.closeOverlay();
+        if (yPressed && !this._prevPadY) this.toggleOverlay('map');
+
+        this._prevPadStart = startPressed;
+        this._prevPadB = bPressed;
+        this._prevPadY = yPressed;
     }
 
     private getActiveMapScene(): Phaser.Scene | null {

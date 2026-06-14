@@ -24,6 +24,9 @@ export function createGameConfig(): Phaser.Types.Core.GameConfig {
     antialias: true,
     roundPixels: false,
     backgroundColor: '#0a0a1a',
+    input: {
+      gamepad: true,
+    },
     physics: {
       default: 'arcade',
       arcade: {

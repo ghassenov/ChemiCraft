@@ -26,6 +26,7 @@ export class DialogueBox {
   private questBtns: Phaser.GameObjects.Container[] = [];
   private portraitInitial: Phaser.GameObjects.Text | null = null;
   private boxCenterY: number;
+  private _prevPadA = false;
 
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
@@ -76,6 +77,20 @@ export class DialogueBox {
       scene.input.keyboard.on('keydown-SPACE', () => this.advance());
       scene.input.keyboard.on('keydown-ENTER', () => this.advance());
     }
+
+    // Gamepad A (button index 0) to advance
+    const gamepadCheck = () => {
+      if (!this.isVisible) return;
+      const pad = scene.input.gamepad?.pad1;
+      if (!pad) return;
+      const aPressed = pad.buttons[0]?.pressed ?? false;
+      if (aPressed && !this._prevPadA) this.advance();
+      this._prevPadA = aPressed;
+    };
+    scene.events.on('update', gamepadCheck);
+    scene.events.on(Phaser.Scenes.Events.SHUTDOWN, () => {
+      scene.events.off('update', gamepadCheck);
+    });
   }
 
   show(name: string, lines: string[], portraitColor: string, questId?: string, onComplete?: () => void) {
