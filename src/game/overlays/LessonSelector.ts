@@ -218,69 +218,124 @@ export function openLessonSelector(scene: Phaser.Scene, mapKey?: string) {
   const effectiveMapKey = mapKey || gameStore.getCurrentMap();
   const set = mapLessonSets[effectiveMapKey] || mapLessonSets['atomMeadows'];
   const { width, height } = scene.cameras.main;
+  const cx = width * 0.5 - 120;
   const overlay = scene.add.rectangle(0, 0, width, height, 0x000, 0.8).setOrigin(0).setDepth(50);
 
   const panel = scene.add.graphics().setDepth(51);
   panel.fillStyle(0x1a1510, 0.95);
-  panel.fillRoundedRect(width / 2 - 200, height / 2 - 160, 400, 320, 12);
-  panel.lineStyle(2, 0x8b6914, 0.5);
-  panel.strokeRoundedRect(width / 2 - 200, height / 2 - 160, 400, 320, 12);
+  panel.fillRoundedRect(cx - 200, height / 2 - 160, 400, 320, 12);
+  panel.lineStyle(2, 0x3498db, 0.5);
+  panel.strokeRoundedRect(cx - 200, height / 2 - 160, 400, 320, 12);
 
   const titleText = effectiveMapKey === 'recyclingFields' ? 'MATERIALS STUDY CENTER' : effectiveMapKey === 'ecoVille' ? 'ECO CLIMATE LIBRARY' : effectiveMapKey === 'prismHeights' ? 'OPTICS STUDY CENTER' : 'SELECT A LESSON';
   const title = scene.add.text(width / 2, height / 2 - 140, titleText, {
     fontFamily: '"Press Start 2P"', fontSize: '12px', color: '#d4a855',
   }).setOrigin(0.5).setDepth(52);
 
-  const closeIcn = scene.add.text(width / 2 + 180, height / 2 - 150, '✕', {
+  const closeIcn = scene.add.text(cx + 180, height / 2 - 150, '✕', {
     fontFamily: '"Inter"', fontSize: '16px', color: '#ff7675',
   }).setOrigin(0.5).setDepth(55).setInteractive({ useHandCursor: true });
 
-  const items: Phaser.GameObjects.GameObject[] = [overlay, panel, title, closeIcn];
-  closeIcn.on('pointerdown', () => items.forEach(i => i.destroy()));
-
-  let y = height / 2 - 100;
-  for (const lesson of set.lessons) {
-    const bg = scene.add.graphics().setDepth(52);
-    bg.fillStyle(0x2a1e17, 0.85);
-    bg.fillRoundedRect(width / 2 - 170, y, 340, 46, 6);
-    bg.lineStyle(1, 0x8b6914, 0.3);
-    bg.strokeRoundedRect(width / 2 - 170, y, 340, 46, 6);
-
-    const lt = scene.add.text(width / 2 - 150, y + 6, lesson.title, {
-      fontFamily: '"Inter"', fontSize: '14px', color: '#f1c40f', fontStyle: 'bold',
-    }).setDepth(53);
-
-    const ld = scene.add.text(width / 2 - 150, y + 26, lesson.desc, {
-      fontFamily: '"Inter"', fontSize: '11px', color: '#8a7a6a',
-    }).setDepth(53);
-
-    const btnG = scene.add.graphics().setDepth(52);
-    btnG.fillStyle(0x3498db, 0.85);
-    btnG.fillRoundedRect(width / 2 + 70, y + 6, 80, 26, 6);
-    const btnT = scene.add.text(width / 2 + 110, y + 19, 'OPEN', {
-      fontFamily: '"Inter"', fontSize: '11px', color: '#fff', fontStyle: 'bold',
-    }).setOrigin(0.5).setDepth(53);
-
-    const zone = scene.add.zone(width / 2 + 110, y + 19, 80, 26)
-      .setInteractive({ useHandCursor: true }).setDepth(54);
-    zone.on('pointerdown', () => {
-      items.forEach(i => i.destroy());
-      openLessonContent(scene, lesson, [...(set.quizzes[lesson.id] || [])], effectiveMapKey, set.completionItem);
-    });
-
-    items.push(bg, lt, ld, btnG, btnT, zone);
-    y += 54;
-  }
-
-  const closeBtn = scene.add.text(width / 2, height / 2 + 145, 'Close', {
+  const closeBtn = scene.add.text(cx, height / 2 + 145, 'Close', {
     fontFamily: '"Inter"', fontSize: '12px', color: '#636e72',
   }).setOrigin(0.5).setDepth(53).setInteractive({ useHandCursor: true });
-  closeBtn.on('pointerdown', () => items.forEach(i => i.destroy()));
-  items.push(closeBtn);
+
+  const items: Phaser.GameObjects.GameObject[] = [overlay, panel, title, closeIcn, closeBtn];
+
+  // Scrollable lesson list
+  const scrollAreaTop = height / 2 - 95;
+  const scrollAreaBottom = height / 2 + 130;
+  const scrollAreaHeight = scrollAreaBottom - scrollAreaTop;
+
+  const maskGfx = scene.add.graphics().setDepth(51).setVisible(false);
+  maskGfx.fillStyle(0xffffff);
+  maskGfx.fillRect(cx - 170, scrollAreaTop, 340, scrollAreaHeight);
+  const mask = maskGfx.createGeometryMask();
+
+  const listContainer = scene.add.container(0, 0).setDepth(52);
+  listContainer.setMask(mask);
+
+  const rowPitch = 54;
+  const rowHeight = 46;
+  let y = scrollAreaTop;
+  for (const lesson of set.lessons) {
+    const rowG = scene.add.graphics();
+    rowG.fillStyle(0x2a1e17, 0.85);
+    rowG.fillRoundedRect(cx - 170, y, 340, rowHeight, 6);
+    rowG.lineStyle(1, 0x3498db, 0.3);
+    rowG.strokeRoundedRect(cx - 170, y, 340, rowHeight, 6);
+
+    const lt = scene.add.text(cx - 150, y + 6, lesson.title, {
+      fontFamily: '"Inter"', fontSize: '14px', color: '#f1c40f', fontStyle: 'bold',
+    });
+
+    const ld = scene.add.text(cx - 150, y + 26, lesson.desc, {
+      fontFamily: '"Inter"', fontSize: '11px', color: '#8a7a6a',
+    });
+
+    const btnBg = scene.add.graphics();
+    btnBg.fillStyle(0x00b894, 0.85);
+    btnBg.fillRoundedRect(cx + 70, y + 6, 80, 26, 6);
+
+    const btnT = scene.add.text(cx + 110, y + 19, 'OPEN', {
+      fontFamily: '"Inter"', fontSize: '11px', color: '#fff', fontStyle: 'bold',
+    }).setOrigin(0.5);
+
+    const zone = scene.add.zone(cx + 110, y + 19, 80, 26)
+      .setInteractive({ useHandCursor: true });
+    zone.on('pointerdown', () => {
+      destroyAll();
+      openLessonContent(scene, lesson, [...(set.quizzes[lesson.id] || [])], effectiveMapKey, set.completionItem);
+    });
+    zone.on('pointerover', () => {
+      btnBg.clear();
+      btnBg.fillStyle(0x00e8a4, 0.9);
+      btnBg.fillRoundedRect(cx + 70, y + 6, 80, 26, 6);
+    });
+    zone.on('pointerout', () => {
+      btnBg.clear();
+      btnBg.fillStyle(0x00b894, 0.85);
+      btnBg.fillRoundedRect(cx + 70, y + 6, 80, 26, 6);
+    });
+
+    items.push(rowG, lt, ld, btnBg, btnT, zone);
+    listContainer.add([rowG, lt, ld, btnBg, btnT, zone]);
+    y += rowPitch;
+  }
+
+  items.push(listContainer);
+  items.push(maskGfx);
+
+  const firstY = scrollAreaTop;
+  const lastY = firstY + (set.lessons.length - 1) * rowPitch;
+  const lastBottom = lastY + rowHeight;
+  const contentHeight = lastBottom - firstY;
+  const maxScroll = Math.max(0, contentHeight - scrollAreaHeight);
+  let scrollOffset = 0;
+
+  const wheelHandler = (pointer: Phaser.Input.Pointer, _gameObjects: any[], _deltaX: number, deltaY: number) => {
+    if (pointer.x >= cx - 170 && pointer.x <= cx + 170 && pointer.y >= scrollAreaTop && pointer.y <= scrollAreaBottom) {
+      scrollOffset = Phaser.Math.Clamp(scrollOffset + deltaY, 0, maxScroll);
+      listContainer.y = -scrollOffset;
+    }
+  };
+
+  if (maxScroll > 0) {
+    scene.input.on('wheel', wheelHandler);
+  }
+
+  const destroyAll = () => {
+    scene.input.off('wheel', wheelHandler);
+    items.forEach(i => i.destroy());
+  };
+
+  closeIcn.on('pointerdown', destroyAll);
+  closeBtn.on('pointerdown', destroyAll);
 }
 
 function openLessonContent(scene: Phaser.Scene, lesson: Lesson, remaining: Question[], mapKey: string, completionItem: string | null) {
   const { width, height } = scene.cameras.main;
+  const cx = width * 0.5 - 120;
 
   let content = '';
   if (lesson.id === 'atoms') content = 'Atoms are the basic building blocks of all matter. They consist of a nucleus containing protons and neutrons, surrounded by electrons. Different types of atoms are called elements (like Hydrogen, Oxygen, Carbon).';
@@ -308,19 +363,19 @@ function openLessonContent(scene: Phaser.Scene, lesson: Lesson, remaining: Quest
 
   const panel = scene.add.graphics().setDepth(61);
   panel.fillStyle(0x1a1510, 0.95);
-  panel.fillRoundedRect(width / 2 - 240, height / 2 - 180, 480, 360, 12);
+  panel.fillRoundedRect(cx - 240, height / 2 - 180, 480, 360, 12);
   panel.lineStyle(2, 0x3498db, 0.5);
-  panel.strokeRoundedRect(width / 2 - 240, height / 2 - 180, 480, 360, 12);
+  panel.strokeRoundedRect(cx - 240, height / 2 - 180, 480, 360, 12);
 
-  const closeIcn = scene.add.text(width / 2 + 220, height / 2 - 170, '✕', {
+  const closeIcn = scene.add.text(cx + 220, height / 2 - 170, '✕', {
     fontFamily: '"Inter"', fontSize: '16px', color: '#ff7675',
   }).setOrigin(0.5).setDepth(65).setInteractive({ useHandCursor: true });
 
-  const title = scene.add.text(width / 2, height / 2 - 155, lesson.title, {
+  const title = scene.add.text(cx, height / 2 - 155, lesson.title, {
     fontFamily: '"Press Start 2P"', fontSize: '12px', color: '#3498db',
   }).setOrigin(0.5).setDepth(62);
 
-  const text = scene.add.text(width / 2, height / 2 - 60, content, {
+  const text = scene.add.text(cx, height / 2 - 60, content, {
     fontFamily: '"Inter"', fontSize: '14px', color: '#c8b89a',
     wordWrap: { width: 400 }, lineSpacing: 6,
   }).setOrigin(0.5).setDepth(62);
@@ -337,7 +392,7 @@ function openLessonContent(scene: Phaser.Scene, lesson: Lesson, remaining: Quest
     }
 
     if (remaining.length === 0) {
-      const done = scene.add.text(width / 2, height / 2 - 80, 'All questions answered! +20 bonus coins!', {
+      const done = scene.add.text(cx, height / 2 - 80, 'All questions answered! +20 bonus coins!', {
         fontFamily: '"Inter"', fontSize: '13px', color: '#2ecc71', fontStyle: 'bold', align: 'center',
       }).setOrigin(0.5).setDepth(62);
       uiElements.push(done);
@@ -347,7 +402,7 @@ function openLessonContent(scene: Phaser.Scene, lesson: Lesson, remaining: Quest
       if (completionItem && !completionAwarded) {
         completionAwarded = true;
         gameStore.addToInventory(completionItem, 1);
-        const certMsg = scene.add.text(width / 2, height / 2 - 55, `+1 ${completionItem === 'materials_certificate' ? 'Materials Expert Certificate' : 'Item'} earned!`, {
+        const certMsg = scene.add.text(cx, height / 2 - 55, `+1 ${completionItem === 'materials_certificate' ? 'Materials Expert Certificate' : 'Item'} earned!`, {
           fontFamily: '"Inter"', fontSize: '11px', color: '#f1c40f', fontStyle: 'bold', align: 'center',
         }).setOrigin(0.5).setDepth(62);
         uiElements.push(certMsg);
@@ -357,7 +412,7 @@ function openLessonContent(scene: Phaser.Scene, lesson: Lesson, remaining: Quest
     }
 
     const qData = remaining[0];
-    const qTxt = scene.add.text(width / 2, height / 2 - 120, qData.q, {
+    const qTxt = scene.add.text(cx, height / 2 - 120, qData.q, {
       fontFamily: '"Inter"', fontSize: '14px', color: '#f1c40f', fontStyle: 'bold', align: 'center',
       wordWrap: { width: 440 },
     }).setOrigin(0.5).setDepth(62);
@@ -366,7 +421,7 @@ function openLessonContent(scene: Phaser.Scene, lesson: Lesson, remaining: Quest
     let qy = height / 2 - 60;
     const optionElements: Phaser.GameObjects.GameObject[] = [];
 
-    const feedbackTxt = scene.add.text(width / 2, qy + 180, '', {
+    const feedbackTxt = scene.add.text(cx, qy + 180, '', {
       fontFamily: '"Inter"', fontSize: '12px', color: '#e74c3c',
     }).setOrigin(0.5).setDepth(63);
     uiElements.push(feedbackTxt);
@@ -374,15 +429,15 @@ function openLessonContent(scene: Phaser.Scene, lesson: Lesson, remaining: Quest
     for (const [idx, opt] of qData.opts.entries()) {
       const btnG = scene.add.graphics().setDepth(62);
       btnG.fillStyle(0x3d2b1f, 0.85);
-      btnG.fillRoundedRect(width / 2 - 150, qy, 300, 38, 8);
+      btnG.fillRoundedRect(cx - 150, qy, 300, 38, 8);
       btnG.lineStyle(1, 0x8b6914, 0.5);
-      btnG.strokeRoundedRect(width / 2 - 150, qy, 300, 38, 8);
+      btnG.strokeRoundedRect(cx - 150, qy, 300, 38, 8);
 
-      const btnT = scene.add.text(width / 2, qy + 19, opt, {
+      const btnT = scene.add.text(cx, qy + 19, opt, {
         fontFamily: '"Inter"', fontSize: '12px', color: '#fff',
       }).setOrigin(0.5).setDepth(63);
 
-      const zone = scene.add.zone(width / 2, qy + 19, 300, 38).setInteractive({ useHandCursor: true }).setDepth(64);
+      const zone = scene.add.zone(cx, qy + 19, 300, 38).setInteractive({ useHandCursor: true }).setDepth(64);
 
       zone.on('pointerdown', () => {
         feedbackTxt.setText('');
@@ -423,7 +478,7 @@ function openLessonContent(scene: Phaser.Scene, lesson: Lesson, remaining: Quest
     }
   }
 
-  const startQuizBtn = scene.add.text(width / 2, height / 2 + 155, 'Start Quiz', {
+  const startQuizBtn = scene.add.text(cx, height / 2 + 155, 'Start Quiz', {
     fontFamily: '"Press Start 2P"', fontSize: '12px', color: '#2ecc71',
   }).setOrigin(0.5).setDepth(63).setInteractive({ useHandCursor: true });
 
