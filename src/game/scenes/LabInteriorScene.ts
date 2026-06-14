@@ -786,34 +786,35 @@ export class LabInteriorScene extends Phaser.Scene {
 
   private showCraftPrompt() {
     const { width, height } = this.cameras.main;
+    const cx = width * 0.5 - 120;
     const overlay = this.add.rectangle(0, 0, width, height, 0x000, 0.6).setOrigin(0).setDepth(50);
 
     const panel = this.add.graphics().setDepth(51);
     panel.fillStyle(0x1a1a3e, 0.95);
-    panel.fillRoundedRect(width / 2 - 150, height / 2 - 80, 300, 160, 12);
+    panel.fillRoundedRect(cx - 150, height / 2 - 80, 300, 160, 12);
     panel.lineStyle(2, 0x6c5ce7, 0.5);
-    panel.strokeRoundedRect(width / 2 - 150, height / 2 - 80, 300, 160, 12);
+    panel.strokeRoundedRect(cx - 150, height / 2 - 80, 300, 160, 12);
 
-    const closeIcn = this.add.text(width / 2 + 130, height / 2 - 70, '✕', {
+    const closeIcn = this.add.text(cx + 130, height / 2 - 70, '✕', {
       fontFamily: '"Inter"', fontSize: '16px', color: '#ff7675',
     }).setOrigin(0.5).setDepth(55).setInteractive({ useHandCursor: true });
 
-    const t = this.add.text(width / 2, height / 2 - 55, 'Craft these reagents?', {
+    const t = this.add.text(cx, height / 2 - 55, 'Craft these reagents?', {
       fontFamily: '"Inter"', fontSize: '15px', color: '#f1c40f', fontStyle: 'bold',
     }).setOrigin(0.5).setDepth(52);
 
-    const reagentsTxt = this.add.text(width / 2, height / 2 - 20, this.benchReagents.join(' + '), {
+    const reagentsTxt = this.add.text(cx, height / 2 - 20, this.benchReagents.join(' + '), {
       fontFamily: '"Inter"', fontSize: '18px', color: '#fff', fontStyle: 'bold',
     }).setOrigin(0.5).setDepth(52);
 
     const craftG = this.add.graphics().setDepth(52);
     craftG.fillStyle(0x6c5ce7, 0.9);
-    craftG.fillRoundedRect(width / 2 - 90, height / 2 + 20, 80, 30, 6);
-    const craftT = this.add.text(width / 2 - 50, height / 2 + 35, 'CRAFT', {
+    craftG.fillRoundedRect(cx - 90, height / 2 + 20, 80, 30, 6);
+    const craftT = this.add.text(cx - 50, height / 2 + 35, 'CRAFT', {
       fontFamily: '"Inter"', fontSize: '12px', color: '#fff', fontStyle: 'bold',
     }).setOrigin(0.5).setDepth(53);
 
-    const craftZ = this.add.zone(width / 2 - 50, height / 2 + 35, 80, 30)
+    const craftZ = this.add.zone(cx - 50, height / 2 + 35, 80, 30)
       .setInteractive({ useHandCursor: true }).setDepth(54);
     craftZ.on('pointerdown', () => {
       closeIcn.destroy();
@@ -832,11 +833,11 @@ export class LabInteriorScene extends Phaser.Scene {
 
     const clearG = this.add.graphics().setDepth(52);
     clearG.fillStyle(0x2d3436, 0.9);
-    clearG.fillRoundedRect(width / 2 + 10, height / 2 + 20, 80, 30, 6);
-    const clearT = this.add.text(width / 2 + 50, height / 2 + 35, 'CLEAR', {
+    clearG.fillRoundedRect(cx + 10, height / 2 + 20, 80, 30, 6);
+    const clearT = this.add.text(cx + 50, height / 2 + 35, 'CLEAR', {
       fontFamily: '"Inter"', fontSize: '12px', color: '#ff7675', fontStyle: 'bold',
     }).setOrigin(0.5).setDepth(53);
-    const clearZ = this.add.zone(width / 2 + 50, height / 2 + 35, 80, 30)
+    const clearZ = this.add.zone(cx + 50, height / 2 + 35, 80, 30)
       .setInteractive({ useHandCursor: true }).setDepth(54);
     clearZ.on('pointerdown', () => {
       closeIcn.destroy();

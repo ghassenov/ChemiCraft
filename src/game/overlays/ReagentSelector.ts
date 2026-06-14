@@ -79,8 +79,8 @@ export function openReagentSelector(scene: Phaser.Scene, callbacks: ReagentSelec
 
   for (const invItem of available) {
     const data = callbacks.getCraftingItems()[invItem.itemId];
-    const bx = cx - 120 + col * 110;
-    const by = height / 2 - 90 + row * rowHeight;
+    const bx = cx - 105 + col * 110;
+    const by = height / 2 - 77 + row * rowHeight;
 
     const bg = scene.add.graphics();
     bg.fillStyle(0x2a2a4f, 0.9);
