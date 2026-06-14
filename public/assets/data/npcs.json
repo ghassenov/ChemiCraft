@@ -80,9 +80,9 @@
     "id": "climate_scientist", "name": "Dr. Kai Mate", "spriteColor": "#26a69a",
     "questId": "carbon_neutral", "mapOrigin": "ecoVille",
     "dialogue": {
-      "default": ["Ah, a visitor! Welcome to EcoVille.", "We're working to make this the world's first carbon-neutral city.", "The Climate Calculator over there models our energy decisions.", "Care to help us meet our targets?"],
-      "questActive": ["Balance is key! Reduce emissions without crashing the economy.", "Solar and wind are your best friends here.", "Watch the approval rating — unhappy citizens means failed policies!"],
-      "questComplete": ["50% reduction achieved! Remarkable work!", "This is exactly what the Paris Agreement calls for.", "Science, policy, and public engagement — all three are essential for real change."]
+      "default": ["Ah, a visitor! Welcome to EcoVille.", "We're working to make this the world's first carbon-neutral city.", "The Climate Lab can process organic waste into biofuel!", "Care to help us start our journey to net-zero?"],
+      "questActive": ["Biofuel from organic waste + H₂O is our first step to carbon neutrality.", "Gather 🌿 from the biomass piles and combine with H₂O at the lab.", "You already know how to make H₂O from Atom Meadows!"],
+      "questComplete": ["Biofuel crafted! This burns cleaner than fossil fuels.", "It's carbon-neutral because the plants absorbed CO₂ while growing.", "Science, policy, and public engagement — all three are essential for real change."]
     }
   },
   "green_mayor": {
@@ -99,7 +99,7 @@
     "questId": "renewable_shift", "mapOrigin": "ecoVille",
     "dialogue": {
       "default": ["Hi! I'm redesigning EcoVille's power grid.", "Right now we're at 60% renewable — not good enough!", "We need solar AND biofuel to get to 100%.", "Think you can help me source the materials?"],
-      "questActive": ["Solar panels need recycled plastic and glass — check Recycling Fields.", "Biofuel needs organic waste + water — both available here.", "These cross-map materials are what make the green transition real!"],
+      "questActive": ["Solar panels need 🔄 recycled plastic + 💎 recycled glass — check Recycling Fields!", "You should have already crafted biofuel from the carbon_neutral quest.", "These cross-map materials are what make the green transition real!"],
       "questComplete": ["100% renewable! We've done it!", "The sun and organic matter together can power a whole city.", "The energy transition is happening — one scientist at a time!"]
     }
   },
@@ -164,6 +164,18 @@
       "default": ["Hello there, young scientist!", "I'm Dr. Carbone, studying atmospheric carbon levels.", "I've noticed a worrying increase in CO₂ around Atom Meadows.", "Could you help me understand how to capture it?"],
       "questActive": ["CO₂ is carbon dioxide — one carbon atom and two oxygen atoms.", "First, craft CO₂ in the lab using C + O + O.", "Then bring it to me so we can study its properties!"],
       "questComplete": ["Fascinating! CO₂ captured and analyzed!", "This linear molecule is a major greenhouse gas.", "Understanding its structure is the first step to solving climate change!", "Here's your reward — keep up the great science!"]
+    }
+  },
+  "eco_activist": {
+    "id": "eco_activist", "name": "Zara Green", "spriteColor": "#00b894",
+    "questId": null, "mapOrigin": "ecoVille",
+    "dialogue": {
+      "default": [
+        "Welcome to the Eco Climate Library!",
+        "Have you seen the pollution vents around EcoVille?",
+        "Every sample you collect helps us measure our environmental impact!",
+        "The future is green — but only if we build it together."
+      ]
     }
   },
   "core_guardian": {

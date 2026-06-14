@@ -41,8 +41,9 @@ export class LibraryInteriorScene extends Phaser.Scene {
 
     const currentMap = gameStore.getCurrentMap();
     const recycling = currentMap === 'recyclingFields';
-    const npcId = recycling ? 'eco_educator' : 'professor_knowitall';
-    const npcName = recycling ? 'Eco Emma' : 'Prof. Knowitall';
+    const ecoVille = currentMap === 'ecoVille';
+    const npcId = recycling ? 'eco_educator' : ecoVille ? 'eco_activist' : 'professor_knowitall';
+    const npcName = recycling ? 'Eco Emma' : ecoVille ? 'Zara Green' : 'Prof. Knowitall';
 
     this.professor = new NPC(this, 480, 200, npcId, npcName, `npc_${npcId}`, null);
     this.physics.add.collider(this.player, this.professor);
@@ -50,7 +51,7 @@ export class LibraryInteriorScene extends Phaser.Scene {
     this.dialogueBox = new DialogueBox(this);
     this.player.onInteract(() => this.handleInteraction());
 
-    const libTitle = recycling ? 'MATERIALS RECYCLING CENTER' : 'LIBRARY OF ELEMENTS';
+    const libTitle = recycling ? 'MATERIALS RECYCLING CENTER' : ecoVille ? 'ECO CLIMATE LIBRARY' : 'LIBRARY OF ELEMENTS';
     this.add.text(320, 55, libTitle, {
       fontFamily: '"Press Start 2P", monospace', fontSize: '12px', color: '#d4a855',
     }).setOrigin(0.5);
@@ -66,6 +67,12 @@ export class LibraryInteriorScene extends Phaser.Scene {
         { name: 'Jean-Jacques', label: 'Pioneer of industrial ecology', x: 320, y: 560, read: false },
         { name: 'Wangari Maathai', label: 'Nobel laureate, environmental activist', x: 520, y: 560, read: false },
       ];
+    } else if (ecoVille) {
+      this.portraits = [
+        { name: 'Eunice Newton Foote', label: 'First to describe the greenhouse effect (1856)', x: 120, y: 560, read: false },
+        { name: 'Charles David Keeling', label: 'Created the Keeling Curve of CO\u2082 measurements', x: 320, y: 560, read: false },
+        { name: 'James Hansen', label: 'Brought climate change to public attention (1988)', x: 520, y: 560, read: false },
+      ];
     } else {
       this.portraits = [
         { name: 'Lavoisier', label: 'Father of modern chemistry', x: 120, y: 560, read: false },
@@ -79,6 +86,11 @@ export class LibraryInteriorScene extends Phaser.Scene {
       'Browse the center to learn about\nrecycling and materials.',
       'Study the three portraits\nfor a coin bonus.',
       'Complete lessons to earn your\nMaterials Expert Certificate.',
+      'Exit through the corridor.',
+    ] : ecoVille ? [
+      'Climate Library helps you understand\nclimate science and carbon capture.',
+      'Study the three portraits\nfor a coin bonus.',
+      'Complete lessons to prepare for\nthe Green Certificate quest.',
       'Exit through the corridor.',
     ] : [
       'Browse bookshelves to learn\nchemistry lessons.',
@@ -460,12 +472,13 @@ export class LibraryInteriorScene extends Phaser.Scene {
     const py = this.player.y;
     const currentMap = gameStore.getCurrentMap();
     const recycling = currentMap === 'recyclingFields';
+    const ecoVille = currentMap === 'ecoVille';
 
     if (this.isNear(px, py, this.professor.x, this.professor.y, 40)) {
       if (!gameStore.hasVisitedInterior('LibraryInteriorScene')) {
         gameStore.markInteriorVisited('LibraryInteriorScene');
         const data = this.cache.json.get('npcs') as Record<string, any>;
-        const npcKey = recycling ? 'eco_educator' : 'professor_knowitall';
+        const npcKey = recycling ? 'eco_educator' : ecoVille ? 'eco_activist' : 'professor_knowitall';
         this.dialogueBox.show(
           data[npcKey].name,
           data[npcKey].dialogue.default,

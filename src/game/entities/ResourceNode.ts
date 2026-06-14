@@ -9,6 +9,7 @@ export type ResourceType = 'coal' | 'water' | 'crystal' | 'air'
 export class ResourceNode extends Phaser.Physics.Arcade.Sprite {
   public resourceType: string;
   public amount: number;
+  public emojiLabel: Phaser.GameObjects.Text | null = null;
   private prompt: Phaser.GameObjects.Container | null = null;
   private _isPlayerNear = false;
   
@@ -141,6 +142,7 @@ export class ResourceNode extends Phaser.Physics.Arcade.Sprite {
 
   destroy(fromScene?: boolean) {
     this.prompt?.destroy();
+    this.emojiLabel?.destroy();
     super.destroy(fromScene);
   }
 }
