@@ -150,8 +150,8 @@ export abstract class BaseGameScene extends Phaser.Scene {
       this.events.off(GameEvents.QuestCompleted, questCompleteHandler);
     });
 
-    if (!sessionStorage.getItem('chemicraft_tutorial_shown')) {
-      sessionStorage.setItem('chemicraft_tutorial_shown', '1');
+    if (gameStore.shouldShowTutorial()) {
+      gameStore.clearPendingTutorial();
       this.showTutorialOverlay();
     }
   }
@@ -986,15 +986,16 @@ export abstract class BaseGameScene extends Phaser.Scene {
 
   private showTutorialOverlay() {
     const { width, height } = this.cameras.main;
+    const cx = width * 0.5 - 120;
     const overlay = this.add.rectangle(0, 0, width, height, 0x000, 0.8).setOrigin(0).setDepth(100);
 
     const panel = this.add.graphics().setDepth(101);
     panel.fillStyle(0x1a1a3e, 0.95);
-    panel.fillRoundedRect(width / 2 - 200, height / 2 - 150, 400, 300, 12);
+    panel.fillRoundedRect(cx - 200, height / 2 - 180, 400, 360, 12);
     panel.lineStyle(2, 0x00cec9, 0.5);
-    panel.strokeRoundedRect(width / 2 - 200, height / 2 - 150, 400, 300, 12);
+    panel.strokeRoundedRect(cx - 200, height / 2 - 180, 400, 360, 12);
 
-    const title = this.add.text(width / 2, height / 2 - 120, 'WELCOME TO CHEMICRAFT', {
+    const title = this.add.text(cx, height / 2 - 155, 'WELCOME TO CHEMICRAFT', {
       fontFamily: '"Press Start 2P"', fontSize: '14px', color: '#00cec9'
     }).setOrigin(0.5).setDepth(102);
 
@@ -1009,19 +1010,19 @@ export abstract class BaseGameScene extends Phaser.Scene {
                 '[ F ]       - Toggle Fullscreen\n\n' +
                 'Start by talking to Mayor Molecule in the center of the village!';
 
-    const desc = this.add.text(width / 2, height / 2, txt, {
+    const desc = this.add.text(cx, height / 2 - 10, txt, {
       fontFamily: '"Inter"', fontSize: '12px', color: '#dfe6e9', align: 'center', lineSpacing: 5
     }).setOrigin(0.5).setDepth(102);
 
     const btnG = this.add.graphics().setDepth(102);
     btnG.fillStyle(0x00b894, 0.85);
-    btnG.fillRoundedRect(width / 2 - 60, height / 2 + 100, 120, 30, 6);
+    btnG.fillRoundedRect(cx - 60, height / 2 + 120, 120, 30, 6);
 
-    const btnT = this.add.text(width / 2, height / 2 + 115, 'START GAME', {
+    const btnT = this.add.text(cx, height / 2 + 135, 'START GAME', {
       fontFamily: '"Inter"', fontSize: '12px', color: '#fff', fontStyle: 'bold'
     }).setOrigin(0.5).setDepth(103);
 
-    const zone = this.add.zone(width / 2, height / 2 + 115, 120, 30).setInteractive({ useHandCursor: true }).setDepth(104);
+    const zone = this.add.zone(cx, height / 2 + 135, 120, 30).setInteractive({ useHandCursor: true }).setDepth(104);
 
     gameStore.setPaused(true);
     zone.on('pointerdown', () => {

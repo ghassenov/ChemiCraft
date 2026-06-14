@@ -47,6 +47,7 @@ const DEFAULT_PLAYER_DATA: PlayerData = {
 class GameStore {
   private state: GameState;
   private listeners: Set<Listener> = new Set();
+  private _pendingTutorial = false;
 
   constructor() {
     this.state = {
@@ -71,7 +72,16 @@ class GameStore {
   newGame() {
     this.state.playerData = { ...DEFAULT_PLAYER_DATA };
     localStorage.removeItem(this.SAVE_KEY);
+    this._pendingTutorial = true;
     this.notify();
+  }
+
+  shouldShowTutorial(): boolean {
+    return this._pendingTutorial;
+  }
+
+  clearPendingTutorial() {
+    this._pendingTutorial = false;
   }
 
   setUsername(name: string) {
