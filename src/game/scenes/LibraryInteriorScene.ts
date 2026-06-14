@@ -229,141 +229,148 @@ export class LibraryInteriorScene extends Phaser.Scene {
   private drawRoom() {
     const g = this.add.graphics();
 
-    g.fillStyle(0x1e1510, 1);
+    // Base floor
+    g.fillStyle(0x1a1512, 1);
     g.fillRect(0, 0, 640, 640);
 
+    // Floor texture
     g.fillStyle(0x2a1e17, 1);
     g.fillRect(20, 20, 600, 520);
 
-    g.fillStyle(0x3a2a1f, 0.3);
-    for (let row = 0; row < 30; row++) {
-      g.fillRect(20, 20 + row * 20, 600, 1);
+    // Hardwood floor planks
+    g.lineStyle(1, 0x1e1510, 0.5);
+    for (let x = 20; x < 620; x += 40) {
+      g.moveTo(x, 20); g.lineTo(x, 540);
+      g.strokePath();
+    }
+    for (let y = 20; y < 540; y += 80) {
+      g.lineBetween(20, y, 620, y);
+      g.lineBetween(40, y + 40, 600, y + 40);
     }
 
-    g.fillStyle(0x6a4a2a, 0.3);
-    g.fillRect(20, 20, 600, 520);
+    // Grand carpet in the center
+    g.fillStyle(0x7f0000, 0.6); // Deep red
+    g.fillRect(160, 220, 320, 200);
+    g.lineStyle(4, 0xd4a855, 0.8); // Golden border
+    g.strokeRect(164, 224, 312, 192);
+    // Carpet pattern
+    g.lineStyle(1, 0xd4a855, 0.3);
+    for (let i = 0; i < 5; i++) {
+      g.strokeRect(180 + i * 20, 240 + i * 10, 280 - i * 40, 160 - i * 20);
+    }
 
-    g.fillStyle(0x2a1a0e, 0.5);
-    g.fillRect(20, 20, 600, 4);
-    g.fillRect(20, 20, 4, 520);
-    g.fillRect(616, 20, 4, 520);
-    g.fillRect(20, 536, 600, 4);
+    // Room borders
+    g.fillStyle(0x2a1a0e, 0.8);
+    g.fillRect(20, 20, 600, 8);
+    g.fillRect(20, 20, 8, 520);
+    g.fillRect(612, 20, 8, 520);
+    g.fillRect(20, 532, 600, 8);
 
-    g.fillStyle(0x8B6914, 0.2);
+    // Grand Bookshelves
+    g.fillStyle(0x4e342e, 1); // Darker rich wood
     g.fillRect(30, 80, 80, 420);
     g.fillRect(530, 80, 80, 420);
     g.fillRect(110, 80, 80, 200);
     g.fillRect(450, 80, 80, 200);
 
-    g.lineStyle(2, 0x8B6914, 0.3);
+    g.lineStyle(2, 0xd4a855, 0.6); // Golden trim
     g.strokeRect(30, 80, 80, 420);
     g.strokeRect(530, 80, 80, 420);
+    g.strokeRect(110, 80, 80, 200);
+    g.strokeRect(450, 80, 80, 200);
 
+    // Shelves contents (books)
     const bookColors = [0xc0392b, 0x2980b9, 0x27ae60, 0x8e44ad, 0xd4a017, 0x2c3e50, 0x7f8c8d, 0x16a085, 0xe67e22, 0x3498db];
     const shelves = [
-      { x: 35, y: 90 }, { x: 535, y: 90 },
-      { x: 35, y: 210 }, { x: 535, y: 210 },
-      { x: 35, y: 330 }, { x: 535, y: 330 },
+      { x: 35, y: 90, h: 6 }, { x: 535, y: 90, h: 6 },
+      { x: 115, y: 90, h: 3 }, { x: 455, y: 90, h: 3 },
     ];
 
     for (const s of shelves) {
-      for (let i = 0; i < 8; i++) {
-        const bw = 5 + Math.floor(Math.random() * 7);
-        const bh = 14 + Math.floor(Math.random() * 6);
-        const bc = bookColors[Math.floor(Math.random() * bookColors.length)];
-        g.fillStyle(bc, 0.6);
-        g.fillRect(s.x + i * 9, s.y + (22 - bh), bw, bh);
-        g.fillStyle(0xffffff, 0.06);
-        g.fillRect(s.x + i * 9 + 1, s.y + (22 - bh) + 2, 2, bh - 4);
+      for (let level = 0; level < s.h; level++) {
+        const sy = s.y + level * 60;
+        // Shelf wood
+        g.fillStyle(0x3e2723, 1);
+        g.fillRect(s.x - 5, sy + 30, 80, 6);
+        g.fillStyle(0x1a110b, 0.4);
+        g.fillRect(s.x, sy - 10, 70, 40); // Shelf shadow
+
+        // Books
+        let currentX = s.x + 2;
+        while (currentX < s.x + 65) {
+          const bw = 5 + Math.floor(Math.random() * 8);
+          if (currentX + bw > s.x + 65) break;
+          const bh = 18 + Math.floor(Math.random() * 12);
+          const bc = bookColors[Math.floor(Math.random() * bookColors.length)];
+          g.fillStyle(bc, 0.9);
+          g.fillRoundedRect(currentX, sy + 30 - bh, bw, bh, 2);
+          
+          // Book spine details
+          g.fillStyle(0xffffff, 0.15);
+          g.fillRect(currentX + 2, sy + 30 - bh + 2, 2, bh - 4);
+          g.fillStyle(0xd4a855, 0.4);
+          g.fillRect(currentX, sy + 30 - bh + 4, bw, 2);
+          g.fillRect(currentX, sy + 30 - 6, bw, 2);
+          
+          currentX += bw + Math.floor(Math.random() * 3);
+        }
       }
     }
 
-    g.fillStyle(0x3a2a1f, 0.4);
-    for (let i = 0; i < 3; i++) {
-      g.fillRect(30, 115 + i * 120, 80, 3);
-      g.fillRect(530, 115 + i * 120, 80, 3);
-    }
-
-    g.fillStyle(0x3d2b1f, 0.8);
-    g.fillRect(220, 270, 200, 50);
-    g.lineStyle(2, 0x8B6914, 0.4);
-    g.strokeRect(220, 270, 200, 50);
-
-    g.fillStyle(0x4a3a2a, 0.3);
-    g.fillRect(228, 278, 184, 34);
-
-    g.fillStyle(0xd4a855, 0.12);
-    g.fillCircle(250, 295, 6);
-    g.fillCircle(390, 295, 6);
+    // Central Reading Desk
+    g.fillStyle(0x5d4037, 1);
+    g.fillRoundedRect(220, 270, 200, 60, 8);
+    g.lineStyle(2, 0xd4a855, 0.7);
+    g.strokeRoundedRect(220, 270, 200, 60, 8);
+    
+    // Desk leather pad
+    g.fillStyle(0x1b5e20, 0.6); // Green leather
+    g.fillRoundedRect(230, 280, 180, 40, 4);
 
     this.drawDecor(g);
     this.drawCorridor(g);
   }
 
   private drawDecor(g: Phaser.GameObjects.Graphics) {
-    g.fillStyle(0x8B6914, 0.15);
-    g.fillCircle(320, 295, 30);
-    g.fillStyle(0x3a2a1f, 0.2);
-    g.fillCircle(320, 295, 18);
-    g.fillStyle(0xd4a855, 0.06);
-    g.fillCircle(320, 295, 8);
-
-    g.fillStyle(0x8B4513, 0.4);
-    g.fillRect(240, 268, 4, 24);
-    g.fillRect(396, 268, 4, 24);
-    g.fillStyle(0xd4a855, 0.08);
-    g.fillCircle(242, 268, 4);
-    g.fillCircle(242, 266, 2);
-    g.fillCircle(398, 268, 4);
-    g.fillCircle(398, 266, 2);
-
-    g.fillStyle(0x8B6914, 0.08);
-    g.fillRect(180, 270, 30, 50);
-    g.fillRect(430, 270, 30, 50);
-
-    g.fillStyle(0xd4a855, 0.04);
-    g.fillCircle(195, 268, 8);
-    g.fillCircle(445, 268, 8);
-
-    g.fillStyle(0x4a3a2a, 0.6);
-    g.fillRect(314, 80, 12, 60);
-    g.fillStyle(0x6a4a2a, 0.4);
-    g.fillRect(310, 80, 20, 6);
-    g.fillStyle(0xd4a855, 0.06);
-    g.fillCircle(318, 76, 10);
-    g.fillCircle(318, 76, 6);
-    g.fillStyle(0xf1c40f, 0.04);
-    g.fillCircle(318, 76, 3);
-
-    g.fillStyle(0x8B4513, 0.3);
-    g.fillRect(290, 340, 60, 20);
-    g.fillRect(290, 360, 60, 30);
-    g.fillStyle(0x6a4a2a, 0.3);
-    g.fillCircle(305, 348, 6);
-    g.fillCircle(335, 348, 6);
-    g.fillStyle(0xd4a855, 0.08);
-    g.fillCircle(305, 346, 3);
-    g.fillCircle(335, 346, 3);
-
-    g.fillStyle(0x6a8aaa, 0.06);
-    g.fillRect(34, 85, 8, 410);
-    g.fillRect(598, 85, 8, 410);
-
-    g.fillStyle(0x2d3436, 0.15);
-    g.fillRect(220, 375, 200, 80);
-    g.lineStyle(1, 0xd4a855, 0.06);
-    g.strokeRect(220, 375, 200, 80);
-
-    for (let i = 0; i < 3; i++) {
-      g.fillStyle([0x8B6914, 0xc0392b, 0x2980b9][i], 0.3);
-      g.fillRect(230 + i * 65, 385, 50, 8);
-      g.fillStyle([0x8B6914, 0xc0392b, 0x2980b9][i], 0.15);
-      g.fillRect(235 + i * 65, 395, 40, 6);
+    // Open books on desk
+    g.fillStyle(0xfffde7, 0.9);
+    g.fillRect(250, 285, 20, 25);
+    g.fillRect(270, 285, 20, 25);
+    g.lineStyle(1, 0x000000, 0.2);
+    g.strokeRect(250, 285, 40, 25);
+    g.lineBetween(270, 285, 270, 310);
+    // Text lines
+    g.lineStyle(1, 0x5d4037, 0.5);
+    for (let i = 0; i < 4; i++) {
+      g.lineBetween(253, 290 + i * 5, 267, 290 + i * 5);
+      g.lineBetween(273, 290 + i * 5, 287, 290 + i * 5);
     }
 
-    g.fillStyle(0x8B6914, 0.1);
-    g.fillRect(170, 185, 30, 50);
-    g.fillRect(440, 185, 30, 50);
+    g.fillStyle(0xfffde7, 0.8);
+    g.fillRect(350, 280, 30, 20); // Papers
+    g.fillStyle(0xbdc3c7, 0.8);
+    g.fillCircle(385, 285, 4); // Inkwell
+    g.fillStyle(0x000000, 0.6);
+    g.fillCircle(385, 285, 2);
+
+    // Reading Lamp Base
+    g.fillStyle(0xd4a855, 1);
+    g.fillCircle(320, 290, 8);
+    g.fillStyle(0x27ae60, 0.9); // Green glass shade
+    g.fillEllipse(320, 290, 20, 8);
+
+    // Portraits on the back wall (y=20)
+    const pxs = [150, 320, 490];
+    for (const px of pxs) {
+      g.fillStyle(0xd4a855, 0.8); // Golden frame
+      g.fillRect(px - 22, 25, 44, 44);
+      g.fillStyle(0x3e2723, 1); // Dark painting background
+      g.fillRect(px - 18, 29, 36, 36);
+      g.fillStyle(0xffffff, 0.1);
+      g.fillCircle(px, 47, 12); // Vague face
+      g.fillStyle(0xfffde7, 0.6);
+      g.fillRect(px - 8, 64, 16, 4); // Plaque
+    }
   }
 
   private drawCorridor(g: Phaser.GameObjects.Graphics) {
