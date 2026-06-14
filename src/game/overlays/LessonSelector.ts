@@ -308,39 +308,36 @@ function openLessonContent(scene: Phaser.Scene, lesson: Lesson, remaining: Quest
 
   const panel = scene.add.graphics().setDepth(61);
   panel.fillStyle(0x1a1510, 0.95);
-  panel.fillRoundedRect(width / 2 - 240, height / 2 - 210, 480, 420, 12);
+  panel.fillRoundedRect(width / 2 - 240, height / 2 - 180, 480, 360, 12);
   panel.lineStyle(2, 0x3498db, 0.5);
-  panel.strokeRoundedRect(width / 2 - 240, height / 2 - 210, 480, 420, 12);
+  panel.strokeRoundedRect(width / 2 - 240, height / 2 - 180, 480, 360, 12);
 
-  const closeIcn = scene.add.text(width / 2 + 220, height / 2 - 195, '✕', {
+  const closeIcn = scene.add.text(width / 2 + 220, height / 2 - 170, '✕', {
     fontFamily: '"Inter"', fontSize: '16px', color: '#ff7675',
   }).setOrigin(0.5).setDepth(65).setInteractive({ useHandCursor: true });
 
-  const title = scene.add.text(width / 2, height / 2 - 175, lesson.title, {
+  const title = scene.add.text(width / 2, height / 2 - 155, lesson.title, {
     fontFamily: '"Press Start 2P"', fontSize: '12px', color: '#3498db',
   }).setOrigin(0.5).setDepth(62);
 
-  const text = scene.add.text(width / 2, height / 2 - 120, content, {
+  const text = scene.add.text(width / 2, height / 2 - 60, content, {
     fontFamily: '"Inter"', fontSize: '14px', color: '#c8b89a',
-    wordWrap: { width: 380 }, lineSpacing: 6,
+    wordWrap: { width: 400 }, lineSpacing: 6,
   }).setOrigin(0.5).setDepth(62);
 
   const uiElements: Phaser.GameObjects.GameObject[] = [overlay, panel, closeIcn, title, text];
 
-  let questionElements: Phaser.GameObjects.GameObject[] = [];
-
+  let quizStarted = false;
   let completionAwarded = false;
 
   function showNextQuestion() {
-    for (const el of questionElements) {
-      const idx = uiElements.indexOf(el);
-      if (idx !== -1) uiElements.splice(idx, 1);
-      el.destroy();
+    if (!quizStarted) {
+      text.setVisible(false);
+      quizStarted = true;
     }
-    questionElements = [];
 
     if (remaining.length === 0) {
-      const done = scene.add.text(width / 2, height / 2 + 10, 'All questions answered! +20 bonus coins!', {
+      const done = scene.add.text(width / 2, height / 2 - 80, 'All questions answered! +20 bonus coins!', {
         fontFamily: '"Inter"', fontSize: '13px', color: '#2ecc71', fontStyle: 'bold', align: 'center',
       }).setOrigin(0.5).setDepth(62);
       uiElements.push(done);
@@ -350,7 +347,7 @@ function openLessonContent(scene: Phaser.Scene, lesson: Lesson, remaining: Quest
       if (completionItem && !completionAwarded) {
         completionAwarded = true;
         gameStore.addToInventory(completionItem, 1);
-        const certMsg = scene.add.text(width / 2, height / 2 + 35, `+1 ${completionItem === 'materials_certificate' ? 'Materials Expert Certificate' : 'Item'} earned!`, {
+        const certMsg = scene.add.text(width / 2, height / 2 - 55, `+1 ${completionItem === 'materials_certificate' ? 'Materials Expert Certificate' : 'Item'} earned!`, {
           fontFamily: '"Inter"', fontSize: '11px', color: '#f1c40f', fontStyle: 'bold', align: 'center',
         }).setOrigin(0.5).setDepth(62);
         uiElements.push(certMsg);
@@ -360,27 +357,35 @@ function openLessonContent(scene: Phaser.Scene, lesson: Lesson, remaining: Quest
     }
 
     const qData = remaining[0];
-    const qTxt = scene.add.text(width / 2, height / 2 + 70, qData.q, {
-      fontFamily: '"Inter"', fontSize: '12px', color: '#f1c40f', fontStyle: 'bold', align: 'center',
+    const qTxt = scene.add.text(width / 2, height / 2 - 120, qData.q, {
+      fontFamily: '"Inter"', fontSize: '14px', color: '#f1c40f', fontStyle: 'bold', align: 'center',
+      wordWrap: { width: 440 },
     }).setOrigin(0.5).setDepth(62);
     uiElements.push(qTxt);
-    questionElements.push(qTxt);
 
-    let qy = height / 2 + 110;
+    let qy = height / 2 - 60;
+    const optionElements: Phaser.GameObjects.GameObject[] = [];
+
+    const feedbackTxt = scene.add.text(width / 2, qy + 180, '', {
+      fontFamily: '"Inter"', fontSize: '12px', color: '#e74c3c',
+    }).setOrigin(0.5).setDepth(63);
+    uiElements.push(feedbackTxt);
+
     for (const [idx, opt] of qData.opts.entries()) {
       const btnG = scene.add.graphics().setDepth(62);
       btnG.fillStyle(0x3d2b1f, 0.85);
-      btnG.fillRoundedRect(width / 2 - 120, qy, 240, 30, 6);
+      btnG.fillRoundedRect(width / 2 - 150, qy, 300, 38, 8);
       btnG.lineStyle(1, 0x8b6914, 0.5);
-      btnG.strokeRoundedRect(width / 2 - 120, qy, 240, 30, 6);
+      btnG.strokeRoundedRect(width / 2 - 150, qy, 300, 38, 8);
 
-      const btnT = scene.add.text(width / 2, qy + 15, opt, {
-        fontFamily: '"Inter"', fontSize: '11px', color: '#fff',
+      const btnT = scene.add.text(width / 2, qy + 19, opt, {
+        fontFamily: '"Inter"', fontSize: '12px', color: '#fff',
       }).setOrigin(0.5).setDepth(63);
 
-      const zone = scene.add.zone(width / 2, qy + 15, 240, 30).setInteractive({ useHandCursor: true }).setDepth(64);
+      const zone = scene.add.zone(width / 2, qy + 19, 300, 38).setInteractive({ useHandCursor: true }).setDepth(64);
 
       zone.on('pointerdown', () => {
+        feedbackTxt.setText('');
         if (idx === qData.ans) {
           scene.cameras.main.flash(200, 46, 204, 113);
           scene.sound.play('sfx_coin', { volume: 0.5 });
@@ -388,28 +393,46 @@ function openLessonContent(scene: Phaser.Scene, lesson: Lesson, remaining: Quest
 
           const skillMap: Record<string, string> = {
             recyclingFields: 'recycling_mastery',
-            ecoVille: 'climate_science',
             atomMeadows: 'equation_balancing',
             prismHeights: 'optics_mastery',
           };
           gameStore.addSkillPoints(skillMap[mapKey] || 'equation_balancing', 1);
 
           remaining.shift();
+
+          [qTxt, ...optionElements].forEach(el => {
+            const i = uiElements.indexOf(el);
+            if (i !== -1) uiElements.splice(i, 1);
+            el.destroy();
+          });
+
           showNextQuestion();
         } else {
           scene.cameras.main.shake(200, 0.01);
-          qTxt.setText('Incorrect. Try again!');
-          qTxt.setColor('#e74c3c');
+          feedbackTxt.setText('Incorrect. Try again!');
+          btnG.fillStyle(0x992d2d, 0.7);
+          scene.time.delayedCall(500, () => {
+            btnG.fillStyle(0x3d2b1f, 0.85);
+          });
         }
       });
 
+      optionElements.push(btnG, btnT, zone);
       uiElements.push(btnG, btnT, zone);
-      questionElements.push(btnG, btnT, zone);
-      qy += 40;
+      qy += 48;
     }
   }
 
-  showNextQuestion();
+  const startQuizBtn = scene.add.text(width / 2, height / 2 + 155, 'Start Quiz', {
+    fontFamily: '"Press Start 2P"', fontSize: '12px', color: '#2ecc71',
+  }).setOrigin(0.5).setDepth(63).setInteractive({ useHandCursor: true });
+
+  startQuizBtn.on('pointerdown', () => {
+    startQuizBtn.destroy();
+    showNextQuestion();
+  });
+
+  uiElements.push(startQuizBtn);
 
   closeIcn.on('pointerdown', () => {
     uiElements.forEach(o => o.destroy());
