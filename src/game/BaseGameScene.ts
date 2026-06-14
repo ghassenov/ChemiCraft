@@ -18,6 +18,7 @@ export abstract class BaseGameScene extends Phaser.Scene {
   protected buildings!: Phaser.Physics.Arcade.StaticGroup;
   protected groundLayer!: Phaser.GameObjects.Group;
   protected portalPrompt!: Phaser.GameObjects.Text;
+  protected buildingPrompt!: Phaser.GameObjects.Text;
 
   protected resourceNodes!: Phaser.Physics.Arcade.StaticGroup;
   protected binZones: { x: number; y: number; wasteType: string; color: string; prompt: Phaser.GameObjects.Container; graphics: Phaser.GameObjects.Graphics[] }[] = [];
@@ -89,9 +90,10 @@ export abstract class BaseGameScene extends Phaser.Scene {
         const node = new ResourceNode(this, rx, ry, nodeData.type as ResourceType, nodeData.maxGathers);
         this.resourceNodes.add(node);
         if (emojiOverlay[nodeData.type]) {
-          this.add.text(rx, ry - 20, emojiOverlay[nodeData.type], {
+          const emoji = this.add.text(rx, ry - 20, emojiOverlay[nodeData.type], {
             fontSize: '18px',
           }).setOrigin(0.5).setDepth(3);
+          node.emojiLabel = emoji;
         }
       }
     } else {
@@ -113,6 +115,11 @@ export abstract class BaseGameScene extends Phaser.Scene {
 
     this.portalPrompt = this.add.text(0, 0, '', {
       fontFamily: '"Inter", sans-serif', fontSize: '12px', color: '#a29bfe',
+      backgroundColor: '#000000aa', padding: { x: 8, y: 4 },
+    }).setOrigin(0.5).setScrollFactor(0).setDepth(30).setAlpha(0);
+
+    this.buildingPrompt = this.add.text(0, 0, '', {
+      fontFamily: '"Inter", sans-serif', fontSize: '12px', color: '#fdcb6e',
       backgroundColor: '#000000aa', padding: { x: 8, y: 4 },
     }).setOrigin(0.5).setScrollFactor(0).setDepth(30).setAlpha(0);
 
@@ -188,6 +195,20 @@ export abstract class BaseGameScene extends Phaser.Scene {
     const px = Math.floor(this.player.x / ts);
     const py = Math.floor(this.player.y / ts);
 
+    let nearBuilding = false;
+    for (const b of this.mapData.buildings) {
+      if (Math.abs(b.tileX - px) <= 1 && Math.abs(b.tileY - py) <= 1) {
+        nearBuilding = true;
+      }
+    }
+    if (nearBuilding) {
+      const bx = this.player.x;
+      const by = this.player.y - 40;
+      this.buildingPrompt.setPosition(bx, by).setText(this.player.facing === Direction.Up ? '[ ↑ ] Enter' : '[ ↑ ] Face up').setAlpha(1);
+    } else {
+      this.buildingPrompt.setAlpha(0);
+    }
+
     for (const b of this.mapData.buildings) {
       if (b.tileX === px && b.tileY === py) {
         if (this.player.facing === Direction.Up) {
@@ -213,7 +234,14 @@ export abstract class BaseGameScene extends Phaser.Scene {
     }
   }
 
-  protected unlockAndTravel(currentMapKey: string, nextMapKey: string, _portal: any) {
+  protected unlockAndTravel(currentMapKey: string, nextMapKey: string, portal: any) {
+    if (portal.unlockCondition === 'all_quests' && !this.checkAllMainQuestsComplete()) {
+      const event = new CustomEvent('chemicraft:notification', {
+        detail: { message: 'Complete all main quests first!', color: '#e74c3c' }
+      });
+      window.dispatchEvent(event);
+      return;
+    }
     const allMaps = this.cache.json.get('maps') as Record<string, MapData>;
     if (allMaps[nextMapKey]) {
       gameStore.unlockMap(nextMapKey);
@@ -891,7 +919,7 @@ export abstract class BaseGameScene extends Phaser.Scene {
       }
 
       const buildingSceneKey = data.id === 'lab_assistant' ? 'LabInteriorScene'
-        : (data.id === 'professor_knowitall' || data.id === 'eco_educator') ? 'LibraryInteriorScene'
+        : (data.id === 'professor_knowitall' || data.id === 'eco_educator' || data.id === 'eco_activist') ? 'LibraryInteriorScene'
         : null;
 
       if (data.questId && gameStore.isQuestActive(data.questId) && !gameStore.isQuestCompleted(data.questId)) {

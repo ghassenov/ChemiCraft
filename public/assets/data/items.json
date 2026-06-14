@@ -105,7 +105,7 @@
     "color": "#a5d6a7", "price": 0, "stackable": true, "mapOrigin": "recyclingFields"
   },
   "recycled_plastic": {
-    "id": "recycled_plastic", "name": "Recycled Plastic Pellets", "symbol": "🔵", "type": "molecule",
+    "id": "recycled_plastic", "name": "Recycled Plastic Pellets",     "symbol": "🔄", "type": "molecule",
     "description": "Processed plastic ready for reuse in manufacturing.",
     "color": "#ffcc02", "price": 30, "stackable": true, "mapOrigin": "recyclingFields"
   },
@@ -205,12 +205,12 @@
     "color": "#ce93d8", "price": 300, "stackable": false, "mapOrigin": "prismHeights"
   },
   "magnet_n": {
-    "id": "magnet_n", "name": "North Magnet", "symbol": "🔵", "type": "reagent",
+    "id": "magnet_n", "name": "North Magnet",     "symbol": "🟦", "type": "reagent",
     "description": "Magnetic north pole — attracts south poles, repels north poles.",
     "color": "#42a5f5", "price": 40, "stackable": true, "mapOrigin": "magnetCore"
   },
   "magnet_s": {
-    "id": "magnet_s", "name": "South Magnet", "symbol": "🔴", "type": "reagent",
+    "id": "magnet_s", "name": "South Magnet",     "symbol": "🟥", "type": "reagent",
     "description": "Magnetic south pole — attracts north poles, repels south poles.",
     "color": "#ef5350", "price": 40, "stackable": true, "mapOrigin": "magnetCore"
   },

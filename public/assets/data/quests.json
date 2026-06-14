@@ -87,7 +87,7 @@
     "objectiveType": "craft", "target": "biofuel", "targetItemId": "biofuel", "targetAmount": 1,
     "rewardCoins": 100, "rewardSkill": { "climate_science": 1 }, "rewardItems": [],
     "prerequisiteQuests": [],
-    "hints": ["Biofuel is made from organic waste + H₂O.", "Organic waste can be gathered from Recycling Fields.", "You already crafted H₂O in Atom Meadows — check your inventory!", "Craft it at the Eco Lab workbench."]
+    "hints": ["Biofuel = organic waste (🌿) + H₂O.", "Gather 🌿 from the biomass piles or bring from Recycling Fields.", "You need H₂O from Atom Meadows — craft it if you haven't already!", "Use the Climate Lab workbench to craft."]
   },
   "greenhouse_gases": {
     "id": "greenhouse_gases", "mapOrigin": "ecoVille",
@@ -110,7 +110,7 @@
   "renewable_shift": {
     "id": "renewable_shift", "mapOrigin": "ecoVille",
     "title": "Renewable Shift", "isMainQuest": true, "npcId": "energy_engineer",
-    "description": "Power EcoVille with clean energy! Craft 1 Solar Panel and 1 Biofuel.",
+    "description": "Power EcoVille with clean energy! Craft 1 Solar Panel from recycled materials.",
     "objectiveType": "craft", "target": "solar_panel", "targetItemId": "solar_panel", "targetAmount": 1,
     "rewardCoins": 150, "rewardSkill": { "climate_science": 1, "equation_balancing": 1 }, "rewardItems": ["biofuel"],
     "prerequisiteQuests": ["clean_water_quest"],
