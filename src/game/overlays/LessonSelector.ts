@@ -116,54 +116,6 @@ const mapLessonSets: Record<string, MapLessonSet> = {
     },
     completionItem: 'materials_certificate',
   },
-
-  ecoVille: {
-    lessons: [
-      { id: 'climate_basics', title: 'Climate Science Basics', desc: 'Greenhouse effect and global warming.', reward: 15 },
-      { id: 'carbon_cycle', title: 'The Carbon Cycle', desc: 'How carbon moves through Earth.', reward: 15 },
-      { id: 'carbon_capture', title: 'Carbon Capture Tech', desc: 'Removing CO₂ from the air.', reward: 20 },
-      { id: 'renewable_energy', title: 'Renewable Energy', desc: 'Solar, biofuel, wind, and more.', reward: 20 },
-      { id: 'sustainable_city', title: 'Sustainable Cities', desc: 'Building a carbon-neutral future.', reward: 25 },
-    ],
-    quizzes: {
-      climate_basics: [
-        { q: 'Which gas is the primary greenhouse gas from human activity?', opts: ['Oxygen', 'Carbon Dioxide', 'Nitrogen'], ans: 1 },
-        { q: 'What does the greenhouse effect do?', opts: ['Cools the planet', 'Traps heat in the atmosphere', 'Blocks all sunlight'], ans: 1 },
-        { q: 'Which is a stronger greenhouse gas, molecule for molecule?', opts: ['CO₂', 'CH₄ (Methane)', 'O₂'], ans: 1 },
-        { q: 'What human activity produces the most greenhouse gases?', opts: ['Burning fossil fuels', 'Growing food', 'Using phones'], ans: 0 },
-        { q: 'What percentage of Earth\'s atmosphere is CO₂?', opts: ['About 0.04%', 'About 4%', 'About 21%'], ans: 0 },
-      ],
-      carbon_cycle: [
-        { q: 'Where is most of Earth\'s carbon stored?', opts: ['In the atmosphere', 'In the oceans and rocks', 'In living things'], ans: 1 },
-        { q: 'What process removes CO₂ from the atmosphere?', opts: ['Respiration', 'Photosynthesis', 'Combustion'], ans: 1 },
-        { q: 'What happens when oceans absorb more CO₂?', opts: ['They become more alkaline', 'They become more acidic', 'Nothing changes'], ans: 1 },
-        { q: 'How does deforestation affect the carbon cycle?', opts: ['Increases CO₂ in the atmosphere', 'Decreases CO₂', 'No effect'], ans: 0 },
-        { q: 'What is the Keeling Curve?', opts: ['A graph of rising CO₂ levels', 'A type of solar panel', 'A weather pattern'], ans: 0 },
-      ],
-      carbon_capture: [
-        { q: 'What is carbon capture?', opts: ['Trapping CO₂ before it reaches the atmosphere', 'Growing more plants', 'Using less energy'], ans: 0 },
-        { q: 'What material is commonly used to filter pollutants?', opts: ['Plastic', 'Activated carbon', 'Aluminum'], ans: 1 },
-        { q: 'What happens to captured CO₂ in this game?', opts: ['Released into space', 'Converted into carbon credits', 'Stored underground forever'], ans: 1 },
-        { q: 'In the game, what do you combine to capture CO₂?', opts: ['O₂ + H₂', 'Pollution sample + clean water', 'C + H + H + H + H'], ans: 1 },
-        { q: 'How many captured CO₂ units make a carbon credit?', opts: ['1', '2', '3'], ans: 1 },
-      ],
-      renewable_energy: [
-        { q: 'Which energy source is considered renewable?', opts: ['Coal', 'Natural gas', 'Solar'], ans: 2 },
-        { q: 'What do solar panels convert sunlight into?', opts: ['Heat', 'Electricity', 'Fuel'], ans: 1 },
-        { q: 'Why is biofuel considered carbon-neutral?', opts: ['It produces no CO₂', 'Plants absorbed CO₂ while growing', 'It uses no energy to make'], ans: 1 },
-        { q: 'What materials make a solar panel in the game?', opts: ['Plastic + metal', 'Recycled plastic + recycled glass', 'Wood + water'], ans: 1 },
-        { q: 'Which renewable source provides the most energy worldwide?', opts: ['Solar', 'Wind', 'Hydropower'], ans: 2 },
-      ],
-      sustainable_city: [
-        { q: 'What does carbon neutral mean?', opts: ['Zero CO₂ produced', 'CO₂ emitted equals CO₂ removed', 'Only using renewable energy'], ans: 1 },
-        { q: 'What is the final quest reward in EcoVille?', opts: ['Biofuel', 'Solar panel', 'Green Certificate'], ans: 2 },
-        { q: 'What three items make the Green Certificate?', opts: ['Biofuel + solar + carbon credit', 'Water + air + soil', 'Plastic + glass + metal'], ans: 0 },
-        { q: 'Where do recycled plastic and glass come from?', opts: ['EcoVille shops', 'Recycling Fields', 'Atom Meadows'], ans: 1 },
-        { q: 'What unlocks after completing all EcoVille quests?', opts: ['Portal to Prism Heights', 'Portal back to Atom Meadows', 'The Green Certificate'], ans: 0 },
-      ],
-    },
-    completionItem: null,
-  },
 };
 
 export function openLessonSelector(scene: Phaser.Scene, mapKey?: string) {
@@ -178,7 +130,7 @@ export function openLessonSelector(scene: Phaser.Scene, mapKey?: string) {
   panel.lineStyle(2, 0x8b6914, 0.5);
   panel.strokeRoundedRect(width / 2 - 200, height / 2 - 160, 400, 320, 12);
 
-  const titleText = effectiveMapKey === 'recyclingFields' ? 'MATERIALS STUDY CENTER' : effectiveMapKey === 'ecoVille' ? 'ECO CLIMATE LIBRARY' : 'SELECT A LESSON';
+  const titleText = effectiveMapKey === 'recyclingFields' ? 'MATERIALS STUDY CENTER' : 'SELECT A LESSON';
   const title = scene.add.text(width / 2, height / 2 - 140, titleText, {
     fontFamily: '"Press Start 2P"', fontSize: '12px', color: '#d4a855',
   }).setOrigin(0.5).setDepth(52);
@@ -245,46 +197,38 @@ function openLessonContent(scene: Phaser.Scene, lesson: Lesson, remaining: Quest
   else if (lesson.id === 'glass_metal') content = 'Glass is made from silica sand, soda ash, and limestone. It\'s infinitely recyclable without quality loss. Metals like aluminum are the most energy-efficient to recycle — aluminum recycling uses 95% less energy than primary production! Steel, copper, and brass are also valuable recyclables.';
   else if (lesson.id === 'paper_organic') content = 'Paper fibers weaken each time they\'re recycled, so paper can typically be recycled 5-7 times. Composting turns organic waste into nutrient-rich soil through thermophilic microbial activity. The right balance of greens (nitrogen), browns (carbon), air, and moisture is key to successful composting.';
   else if (lesson.id === 'circular_eco') content = 'A circular economy keeps resources in use for as long as possible, extracting maximum value, then recovering and regenerating products at end of life. This contrasts with the traditional linear economy (take-make-dispose). Eco bricks, upcycling, and industrial symbiosis are circular economy innovations.';
-  else if (lesson.id === 'climate_basics') content = 'The greenhouse effect is a natural process where gases like CO\u2082 and CH\u2084 trap heat in Earth\u2019s atmosphere. Without it, our planet would be frozen. However, human activities \u2014 especially burning fossil fuels \u2014 have increased CO\u2082 levels by 50% since the Industrial Revolution, causing global temperatures to rise. This is climate change. The main greenhouse gases are CO\u2082 (carbon dioxide), CH\u2084 (methane), N\u2082O (nitrous oxide), and fluorinated gases.';
-  else if (lesson.id === 'carbon_cycle') content = 'Carbon moves continuously through Earth\u2019s systems \u2014 the atmosphere, oceans, soil, and living things. Plants absorb CO\u2082 through photosynthesis, animals release it through respiration, and the oceans absorb vast amounts. The Keeling Curve, started by Charles David Keeling in 1958, shows atmospheric CO\u2082 rising from 315 ppm to over 420 ppm today. Deforestation and fossil fuel burning have disrupted this natural cycle, releasing carbon that was locked underground for millions of years.';
-  else if (lesson.id === 'carbon_capture') content = 'Carbon capture technology traps CO\u2082 before it reaches the atmosphere. In this game, you combine a pollution sample (\u2601\uFE0F) with clean water (\uD83D\uDCA7) to capture CO\u2082 (\uD83E\uDEEB). Two captured CO\u2082 units can be combined into a carbon credit (\uD83C\uDF0D), which represents removing 1 tonne of CO\u2082 from the atmosphere. Real-world methods include chemical absorption, direct air capture, and bioenergy with carbon capture and storage (BECCS).';
-  else if (lesson.id === 'renewable_energy') content = 'Renewable energy comes from sources that naturally replenish. Solar panels convert sunlight into electricity using photovoltaic cells. Biofuel is made from organic matter and is carbon-neutral because the plants absorbed CO\u2082 as they grew. Wind turbines, hydropower, and geothermal energy are other major renewables. In EcoVille, you craft solar panels from recycled plastic and glass, and biofuel from organic waste and water \u2014 showing how waste can become energy.';
-  else if (lesson.id === 'sustainable_city') content = 'A sustainable city balances environmental, social, and economic needs. Carbon neutrality means the CO\u2082 a city emits is equal to what it removes. EcoVille\u2019s path to carbon neutrality requires: renewable energy (solar + biofuel), carbon capture and offsetting, clean water filtration, and sustainable materials. The Green Certificate (\uD83C\uDFC6) represents the final synthesis of all these technologies. Real cities like Copenhagen and Vancouver have set 2040-2050 carbon neutrality targets.';
 
   const overlay = scene.add.rectangle(0, 0, width, height, 0x000, 0.85).setOrigin(0).setDepth(60);
 
   const panel = scene.add.graphics().setDepth(61);
   panel.fillStyle(0x1a1510, 0.95);
-  panel.fillRoundedRect(width / 2 - 240, height / 2 - 210, 480, 420, 12);
+  panel.fillRoundedRect(width / 2 - 240, height / 2 - 180, 480, 360, 12);
   panel.lineStyle(2, 0x3498db, 0.5);
-  panel.strokeRoundedRect(width / 2 - 240, height / 2 - 210, 480, 420, 12);
+  panel.strokeRoundedRect(width / 2 - 240, height / 2 - 180, 480, 360, 12);
 
-  const closeIcn = scene.add.text(width / 2 + 220, height / 2 - 195, '✕', {
+  const closeIcn = scene.add.text(width / 2 + 220, height / 2 - 170, '✕', {
     fontFamily: '"Inter"', fontSize: '16px', color: '#ff7675',
   }).setOrigin(0.5).setDepth(65).setInteractive({ useHandCursor: true });
 
-  const title = scene.add.text(width / 2, height / 2 - 175, lesson.title, {
+  const title = scene.add.text(width / 2, height / 2 - 155, lesson.title, {
     fontFamily: '"Press Start 2P"', fontSize: '12px', color: '#3498db',
   }).setOrigin(0.5).setDepth(62);
 
-  const text = scene.add.text(width / 2, height / 2 - 120, content, {
+  const text = scene.add.text(width / 2, height / 2 - 60, content, {
     fontFamily: '"Inter"', fontSize: '14px', color: '#c8b89a',
-    wordWrap: { width: 380 }, lineSpacing: 6,
+    wordWrap: { width: 400 }, lineSpacing: 6,
   }).setOrigin(0.5).setDepth(62);
 
   const uiElements: Phaser.GameObjects.GameObject[] = [overlay, panel, closeIcn, title, text];
 
-  let questionElements: Phaser.GameObjects.GameObject[] = [];
-
+  let quizStarted = false;
   let completionAwarded = false;
 
   function showNextQuestion() {
-    for (const el of questionElements) {
-      const idx = uiElements.indexOf(el);
-      if (idx !== -1) uiElements.splice(idx, 1);
-      el.destroy();
+    if (!quizStarted) {
+      text.setVisible(false);
+      quizStarted = true;
     }
-    questionElements = [];
 
     if (remaining.length === 0) {
       const done = scene.add.text(width / 2, height / 2 - 80, 'All questions answered! +20 bonus coins!', {
@@ -307,13 +251,20 @@ function openLessonContent(scene: Phaser.Scene, lesson: Lesson, remaining: Quest
     }
 
     const qData = remaining[0];
-    const qTxt = scene.add.text(width / 2, height / 2 + 70, qData.q, {
-      fontFamily: '"Inter"', fontSize: '12px', color: '#f1c40f', fontStyle: 'bold', align: 'center',
+    const qTxt = scene.add.text(width / 2, height / 2 - 120, qData.q, {
+      fontFamily: '"Inter"', fontSize: '14px', color: '#f1c40f', fontStyle: 'bold', align: 'center',
+      wordWrap: { width: 440 },
     }).setOrigin(0.5).setDepth(62);
     uiElements.push(qTxt);
-    questionElements.push(qTxt);
 
-    let qy = height / 2 + 110;
+    let qy = height / 2 - 60;
+    const optionElements: Phaser.GameObjects.GameObject[] = [];
+
+    const feedbackTxt = scene.add.text(width / 2, qy + 180, '', {
+      fontFamily: '"Inter"', fontSize: '12px', color: '#e74c3c',
+    }).setOrigin(0.5).setDepth(63);
+    uiElements.push(feedbackTxt);
+
     for (const [idx, opt] of qData.opts.entries()) {
       const btnG = scene.add.graphics().setDepth(62);
       btnG.fillStyle(0x3d2b1f, 0.85);
@@ -336,12 +287,18 @@ function openLessonContent(scene: Phaser.Scene, lesson: Lesson, remaining: Quest
 
           const skillMap: Record<string, string> = {
             recyclingFields: 'recycling_mastery',
-            ecoVille: 'climate_science',
             atomMeadows: 'equation_balancing',
           };
           gameStore.addSkillPoints(skillMap[mapKey] || 'equation_balancing', 1);
 
           remaining.shift();
+
+          [qTxt, ...optionElements].forEach(el => {
+            const i = uiElements.indexOf(el);
+            if (i !== -1) uiElements.splice(i, 1);
+            el.destroy();
+          });
+
           showNextQuestion();
         } else {
           scene.cameras.main.shake(200, 0.01);
@@ -355,8 +312,7 @@ function openLessonContent(scene: Phaser.Scene, lesson: Lesson, remaining: Quest
 
       optionElements.push(btnG, btnT, zone);
       uiElements.push(btnG, btnT, zone);
-      questionElements.push(btnG, btnT, zone);
-      qy += 40;
+      qy += 48;
     }
   }
 
