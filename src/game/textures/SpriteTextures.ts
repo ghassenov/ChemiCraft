@@ -254,4 +254,9 @@ export function generateNPCSprites(scene: Phaser.Scene) {
   generateNPC(scene, 'npc_color_artist', 0xff8a65, 0xff5722, 'worker');
   generateNPC(scene, 'npc_lens_crafter', 0xce93d8, 0xba68c8, 'worker');
   generateNPC(scene, 'npc_optics_librarian', 0xce93d8, 0xab47bc, 'scholar');
+  // MagnetCore NPCs
+  generateNPC(scene, 'npc_physicist', 0x42a5f5, 0x1976d2, 'scholar');
+  generateNPC(scene, 'npc_rocket_engineer', 0xef5350, 0xc62828, 'worker');
+  generateNPC(scene, 'npc_magnetic_artist', 0xce93d8, 0xab47bc, 'assistant');
+  generateNPC(scene, 'npc_core_guardian', 0x7c4dff, 0x4527a0, 'mayor');
 }
