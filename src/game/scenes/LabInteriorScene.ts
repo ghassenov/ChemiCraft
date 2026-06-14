@@ -948,8 +948,8 @@ export class LabInteriorScene extends Phaser.Scene {
         if (temp > 100) temp = 100;
         
         // Flame particle every ~200ms while held
-        if (time - lastFlameTime > 200) {
-          lastFlameTime = time;
+        if (_time - lastFlameTime > 200) {
+          lastFlameTime = _time;
           const f = this.add.particles(width / 2, height / 2 + 120, 'icon_particle', {
             speed: 20, angle: {min: 250, max: 290}, scale: {start:0.3, end:0}, lifespan: 300, blendMode: 'ADD', tint: 0xe74c3c
           }).setDepth(105);
