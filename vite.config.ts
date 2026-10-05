@@ -15,7 +15,7 @@ export default defineConfig({
         open: true,
     },
     build: {
-        target: "ES2022",
+        target: "es2022",
         sourcemap: true,
     },
 });
